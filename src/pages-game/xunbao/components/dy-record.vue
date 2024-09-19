@@ -29,8 +29,18 @@
 				<!-- 	<view class="" v-else>
 						123
 					</view> -->
+					<u-popup :show="noPrize" mode="center" :safeAreaInsetBottom="false" bgColor="transparent" @close="noPrize = false;close()" >
+						<view class=" por">
+							<u-image :src="ASSETSURL + 'noPrize.png'" width="540rpx" height="674rpx"></u-image>
+							<view class="close" @click="noPrize = false;close()">
+								<u-icon :name="ASSETSURL + 'close.png'" color="#fff" size="60rpx"></u-icon>
+							</view>
+						</view>
+					</u-popup>
 			</view>
+			
 		</u-popup>
+		
 		<dy-prize :show="showPrize" :item="prizeDetail" v-if="code != 10007" @close="showPrize = false"
 			@getZlyq="showPrize = false"></dy-prize>
 	</view>
@@ -101,6 +111,7 @@
 					loop: true,
 					autoplay: false
 				},
+				noPrize: false,
 				showPrize: false,
 				prizeDetail: false,
 				webSocket: '',
@@ -423,8 +434,8 @@
 						// uni.hideLoading();
 						// tool.alert('识别失败')
 						// that.queryAd()
-						that.sayData = '识别失败'
-						that.adText = '识别失败，再来一次'
+						// that.sayData = '识别失败'
+						// that.adText = '识别失败，再来一次'
 					})
 				}
 				if (jsonData.code !== 0) {
@@ -469,30 +480,36 @@
 								})
 							}
 							if (data.prizeType == 'kapian') {
-								// that.showRecord = false
 								that.close()
+								// that.showRecord = false
 							} else if (data.prizeType == 'jiangli') {
 								// that.showRecord = false
 								that.close()
 								that.queryAd()
 								tool.jump_nav('/pages-game/xunbao/pages-list/advertising/advertising')
 								return
-							} else {}
+							}
+							
+							
 							// that.prizeDetail = data;
 							// setTimeout(() => {
 							// 	that.showPrize = true;
 							// }, 200)
-							console.log('出弹窗')
-							that.$emit('detailCloce', data)
+							
 							uni.closeSocket()
+							console.log('出弹窗')
+							if (data.prizeType != 'kong') that.$emit('detailCloce', data)
+							else{
+								
+							 that.noPrize = true;
+							 }
+							 uni.closeSocket()
 							
 						}).catch((err)=>{
+							uni.closeSocket()
 							let { code, message } = err
 							if (code == 10007 || code == 1002) {
-								
 								that.code = 10007
-								// tool.alert(message)
-								// this.queryAd()
 								that.sayData = '识别失败'
 								that.adText = '识别失败，再来一次'
 								return
@@ -545,4 +562,10 @@
 		opacity: 0;
 		 // transform:	tranxlateX(-50%);
 	}
+	
+		.close {
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
 </style>
