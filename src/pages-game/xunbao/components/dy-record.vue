@@ -8,10 +8,10 @@
 				<image class="ad_14" @click="close" :src="`${ASSETSURL}ad_14.png`"></image>
 				<view class="por" style="margin-left: -40rpx;margin-bottom: 30rpx">
 					<u-image :src="`${ASSETSURL}tan2_1.png`" width="610rpx" height="568rpx"></u-image>
-					<view class="adText" >
+					<view class="adText" :style="{ color: code == 10007 ? '#000' : '' }">
 						{{ code == 10007 ? '识别失败，再来一次' : adText }}
 					</view>
-					<view class="adText" style="margin-top: 108rpx">{{ sayData }}</view>
+					<view class="adText" style="margin-top: 108rpx" :style="{ color: code == 10007 ? '#000' : '' }">{{ sayData }}</view>
 				</view>
 				<view class="voice fade-show">
 					<sequenceEffect ref="voice" :sequenceList="voiceList"></sequenceEffect>
