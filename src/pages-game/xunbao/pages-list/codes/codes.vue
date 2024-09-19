@@ -125,33 +125,29 @@ export default {
 									}
 								})
 								
-								console.log('【识别返回】', res1)
-								if (res1.code == 500 || res1.code == 10006) {
-									that.codes_type = 0
-								}
-								if (res1.code != 200) {
-								} else {
-									reportClickEvent({
-										activityName: 'AR扫描成功',
-										actionRank: 0,
-										activityId: 'game_xunbao_AR_click_success',
-										activityContent: {
-											operateRecordCode: that.operateRecordCode,
-											imgUrl: res[0]
-										}
-									})
-									console.log(111)
-									// someClickEvent()  全局埋点
-									that.prizeDetail = res1.data
-									that.showPrize = true
-									if (res1.data.prizeType != 'kong') {
-										reportClickEvent({
-											activityName: 'AR获得奖品',
-											actionRank: 0,
-											activityId: 'game_xunbao_AR_click_prize',
-											activityContent: res1.data
-										})
+								reportClickEvent({
+									activityName: 'AR扫描成功',
+									actionRank: 0,
+									activityId: 'game_xunbao_AR_click_success',
+									activityContent: {
+										operateRecordCode: that.operateRecordCode,
+										imgUrl: res[0]
 									}
+								})
+								console.log(111)
+								// someClickEvent()  全局埋点
+								that.prizeDetail = res1.data
+								that.showPrize = true
+								api.preArScan().then(({ data }) => {
+									that.operateRecordCode = data.operateRecordCode
+								})
+								if (res1.data.prizeType != 'kong') {
+									reportClickEvent({
+										activityName: 'AR获得奖品',
+										actionRank: 0,
+										activityId: 'game_xunbao_AR_click_prize',
+										activityContent: res1.data
+									})
 								}
 							})
 							.catch((err) => {
@@ -159,6 +155,9 @@ export default {
 								console.log(err, '‘err173')
 								that.isSend = false
 								that.codes_type = 0
+								api.preArScan().then(({ data }) => {
+									that.operateRecordCode = data.operateRecordCode
+								})
 							})
 					})
 				}
