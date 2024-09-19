@@ -3,36 +3,12 @@
 		:refresher-enabled="false">
 		<view class="awardceng">
 			<view class="award">
-				<!-- <view class="award1" @click="fhui">
-					<image src="https://cdn.vrupup.com/s/116/ad_18.png"></image>
-					<u-navbar class="custom-navbar" title=" " autoBack bgColor="transparent" height="88rpx" placeholder></u-navbar>
-				</view> -->
 				<view class="award2">
 					<u-subsection mode="button" :list="list" :current="curNow" @change="sectionChange" bgColor="#ffe3a0"
 						activeColor="#fa7700" inactiveColor="#000"></u-subsection>
 				</view>
 				<view class="award3_list" v-for="(item,index) in dataList" :key="index"
 					:class="curNow == 0 ? 'add_h' : ''">
-					<!-- <view class="conterFoms" v-if="curNow == 0 && index == 0" style="padding-bottom: 0;">
-						<view v-for="(item2,index2) in jiangp_list" :key="index2">
-							<view class="award3">
-								<view class="award31 oh">
-									<view class="oh">
-										<view class="award311 le">
-											<image :src="item2.prizeImage"></image>
-										</view>
-										<view class="award312 le oh">
-											<view class="award3121">{{item2.prizeName}}</view>
-											<view class="award3122" :class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'">
-												未获取
-											</view>
-										</view>
-									</view>
-								</view>
-							</view>
-						</view>
-					</view> -->
-
 					<!-- 基础 -->
 					<view class="conterFoms" v-if="curNow == 0" style="margin-top: 0;">
 						<view v-if="item.prizeInfoList.length > 0 && item.prizeType == 'diaoluo'">
@@ -74,7 +50,6 @@
 						</view>
 					</view>
 
-
 					<!-- 卡片奖励 -->
 					<view class="conterFoms" v-if="curNow == 1 && item.prizeType == 'jichu'">
 						<view class="" v-if="item.prizeInfoList.length > 0 && item.prizeType == 'jichu'">
@@ -84,6 +59,9 @@
 										<view class="award31 oh award31_add">
 											<view class="award311 le">
 												<image :src="item2.prizeImage" v-if="item2.prizeStatus != 0"></image>
+												<view class="prizeImage">
+													<image :src="item2.prizeImage"></image>
+												</view>
 												<view class="theAddress" v-if="item2.prizeStatus == 0">
 													<view class="address">
 														填写地址
@@ -130,102 +108,38 @@
 					<view class="conterFoms" v-if="item.prizeType == 'zuigao' && curNow == 2">
 						<view class="award5" v-show="item.prizeInfoList[0].prizeStatus == 1">
 							<view class="award51">
-								<image :src="`${ASSETSURL}img/mcZuiGao.png`" mode="widthFix"></image>
-								<view class="award53"
-									v-if="item.prizeInfoList[0].prizeStatus == 4 || item.prizeInfoList[0].prizeStatus == 2">
-									<view class="award531 oh" style="top:-548rpx;">
-										<view class="award5313" v-show="item.prizeInfoList[0].prizeStatus == 4">
-											<!-- 暂未开始发放 -->
-										</view>
-										<view class="award5313" v-show="item.prizeInfoList[0].prizeStatus == 2">
-											未获得
-										</view>
-									</view>
-								</view>
+								<image :src="`${ASSETSURL}img/wmcZuiGao.png`" mode="widthFix"></image>
 							</view>
-							<view class="award52">
+							<view class="award52" style="margin-top: 50rpx;">
 								<image :src="`${ASSETSURL}ad_23.png`"></image>
 							</view>
 						</view>
 						<view class="award5" v-show="item.prizeInfoList[0].prizeStatus != 1">
 							<view class="award51">
-								<image :src="`${ASSETSURL}img/zuiGao.png`" mode="widthFix"></image>
-								<view class="award53"
+								<image :src="`${ASSETSURL}img/mcZuiGao.png`" mode="widthFix"></image>
+								<view class=""
 									v-if="item.prizeInfoList[0].prizeStatus == 4 || item.prizeInfoList[0].prizeStatus == 2">
-									<view class="award531 oh" style="top:-548rpx;">
-										<view class="award5313" v-show="item.prizeInfoList[0].prizeStatus == 4">
-											<!-- 暂未开始发放 -->
+								</view>
+								<view class="award53" v-if="item.prizeInfoList[0].prizeStatus == 0">
+									<view class="award531 oh">
+										<view class="award5311">
+											<image :src="`${ASSETSURL}ad_2311.png`"></image>
 										</view>
-										<view class="award5313" v-show="item.prizeInfoList[0].prizeStatus == 2">
-											未获得
+										<view class="award5312">
+											{{timeDiff}}
 										</view>
 									</view>
 								</view>
 							</view>
-							<view class="award52" v-if="item.prizeInfoList[0].prizeStatus == 0" @click="show = true">
-								<image :src="`${ASSETSURL}ad_231.png`"></image>
+							<view class="award52" style="margin-top: 50rpx;"
+								v-if="item.prizeInfoList[0].prizeStatus == 0" @click="show = true">
+								<image :src="`${ASSETSURL}ad_231.png`" @click="priztus(item.prizeInfoList[0])"></image>
 							</view>
-
-							<view class="award53" v-if="item.prizeInfoList[0].prizeStatus == 0">
-								<view class="award531 oh">
-									<view class="award5311">
-										<image :src="`${ASSETSURL}ad_2311.png`"></image>
-									</view>
-									<view class="award5312">
-										{{timeDiff}}
-									</view>
-								</view>
-							</view>
-
-
-
 						</view>
 
-
-
-						<!-- <view class="" v-for="(item2,index2) in item.prizeInfoList" :key="index2">
-							<view class="award3">
-								<view class="award31 oh">
-									<view class="oh">
-										<view class="award311 le">
-											<image :src="item2.prizeImage"></image>
-										</view>
-										<view class="award312 le oh">
-											<view class="award3121">{{item2.prizeName}}</view>
-											<view class="award3122">{{prizeStatus[item2.prizeStatus]}}</view>
-										</view>
-									</view>
-								</view>
-							</view>
-						</view> -->
 					</view>
 				</view>
 			</view>
-			<!-- <view class="award3" v-show="curNow == 1">
-				<view class=" award31_add1" v-for="(item,index) in dataList" :key="index">
-				<view class="award31 oh award31_add" >
-						<view class="award311 le">
-							<image src="https://cdn.vrupup.com/s/116/ad_19.png" mode="widthFix"></image>
-						</view>
-						<view class="award312 le oh">
-							<view class="award3121">奖品名称{{index}}</view>
-							<view class="award3122">领取</view>
-						</view>
-					</view>
-					<view class="award31_mc">
-						<view class="award31_mc1">
-							<view class="award31_mc11">
-								暂未获得
-							</view>
-							<view class="award31_mc12">
-								奖品当前剩余数量：xx个
-							</view>
-						</view>
-					</view>
-				</view>
-			</view> -->
-
-
 			<view class="award4" v-show="list_dq == 0 && curNow == 0">
 				<image src="https://cdn.vrupup.com/s/116/ad_20.png"></image>
 			</view>
@@ -299,7 +213,7 @@
 		</view>
 	</z-paging>
 </template>
- 
+
 <script>
 	import api from '@/pages-game/xunbao/api/api'
 	import tool from '@/pages-game/xunbao/js/tool'
@@ -884,6 +798,7 @@
 				width: 636rpx;
 				height: 487rpx;
 				margin: 0 auto;
+				position: relative;
 
 				image {
 					width: 636rpx;
@@ -902,14 +817,14 @@
 				width: 100%;
 				height: 100%;
 				position: absolute;
-				left: 0;
-				top: 0;
+				left: 10rpx;
+				top: 60rpx;
 				z-index: 9;
-				background: rgba(0, 0, 0, 0.6);
+				// background: rgba(0, 0, 0, 0.6);
 				border-radius: 19rpx 115rpx 19rpx 105rpx;
 
 				.award531 {
-
+					height: 100%;
 
 					.award5311 {
 						margin-top: 150rpx;

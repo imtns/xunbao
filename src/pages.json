@@ -104,10 +104,7 @@
           "path": "xunbao/pages-list/advertising/advertising",
           "style": {
 			  "navigationBarTitleText": "观看视频",
-            
-            "app-plus": {
-              "titleNView": false
-            }
+			  "navigationStyle": "custom"
           }
         }
       ]

@@ -94,7 +94,7 @@
 						<view class="compound121 le" @click="show = false">
 							<image :src="`${ASSETSURL}card/compound2.png`"></image>
 						</view>
-						<view class="compound122 le">
+						<view class="compound122 le" @click="show = false">
 							<image :src="`${ASSETSURL}card/compound3.png`"></image>
 						</view>
 					</view>
@@ -167,6 +167,11 @@
 		<view class="bgGxBgGxShowFect" v-show="bgGxShowFect">
 			<sequenceEffect ref="bgGx" :sequenceList="bgGx2"></sequenceEffect>
 		</view>
+		<!-- 地址弹窗 -->
+		<view style="margin-top: -100rpx;">
+			<shareAndDrop v-if="shareAndDropShow" :show="shareAndDropShow" @close="shareAndDropShow = false"
+				@selectAddress="selectAddress" @saveAddressInfo2="saveAddressInfo2" />
+		</view>
 	</view>
 </template>
 
@@ -180,13 +185,16 @@
 		reportClickEvent,
 		reportExposeEvent
 	} from '@/utils/report/report'
+	import shareAndDrop from '@/pages-game/xunbao/components/shareAndDrop/shareAndDrop.vue'
 	export default {
 		components: {
 			cardFlip,
-			sequenceEffect
+			sequenceEffect,
+			shareAndDrop
 		},
 		data() {
 			return {
+				shareAndDropShow: true, //显示隐藏
 				bgGxShowFect: false, //展示合成弹窗效果
 				resetShow: true, //强制刷新变量
 				bgGxShow: false,
@@ -304,6 +312,11 @@
 		onShow() {
 			this.htxb_myCard()
 			// this.htxb_cardDetail()
+			//获取地址
+			if (tool.storage('addressId')) {
+				this.addressId = tool.storage('addressId')
+				this.getAddressId(this.addressId)
+			}
 		},
 		watch: {
 			show(a, b) {
@@ -313,6 +326,34 @@
 			}
 		},
 		methods: {
+			//选择地址
+			selectAddress() {
+				tool.jump_nav('/pages/mine/address/list?type=1')
+			},
+			//保存地址信息
+			saveAddressInfo2() {
+				console.log('----保存地址信息----');
+				if (this.addressDate && !this.addressDate.objectCode) return tool.alert('请选择地址')
+				let data = {
+					goodsCode: this.shareCode2, //商品编码
+					receiveAddressCode: this.addressDate.objectCode
+				}
+				api.saveAddressInfo(data).then(res => {
+					console.log(res, '===保存地址信息=======');
+					if (res.code == 200) {
+						tool.alert('提交成功')
+						reportClickEvent({
+							activityName: '完成留资',
+							actionRank: 0,
+							activityId: 'game_xunbao_prize_click_leave',
+							activityContent: {}
+						})
+						this.show = false
+						tool.jump_back()
+					}
+				})
+			},
+
 			getbgGx() {
 				console.log('序列完成getbgGx');
 				this.$refs.bgGx.play()
@@ -374,14 +415,14 @@
 								this.show = true
 								this.compound1 = 1
 								this.bgGxShowFect = false
-								console.log( 'this.compound1 = 1');
+								console.log('this.compound1 = 1');
 							})
 						} else {
 							this.$refs.bgGx.play(46).then(() => {
 								this.show = true
 								this.compound1 = 0
 								this.bgGxShowFect = false
-								console.log( 'this.compound1 = 0');
+								console.log('this.compound1 = 0');
 							})
 						}
 						this.htxb_myCard()
@@ -461,6 +502,10 @@
 	.bgGxBgGxShowFect {
 		width: 100vw;
 		height: 100vh;
+
+		::v-deep .sequence {
+			margin-top: -60px;
+		}
 	}
 
 	.card {

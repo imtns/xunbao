@@ -5,6 +5,8 @@
 				<image :src="`${ASSETSURL}ad_18.png`"></image>
 				<u-navbar class="custom-navbar" title=" " autoBack bgColor="transparent" height="88rpx" placeholder></u-navbar>
 			</view> -->
+			<u-navbar @leftClick="fhui" class="custom-navbar" title="观看视频" fixed safeAreaInsetTop bgColor="#FFF"
+				height="88rpx" placeholder></u-navbar>
 			<view class="advertising1 oh" :class="'isUs' + dq_claas_i">
 				<view class="advertising10 le">
 					<u-line-progress :showText="false" :percentage="percentage" activeColor="#fea500"
@@ -42,16 +44,18 @@
 
 				<view class="advertising4" v-show="type == 1">
 					<view class="advertising43">
-						<view class="advertising431">
-							<image :src="dropPrize.prizeImage" @click="close"></image>
+						<view class="advertising431" style="margin-top: 100rpx;">
+							<image :src="`${ASSETSURL}img/zhiYing.png`"
+								style="position: absolute;top: -63%;right: 10%;width: 445rpx; height: 379rpx;"></image>
+							<image :src="`${ASSETSURL}img/fx${dq_claas_i + 1}.png`"></image>
 							<!-- <image :src="`${ASSETSURL}advertising7.png`" @click="close"></image> -->
+							<view class="advertising432">
+								<!-- <button type="primary" open-type="share" style="background: none; border: none; border-radius: 0; line-height: 0"> -->
+									<image :src="`${ASSETSURL}advertising8.png`"></image>
+								<!-- </button> -->
+							</view>
 						</view>
-						<view class="advertising432">
-							<button type="primary" open-type="share"
-								style="background: none; border: none; border-radius: 0; line-height: 0">
-								<image :src="`${ASSETSURL}advertising8.png`" @click="cs_fx"></image>
-							</button>
-						</view>
+
 					</view>
 				</view>
 			</u-popup>
@@ -154,11 +158,11 @@
 				], //'shareAppMessage'打开分享好友功能 | 'shareTimeline'打开分享到朋友圈功能
 			});
 		},
-
 		//分享朋友圈
 		onShareTimeline(res) {
+			this.shareWithFriends()
 			return {
-				title: '分享到朋友圈', //分享的标题
+				title: '分享到朋友圈11', //分享的标题
 				imageUrl: 'https://cdn.vrupup.com/s/116/dayAnswer/jiangp1.png', //展示的图片，这里是本地路径的写法，也可以写http或https开头的图片路径
 				query: 'from=shareTimeline', //页面打开的传参
 			}
@@ -177,23 +181,21 @@
 				this.addressId = tool.storage('addressId')
 				this.getAddressId(this.addressId)
 			}
-			if (this.shareDate) {
-				console.log(this.shareDate, '-----111111-----');
-				this.sharepro = 100
-				// this.priceImgList.includes(this.shareDate.dropPrize.prizeName)
-				let _prizeName = this.priceImgList.filter(item => item.prizeName = this.shareDate.dropPrize.prizeName)
-				console.log("_prizeName", _prizeName)
-				console.log("_prizeName.prizeImage", _prizeName.prizeImage)
-				this.shareAndDropShow = true
-				this.show = false
-			}
+			// if (this.shareDate) {
+			// 	console.log(this.shareDate, '-----111111-----');
+			// 	this.sharepro = 100
+			// 	// this.priceImgList.includes(this.shareDate.dropPrize.prizeName)
+			// 	let _prizeName = this.priceImgList.filter(item => item.prizeName = this.shareDate.dropPrize.prizeName)
+			// 	console.log("_prizeName", _prizeName)
+			// 	console.log("_prizeName.prizeImage", _prizeName.prizeImage)
+			// 	this.shareAndDropShow = true
+			// 	this.show = false
+			// }
 		},
 		onUnload() {
 			clearInterval(this.dsq)
 		},
-
 		computed: {
-
 			//当前进度
 			percentage() {
 				return (15 - this.time) * 50 / 15 + this.sharepro
@@ -292,6 +294,9 @@
 					.then((res) => {
 						console.log(res.data);
 						this.shareDate = res.data
+						this.sharepro = 100
+						this.shareAndDropShow = true
+						this.show = false
 					})
 					.catch((err) => {
 
@@ -356,7 +361,6 @@
 					if (this.time == 0) {
 						console.log('播放结束');
 						that.watchVideo2()
-
 					}
 					if (this.time < -1) {
 						clearInterval(this.dsq)
@@ -511,20 +515,22 @@
 					position: relative;
 
 					.advertising431 {
+						position: relative;
+
 						image {
-							width: 750rpx;
-							height: 1036rpx;
+							width: 600rpx;
+							height: 600rpx;
 						}
-					}
 
-					.advertising432 {
-						position: absolute;
-						top: 750rpx;
-						right: 113rpx;
+						.advertising432 {
+							position: absolute;
+							bottom: 30rpx;
+							right: 50rpx;
 
-						image {
-							width: 316rpx;
-							height: 85rpx;
+							image {
+								width: 316rpx;
+								height: 85rpx;
+							}
 						}
 					}
 				}
