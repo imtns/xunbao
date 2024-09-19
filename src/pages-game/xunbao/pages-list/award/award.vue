@@ -41,7 +41,9 @@
 									<view class="award31 oh">
 										<view class="oh">
 											<view class="award311 le" v-if="item2.prizeStatus == 0">
-												<!-- <image :src="item2.prizeImage"></image> -->
+												<view class="prizeImage">
+													<image :src="item2.prizeImage"></image>
+												</view>
 												<view class="theAddress">
 													<view class="address">
 														填写地址
@@ -128,7 +130,7 @@
 					<view class="conterFoms" v-if="item.prizeType == 'zuigao' && curNow == 2">
 						<view class="award5" v-show="item.prizeInfoList[0].prizeStatus == 1">
 							<view class="award51">
-								<image :src="`${ASSETSURL}img/zuiGao.png`" mode="widthFix"></image>
+								<image :src="`${ASSETSURL}img/mcZuiGao.png`" mode="widthFix"></image>
 								<view class="award53"
 									v-if="item.prizeInfoList[0].prizeStatus == 4 || item.prizeInfoList[0].prizeStatus == 2">
 									<view class="award531 oh" style="top:-548rpx;">
@@ -250,7 +252,7 @@
 									收货人
 								</view>
 								<view class="award_tanc22 le">
-									<input v-model="addressDate.provinceName" />
+									<input disabled v-model="addressDate.provinceName" />
 								</view>
 							</view>
 							<view class="award_tanc2 oh">
@@ -258,7 +260,7 @@
 									手机号
 								</view>
 								<view class="award_tanc22 le">
-									<input v-model="addressDate.phone" />
+									<input disabled v-model="addressDate.phone" />
 								</view>
 							</view>
 							<view class="award_tanc2 oh">
@@ -266,7 +268,7 @@
 									所在地
 								</view>
 								<view class="award_tanc22 le">
-									<input v-model="addressDate.fullname" />
+									<input disabled v-model="addressDate.fullname" />
 								</view>
 							</view>
 							<view class="award_tanc2 oh">
@@ -274,7 +276,7 @@
 									详细地址
 								</view>
 								<view class="award_tanc22 le">
-									<input v-model="addressDate.detailAddress" />
+									<input disabled v-model="addressDate.detailAddress" />
 								</view>
 							</view>
 							<view class="award_tanc3 oh">
@@ -403,13 +405,14 @@
 			//获取地址
 			if (tool.storage('addressId')) {
 				this.addressId = tool.storage('addressId')
-				// this.getAddressId(this.addressId)
+				this.getAddressId(this.addressId)
 			}
-			this.getAddressId("1783425478279778305")
+			// this.getAddressId("1783425478279778305")
 		},
 		methods: {
 			//保存地址信息
 			saveAddressInfo() {
+				if (this.addressDate && !this.addressDate.objectCode) return tool.alert('请选择地址')
 				let data = {
 					goodsCode: this.commodity.goodsCode, //商品编码
 					receiveAddressCode: this.addressDate.objectCode
@@ -438,14 +441,12 @@
 				api.getAddressDetail(e).then(res => {
 					console.log(res, '----获取地址详情----');
 					this.addressDate = res.data
-					// uni.removeStorageSync(addressId)
+					uni.removeStorageSync(addressId)
 				})
 			},
 			//选择地址
 			selectAddress() {
-				wx.navigateTo({
-					url: '/pages/mine/address/list'
-				})
+				tool.jump_nav('/pages/mine/address/list?type=1')
 			},
 			// 倒计时函数
 			countdown(endTime, interval = 1000, onComplete) {
@@ -743,11 +744,20 @@
 						box-sizing: border-box;
 						width: 100%;
 					}
+					.prizeImage{
+						position: absolute;
+						left: 50%;
+						top: 50%;
+						transform: translate(-50%, -50%);
+						width: 188rpx;
+						height: 128rpx;
+						border-radius: 27rpx;
+					}
 
 					.theAddress {
 						width: 188rpx;
 						height: 128rpx;
-						background: url('https://cdn.vrupup.com/s/116/img/tianXieDiZhiKuang.png') #6A4718;
+						// background: url('https://cdn.vrupup.com/s/116/img/tianXieDiZhiKuang.png') #6A4718;
 						background-size: 100% 100%;
 						border-radius: 26rpx;
 						color: #FFF;
