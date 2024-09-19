@@ -172,7 +172,7 @@ import dyRecord from '@/pages-game/xunbao/components/dy-record.vue'
 import dyPrize from '@/pages-game/xunbao/components/dy-prize.vue'
 import sequenceEffect from '@/pages-game/xunbao/components/sequenceEffect/sequenceEffect.vue'
 import { mapState } from 'vuex'
-import { reportClickEvent, reportExposeEvent } from '@/utils/report'
+import { reportClickEvent, reportExposeEvent } from '@/utils/report/report'
 export default {
 	components: {
 		dyRecord,
@@ -296,7 +296,7 @@ export default {
 		},
 		handleDoubleClick1() {
 			if (!this.isLogin) {
-				// reportClickEvent({ activityName: '游戏首页跳转登录', actionRank: 0, activityId: 'game_xunbao_home_click_login', activityContent: {} })
+				 reportClickEvent({ activityName: '游戏首页跳转登录', actionRank: 0, activityId: 'game_xunbao_home_click_login', activityContent: {} })
 				return tool.jump_nav('/pages-sub/login/index')
 			}
 			// 单击或双击
@@ -329,6 +329,7 @@ export default {
 					this.scan = res.data[0]
 					this.taskList[0].max = res.data[3].totalTimes
 					this.taskList[0].now = res.data[3].finishTimes
+
 
 					this.taskList[1].max = res.data[1].totalTimes
 					this.taskList[1].now = res.data[1].finishTimes
@@ -394,12 +395,7 @@ export default {
 		},
 		//签到 分享等
 		getSignin(e, inx) {
-			reportClickEvent({
-				activityName: '签到?分享?点击', // 写中文能看的懂什么地方点击的
-				actionRank: 1,
-				activityId: 'game_xunbao_signin_click', // 埋点英文id，自定义根据页面点击方法自己定义，能看的懂就行
-				activityContent: {} // 请求的参数
-			})
+			reportClickEvent({ activityName: '好友分享页跳转登录', actionRank: 0, activityId: 'game_xunbao_index_click_task', activityContent: {name: e.name} })
 			console.log(e, '------------')
 			// someClickEvent() 全局埋点
 			if (e.id == 4) {
@@ -461,7 +457,7 @@ export default {
 		},
 		renw_1() {
 			if (!this.isLogin) {
-				// reportClickEvent({ activityName: '游戏首页跳转登录', actionRank: 0, activityId: 'game_xunbao_home_click_login', activityContent: {} })
+				 reportClickEvent({ activityName: '游戏首页跳转登录', actionRank: 0, activityId: 'game_xunbao_home_click_login', activityContent: {} })
 				return tool.jump_nav('/pages-sub/login/index')
 			}
 			reportClickEvent({ activityName: '寻找宝藏', actionRank: 0, activityId: 'game_xunbao_click_seek', activityContent: {} })
@@ -472,14 +468,14 @@ export default {
 		},
 		renw_3() {
 			if (!this.isLogin) {
-				// reportClickEvent({ activityName: '游戏首页跳转登录', actionRank: 0, activityId: 'game_xunbao_home_click_login', activityContent: {} })
+				 reportClickEvent({ activityName: '游戏首页跳转登录', actionRank: 0, activityId: 'game_xunbao_home_click_login', activityContent: {} })
 				return tool.jump_nav('/pages-sub/login/index')
 			}
 			tool.jump_nav('/pages-game/xunbao/pages-list/award/award')
 		},
 		renw_2() {
 			if (!this.isLogin) {
-				// reportClickEvent({ activityName: '游戏首页跳转登录', actionRank: 0, activityId: 'game_xunbao_home_click_login', activityContent: {} })
+				 reportClickEvent({ activityName: '游戏首页跳转登录', actionRank: 0, activityId: 'game_xunbao_home_click_login', activityContent: {} })
 				return tool.jump_nav('/pages-sub/login/index')
 			}
 			tool.jump_nav('/pages-game/xunbao/pages-list/card/card')

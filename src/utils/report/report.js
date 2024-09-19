@@ -130,7 +130,7 @@ const getCommonParams = (track) => {
 
   const eventId = track.eventId || '' // 事件id
   const eventType = { page_expose: 1, element_click: 2, element_expose: 3 }[eventId]
-  const referrerUrl = getPrevPage() && getPrevPage().route || '' // 前一页路由
+  const referrerUrl = (getPrevPage() && getPrevPage().route) || '' // 前一页路由
 
   return {
     visitId: gd.visitId,
@@ -172,7 +172,8 @@ const dataReader = (params) => {
     } else if (key.indexOf('$') === 0) {
       // 获取全局数据（包括globalData、节点的dataset、下标 - 需要在节点上显式指定data-index="xxx"）
       result = getGlobalData(key, dataset)
-    } else { // 常量
+    } else {
+      // 常量
       result = key
     }
 
@@ -188,7 +189,7 @@ const transferWxReportParam = (param = {}) => {
   const keys = Object.keys(param)
   const res = {}
 
-  keys.forEach(key => {
+  keys.forEach((key) => {
     res[key.toLowerCase()] = param[key]
   })
 
@@ -233,10 +234,12 @@ const report = (track, pageData) => {
   vals.forEach((val, index) => {
     // 特殊处理pv的开始时间和结束时间
     if (keys[index] === '_reportTime') {
-      if (val === 'hide') { // 加结束时间 - 仅限页面pv上报
+      if (val === 'hide') {
+        // 加结束时间 - 仅限页面pv上报
         params.endTime = formatTime()
         params._isLeaveExpose = true
-      } else { // 加开始时间 - 仅限页面pv上报
+      } else {
+        // 加开始时间 - 仅限页面pv上报
         params.startTime = formatTime()
       }
     } else {
@@ -261,14 +264,16 @@ const report = (track, pageData) => {
 
   // 阻止上报逻辑
   const data = { dataset: track.dataset, pageData, query, args }
-  if (track.stopReport === true || (typeof track.stopReport === 'function' && track.stopReport(data))) { return }
+  if (track.stopReport === true || (typeof track.stopReport === 'function' && track.stopReport(data))) {
+    return
+  }
 
   // 判断是否有获取到 unionid 和 openid - 没有的话就暂缓上报
-  if (!params.unionid || !params.openId) {
-    uni.$emit('stageBuryPointClick', params)
-  } else {
-    apiBuryPointClick(params)
-  }
+  //   if (!params.unionid || !params.openId) {
+  //     uni.$emit('stageBuryPointClick', params)
+  //   } else {
+  apiBuryPointClick(params)
+  //   }
 }
 
 export default report

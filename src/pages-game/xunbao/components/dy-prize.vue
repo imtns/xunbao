@@ -85,6 +85,7 @@
 <script>
 import api from '@/pages-game/xunbao/api/api'
 import cardFlip from '@/pages-game/xunbao/components/card-flip/card-flip.vue'
+import { reportClickEvent, reportExposeEvent } from '@/utils/report/report'
 export default {
 	name: 'dy-prize',
 	components: {
@@ -201,6 +202,7 @@ export default {
 		},
 		//分享 埋点
 		getShare() {
+			reportClickEvent({ activityName: '分享喜悦', actionRank: 0, activityId: 'game_xunbao_prize_click_share', activityContent: this.item })
 			// someClickEvent()  全局埋点
 		},
 		back() {
