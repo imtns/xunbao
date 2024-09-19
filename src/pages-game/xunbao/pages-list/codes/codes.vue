@@ -94,7 +94,7 @@
 							icon: 'none'
 						})
 						uni.setStorageSync('todaySignStatus', 1);
-						tool.jump_swi("/pages/index/index")
+						tool.jump_swi("/pages-game/xunbao/index")
 					})
 					.catch((err) => {
 

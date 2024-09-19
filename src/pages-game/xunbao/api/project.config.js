@@ -71,7 +71,7 @@ export default {
   //默认配置全局分享
   // SHAREINFO: {
   // 	title: `默认全局分享标题111${this.shareCode}2233`,
-  // 	path: "pages/index/index?shareCode=" + this.shareCode,
+  // 	path: "/pages-game/xunbao/index?shareCode=" + this.shareCode,
   // 	imageUrl: "https://img.vrupup.com/web/cdn/szq/other/share_01.jpg"
   // },
 }
