@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { userRegister, userInfo } from '@/http/wx'
 import { ls, lsGet } from '@/utils/util'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
     commonConfig: {},
-    isLogin: !!lsGet('iclubUserToken3'),
+    isLogin: !!lsGet('token'),
     captchaFlag: false,
-    userInfo: {},
+    userInfo: lsGet('userInfo') || {},
     commentList: [],
     isTodayCheckIn: false, // 今日签到状态
     defaultAvatar: '',
@@ -111,7 +112,31 @@ const store = new Vuex.Store({
     }
   },
 
-  actions: {}
+  actions: {
+    async getUserInfo({ commit, dispatch, state }) {
+      const data = {
+        inviteCode: getApp?.()?.globalData?.inviteCode || '',
+        inviteSource: getApp?.()?.globalData.inviteSource || '',
+        shareLinkTime: getApp?.()?.globalData.shareLinkTime || ''
+      }
+      //   await userRegister(data)
+      return new Promise((resolve) => {
+        userInfo()
+          .then((res) => {
+            commit('setIsLogin', true)
+            commit('setUserInfo', res)
+            ls('userInfo', res)
+
+            resolve(res)
+          })
+          .catch(() => {
+            commit('setIsLogin', false)
+            commit('setUserInfo', {})
+            resolve('')
+          })
+      })
+    }
+  }
 })
 
 export default store

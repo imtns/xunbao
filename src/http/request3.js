@@ -61,7 +61,7 @@ module.exports = {
 
           // 新的token
           if (res.header && res.header['x-imeik-refreshToken']) {
-            ls('iclubUserToken3', res.header['x-imeik-refreshToken'])
+            ls('token', res.header['x-imeik-refreshToken'])
           }
 
           // 请求成功，清除ticket

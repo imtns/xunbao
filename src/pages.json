@@ -6,6 +6,28 @@
   ],
   "subPackages": [
     {
+      "root": "pages-sub",
+      "pages": [
+        {
+          "path": "login/index",
+          "style": {
+            "navigationStyle": "custom",
+            "mp-weixin": {
+              "usingComponents": {
+                "loginform": "plugin://myPlugin/loginform"
+              }
+            }
+          }
+        }
+      ],
+      "plugins": {
+        "myPlugin": {
+          "version": "1.0.14",
+          "provider": "wx49ba8c2e81bce02f"
+        }
+      }
+    },
+    {
       "root": "pages-game",
       "pages": [
         {

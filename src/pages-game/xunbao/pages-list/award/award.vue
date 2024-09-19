@@ -149,7 +149,7 @@
 
 							<view class="award53"
 								v-if="item.prizeInfoList[0].prizeStatus == 4 || item.prizeInfoList[0].prizeStatus == 2">
-								<view class="award531 oh" style="top:-542rpx;">
+								<view class="award531 oh" style="top:-548rpx;">
 									<view class="award5313" v-show="item.prizeInfoList[0].prizeStatus == 4">
 										<!-- 暂未开始发放 -->
 									</view>
@@ -424,7 +424,7 @@
 			//选择地址
 			selectAddress() {
 				wx.navigateTo({
-					url: '/pages-game/xunbao/mine/address/list'
+					url: '/pages/mine/address/list'
 				})
 			},
 			// 倒计时函数
@@ -492,7 +492,9 @@
 		}
 	}
 </script>
-
+<style>
+	@import '@/pages-game/xunbao/css/base.css';
+</style>
 <style scoped lang="scss">
 	.awardceng {
 

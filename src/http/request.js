@@ -25,49 +25,18 @@ module.exports = {
     // iclub的请求走另外的接口域名
     const base = url.includes('/iclub/') ? baseIclubUrl : baseNewUrl
     const fullUrl = url.includes('http') ? url : `${base}${url}`
-    let token = lsGet('iclubUserToken3')
+    let token = lsGet('token')
 
     // #ifdef H5
     if (getQueryParam('token')) {
       token = getQueryParam('token')
-      ls('iclubUserToken3', token)
+      ls('token', token)
     }
     // #endif
 
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       // 不需要登录就可以调用的接口白名单
-      const whiteList = [
-        'iclub/api/operate/queryOperate',
-        'iclub/api/authenticity/queryAuthenticity',
-        'qxcollege/api/dictionary/tree',
-        'qxcollege/api/buryPoint/click',
-        'iclub/api/content/info',
-        'iclub/api/operate/queryOperate',
-        'iclub/api/home/listhomeContent',
-        'iclub/api/product/list',
-        'iclub/api/product/info',
-        'qxcollege/api/fileUpload/findAliToken',
-        'iclub/api/user/loginForMiniProgram',
-        'passport/api/sso/openid',
-        'passport/api/user/uploadUserInfo',
-        '/iclub/api/content/listProductContent',
-        '/iclub/api/goods/list',
-        '/iclub/api/content/info2',
-        '/iclub/api/goddess/queryActivityInfo',
-        '/passport/api/sso/sendSmsVerCode',
-        '/passport/api/sso/loginForMiniProgramForNewUser',
-        'loginByMiniApp',
-        '/iclub/api/activity/ehi/getEhiGameInfo',
-        '/iclub/openApi/activity/queryVoteActivityInfo',
-        '/iclub/openApi/activity/queryWorksCategoryList',
-        '/iclub/openApi/activity/queryPage'
-      ]
-
-      if (!token && !whiteList.find((i) => url.includes(i))) {
-        resolve({ data: {} })
-        return
-      }
 
       // 把小程序版本号拼接到query里传给接口
       const _version = getCurrentAppVersion()
@@ -107,7 +76,7 @@ module.exports = {
 
           // 新的token
           if (res.header && res.header['x-imeik-refreshToken']) {
-            ls('iclubUserToken3', res.header['x-imeik-refreshToken'])
+            ls('token', res.header['x-imeik-refreshToken'])
           }
 
           // 请求成功，清除ticket

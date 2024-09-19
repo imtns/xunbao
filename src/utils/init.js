@@ -3,12 +3,12 @@ import store from '@/store/store'
 
 // 是否登录
 uni.hasLogin = () => {
-  return !!lsGet('iclubUserToken3')
+  return !!lsGet('token')
 }
 
 // 清除登录信息
 uni.clearLogin = () => {
-  lsDel('iclubUserToken3')
+  lsDel('token')
   lsDel('userInfo')
   lsDel('userHasUploadInfo')
   lsDel('encryptKey')

@@ -1,0 +1,138 @@
+/*每个页面公共css */
+  .body,.container{min-height:100vh;font-size: 28rpx;}
+  .page{
+	  width: 100vw;
+	  min-height: 100vh;
+	  background: #febe00;
+	  background-size: cover;
+  }
+  .oh{
+  	overflow: hidden;
+  }
+  .le{
+  	float: left;
+  }
+  .ri{
+  	float: right;
+  }
+  .tc{
+	  text-align: center;
+  }
+/*公共常用样式*/
+.flex{display:flex}
+.flex-bet{display:flex;;justify-content: space-between;align-items: center;}
+.flex-bett{display:flex;justify-content: space-between;}
+.flex-aro{display:flex;justify-content: space-around;align-items: center;}
+.flex-cen{display: flex;justify-content: center;align-items: center;}
+.flex-cen-col{display: flex;justify-content: center;align-items: center;flex-direction: column;}
+.flex-bet-col{display: flex;justify-content: space-between;flex-direction: column;}
+.flex-ali-col{display: flex;justify-content: center;flex-direction: column;}
+.flex-jus{display: flex;justify-content: center;}
+.flex-ali{display: flex;align-items: center;}
+.flex-col{display: flex;flex-direction: column;}
+.flex-row{display: flex;flex-direction: row-reverse;}
+.flex1{flex:1;}
+.clearfix::before,.clearfix::after{content: "\0020";display: block;height: 0;overflow: hidden;} 
+.clearfix::after,clear:both,.clearfix{zoom: 1;}
+.fl{float:left;}
+.fr{float:right;}
+[class*= 'flex-'] {display: flex;}
+[class*= '-bet'] {justify-content: space-between;}
+[class*= '-cen'] {justify-content: center;}
+[class*= '-aro'] {justify-content: space-around;}
+[class*= '-eve'] {justify-content: space-evenly;}
+[class*= '-ali'] {align-items: center;}
+[class*= '-bas'] {align-items: baseline;}
+[class*= '-end'] {align-items: end;}
+[class*= '-col'] {flex-direction: column;}
+[class*= '-row'] {flex-direction: row-reverse;}
+[class*= '-wra'] {flex-wrap: wrap;}
+.full,.full-screen{width:100vw;height:100vh;}
+.cover{width:100%;height:100%;}
+.haze{position: fixed;width:100%;height:100%;background: rgba(0,0,0,.7);left:0;top:0;z-index: 9999}
+.pof{position: fixed;width:100%;height:100%;left:0;top:0;z-index: 10;}
+.poa{position: absolute;width:100%;height:100%;left:0;top:0;z-index: 10;}
+.por{position: relative;}
+.nowrap{white-space: nowrap;text-overflow: ellipsis;overflow: hidden;}
+.ell{white-space: nowrap;text-overflow: ellipsis;overflow: hidden;}
+.ell1{display: -webkit-box;-webkit-box-orient: vertical;text-overflow: ellipsis;overflow: hidden;-webkit-line-clamp: 1;}
+.ell2{display: -webkit-box;-webkit-box-orient: vertical;text-overflow: ellipsis;overflow: hidden;-webkit-line-clamp: 2;}
+.ell3{display: -webkit-box;-webkit-box-orient: vertical;text-overflow: ellipsis;overflow: hidden;-webkit-line-clamp: 3;}
+.ell4{display: -webkit-box;-webkit-box-orient: vertical;text-overflow: ellipsis;overflow: hidden;-webkit-line-clamp: 4;}
+.wrap{width:93.6%;margin:0 auto;}
+/*页面初始样式*/
+html,body{width: 100%;min-height: 100vh;user-select: none; -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;max-width: 750px;margin:0 auto;background: #eee;color:#222628;font-family: 'pingfang';}
+/* #app{width: 100%;height:100%;overflow-x: hidden;}  */
+#app{max-width: 750px;position: relative;margin:0 auto;}
+body{background: #F6F7F7 !important;overflow-x: hidden;}
+.body{background: #fff;}
+body img{max-width: 100%;}
+.container{width: 100%;}
+[v-cloak]{display: none;}
+/*修改mintUI的样式*/
+.mint-toast-text{font-size: .12rem !important;}
+.mint-msgbox-message{line-height: 1.5em !important;}  
+.mint-popup{width: 100%;}
+.picker-toolbar{display: flex;justify-content: space-between;}
+.picker-toolbar p{font-size: .2rem;;padding:0 10px;height: .4rem;line-height: .4rem;color: #333;}
+.picker-toolbar p.confirm{color: rgba(22,107,206,1);}
+.mint-toast,.mint-indicator-wrapper{z-index: 99999 !important;}
+.mint-indicator-wrapper{padding: .4rem .6rem !important;}
+.mint-toast-text{font-size: .24rem !important;}
+.mint-toast{padding: .2rem !important;}
+/*修改vant的默认样式*/
+uni-toast .uni-sample-toast{line-height: 1.3;}
+/*修改swiper的默认样式*/
+.swiper-pagination-bullet{opacity: 1 !important;background: #fff !important;}
+.swiper-pagination-bullet-active{background: #3DA6FF !important;}
+#__pageSpy{display: none !important;}
+/*修改绿标默认样式*/
+#__vconsole .vc-switch{width:56px !important;height: 56px !important;border-radius: 50% !important;padding:0 !important;display: none !important;align-items: center !important;justify-content: center !important;background-image: linear-gradient(90deg, #F28F29 0, #027C60 100%);}
+#__vconsole .vc-switch.special{background-image: linear-gradient(90deg, #F28F29 0, #DD5145 100%);}
+@media screen and (min-width:750px) {
+  @font-face{
+    font-family: pingfang;
+    src: url('https://game.vrupup.com/resources/web/szq/pingtouge/font/PINGFANGMEDIUM.TTF')
+  }
+}
+  
+/***************关键帧动画***************/
+/*弹窗式--放大缩小淡出*/
+.fade-show{animation:fade-show .5s forwards;}
+@keyframes fade-show{ 0%{transform:scale(.5);opacity:0;} 90%{transform:scale(1.02);opacity:1;} 100%{transform:scale(1);opacity:1;} }      
+.fade-show-close{animation:fade-show-close .5s forwards;}
+@keyframes fade-show-close{ 0%{transform:scale(1);opacity:1;} 50%{transform:scale(1.03);opacity:1;} 100%{transform:scale(.2);opacity:0;} } 
+/*弹窗式--旋转放大淡出*/
+.rs-fd{animation:rs-fd .5s forwards;}
+@keyframes rs-fd { 0%{transform:rotate(20deg) scale(.5);opacity:0;} 100%{transform:rotate(0deg) scale(1);opacity:1;} }
+.rs-fd-close{animation:rs-fd-close .5s;}
+@keyframes rs-fd-close { 0%{transform:rotate(0) scale(1);opacity:1;} 50%{transform:rotate(20deg) scale(1.1);opacity:1;} 100%{transform:rotate(20deg) scale(.2);opacity:0;} }
+/*弹窗式--从下往上淡出*/
+.bt-fd{animation:bt-fd .5s forwards;}
+@keyframes bt-fd { 0%{transform:translateY(30%);opacity:0;} 100%{transform:translateY(0);opacity:1;} }
+.bt-fd-close{animation:bt-fd-close .5s;}
+@keyframes bt-fd-close { 0%{transform:translateY(0);opacity:1;} 100%{transform:translateY(30%);opacity:0;} }
+/*弹窗式--从上往下淡出*/
+.tb-fd{animation:tb-fd .5s forwards;}
+@keyframes tb-fd { 0%{transform:translateY(-30%);opacity:0;} 100%{transform:translateY(0);opacity:1;} }
+.tb-fd-close{animation:tb-fd-close .5s forwards;}
+@keyframes tb-fd-close { 0%{transform:translateY(0);opacity:1;} 100%{transform:translateY(-30%);opacity:0;} }
+/*弹窗式--从左往右向淡出*/
+.lr-fd{animation:lr-fd .5s;}
+@keyframes lr-fd { 0%{transform:translateX(-40%);opacity:0;} 100%{transform:translateX(0);opacity:1;} }
+.lr-fd-close{animation:lr-fd-close .5s;}
+@keyframes lr-fd-close { 0%{transform:translateX(0);opacity:1;} 100%{transform:translateX(-40%);opacity:0;} }
+/*弹窗式--从右往左淡出*/
+.rl-fd{animation:rl-fd .5s;}
+@keyframes rl-fd { 0%{transform:translateX(40%);opacity:0;} 100%{transform:translateY(0);opacity:1;} }
+.rl-fd-close{animation:rl-fd-close .5s;}
+@keyframes rl-fd-close { 0%{transform:translateX(0);opacity:1;} 100%{transform:translateX(40%);opacity:0;} }
+/*从下往上弹出*/
+.bottom-top{animation:bottom-top .3s forwards;}
+@keyframes bottom-top { 0%{transform:translateY(100%);} 100%{transform:translateY(0);} }
+/*效果式--上下晃动*/
+.wobble{animation:wobble 2s infinite alternate;}
+@keyframes wobble { 0%{transform:translateY(-.1rem) rotateY(5deg);} 100%{transform:translateY(.1rem) rotateY(-5deg);} }
+/*效果式--放大波浪*/
+.scale-wave{animation:scale-wave .7s infinite alternate;}
+@keyframes scale-wave { 0%{transform:scale(1);} 100%{transform:scale(1.1);} }

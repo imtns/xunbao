@@ -13,7 +13,7 @@ import hooks from './store/hooks'
 import CustomHook from 'spa-custom-hooks'
 
 import Mixin from './polyfill/mixins'
-import MixinReport from './mixin/report'
+// import MixinReport from './mixin/report'
 import Share from './mixin/share.js'
 
 import Vue from 'vue'
@@ -35,7 +35,7 @@ uni.$detectWebp = detectWebp()
 
 Vue.use(CustomHook, hooks, store)
 Vue.filter('price', (v) => Number(v).toFixed(2))
-Vue.mixin(MixinReport)
+// Vue.mixin(MixinReport)
 Vue.mixin(Mixin)
 Vue.mixin(Share)
 // Vue.mixin(MixinToken)

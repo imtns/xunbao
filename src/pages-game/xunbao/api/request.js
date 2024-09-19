@@ -2,6 +2,8 @@ import config from './project.config'
 import { login } from './auth.js'
 import tool from '@@/pages-game/xunbao/js/tool'
 import store from '@/store/index'
+
+import { lsGet } from '@/utils/util'
 // import { promiseFinally } from '../promise-finally.js'
 // promiseFinally();//promise的finally配置
 /**
@@ -16,8 +18,7 @@ import store from '@/store/index'
 const myRequest = (data = {}, url, method = 'POST', isOpenid = false, contentType = 0, isToken = true) => {
   let header = { 'content-type': ['application/x-www-form-urlencoded', 'application/json', 'text/html; charset=UTF-8', 'none'][contentType] }
   // if (isToken) header.token = store.state.userInfo.token
-  header.Authorization =
-    'eyJhbGciOiJIUzUxMiJ9.eyJleHRlbmQiOiIxMjMzMDY3NTlkOTI3ZmRlZWM4Y2Y5YzViNjNiMzc2NTcyNGQyOGZlZjlkNTc5MGU0OTIwMDgwNWFlYmJhMTY3IiwiYWNjZXNzRXhwaXJlVGltZSI6MTcyNjc5NTE5MjAyOSwic3ViIjoiMTg1MTA5Mjk3MjAiLCJhdWQiOiJhcGkiLCJhY2NvdW50Q29kZSI6IjE2NjEyMzQ1OTMzNzk3MzM1MDUiLCJjcmVhdGVkIjoxNzI2NjIyMzkyMDI5LCJyZWZyZXNoU3RhcnRUaW1lIjoxNzI2NzA4NzkyMDI5fQ.vnVyPPCatFqr71s9Otj4zNSlmJH9vGoXZF2Wef-HfqOTV07gwcmgg9ueHH2MYjjAkrrq2FwhdrTizqT4u8Z9oQ'
+  header.Authorization = lsGet('token')
   // let header = { 'content-type': ['application/x-www-form-urlencoded', 'application/json', 'text/html; charset=UTF-8'][contentType]}
   !(url.indexOf('http:') != -1 || url.indexOf('https:') != -1) && (url = `${config.REQUESTURL()}${url}`)
   isOpenid && Object.assign(data, { openid: store.state.userInfo.openid || uni.getStorageSync('userInfo').openid })
