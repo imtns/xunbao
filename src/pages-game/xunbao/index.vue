@@ -166,7 +166,7 @@ import dyRecord from '@/pages-game/xunbao/components/dy-record.vue'
 import dyPrize from '@/pages-game/xunbao/components/dy-prize.vue'
 import sequenceEffect from '@/pages-game/xunbao/components/sequenceEffect/sequenceEffect.vue'
 import { mapState } from 'vuex'
-import { reportClickEvent, reportExposeEvent } from '@/utils/report'
+import { reportClickEvent, reportExposeEvent } from '@/utils/report/report'
 export default {
   components: {
     dyRecord,
@@ -269,6 +269,7 @@ export default {
       }
     }, 100)
   },
+
   onLoad(ope) {
     this.add_jsq()
   },
