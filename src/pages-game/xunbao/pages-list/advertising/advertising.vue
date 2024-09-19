@@ -18,7 +18,7 @@
 				<view class="advertising21">
 					<video :src="video" :autoplay='true' :muted='false' @pause="pause" @play="play"></video>
 				</view>
-				<view class="advertising22" v-show="time == 0">
+				<view class="advertising22" v-show="time <= 0">
 					完成
 				</view>
 				<view class="advertising22" v-show="time > 0">
@@ -104,6 +104,7 @@
 				shareCode2: null, //看完视频的code
 				isUseShare: true,
 				sharepro: 0, //分享进度
+				shareDate: {}, //分享后的奖品数据
 			}
 		},
 		onShareAppMessage() {
@@ -123,6 +124,11 @@
 			}
 		},
 		onLoad() {
+			let _prizeName = this.priceImgList.filter(item => item.prizeName == '宝藏嗨嗨打光板')
+					console.log("_prizeName", _prizeName)
+					console.log("_prizeName.prizeImage", _prizeName.prizeImage)
+
+			
 			// this.play()
 			this.queryVideo()
 			wx.showShareMenu({
@@ -148,17 +154,48 @@
 					console.log(i, this.jiangp_list[i].prizeName);
 					this.dq_claas_i = i
 				}
+				
+			}
+			if(this.shareDate){
+				// this.priceImgList.includes(this.shareDate.dropPrize.prizeName)
+				let _prizeName = this.priceImgList.filter(item => item.prizeName = this.shareDate.dropPrize.prizeName)
+				console.log("_prizeName", _prizeName)
+				console.log("_prizeName.prizeImage", _prizeName.prizeImage)
 			}
 		},
 		onUnload() {
 			clearInterval(this.dsq)
 		},
-		
+
 		computed: {
 			//当前进度
 			percentage() {
 				return (15 - this.time) * 50 / 15 + this.sharepro
 			},
+			priceImgList() {
+				return [{
+					prizeName: '宝藏嗨嗨打光板',
+					prizeImage: `${this.ASSETSURL}img/daGuanBan.png`
+				}, {
+					prizeName: '宝藏嗨嗨挂件',
+					prizeImage: `${this.ASSETSURL}img/kaiKai.png`
+				}, {
+					prizeName: '宝藏嗨嗨收纳盒',
+					prizeImage: `${this.ASSETSURL}img/shouLaHe.png`
+				}, {
+					prizeName: '宝藏嗨嗨贴纸',
+					prizeImage: `${this.ASSETSURL}img/tieZhi.png`
+				}, {
+					prizeName: '宝藏嗨嗨钥匙扣',
+					prizeImage: `${this.ASSETSURL}img/yaoShiKo.png`
+				}, {
+					prizeName: '宝藏金条项链',
+					prizeImage: `${this.ASSETSURL}img/zuiGao.png`
+				}, {
+					prizeName: '宝藏唱片音响',
+					prizeImage: `${this.ASSETSURL}img/changPianJi.png`
+				}]
+			}
 		},
 		methods: {
 			//视频暂停
@@ -193,6 +230,7 @@
 					})
 					.then((res) => {
 						console.log(res.data);
+						this.shareDate = res.data
 					})
 					.catch((err) => {
 
@@ -252,10 +290,14 @@
 				let that = this
 				this.dsq = setInterval(() => {
 					this.time--
+					console.log(this.time, 'this.timethis.time')
 					// this.percentage = (15 - this.time) * 50 / 15
-					if (this.time < 0) {
+					if (this.time == 0) {
 						console.log('播放结束');
 						that.watchVideo2()
+						
+					} 
+					if (this.time < -1) {
 						clearInterval(this.dsq)
 					}
 				}, 1000)

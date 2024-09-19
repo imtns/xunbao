@@ -1,10 +1,6 @@
 <template>
 	<view class="card">
 		<view class="cardceng" style="height: 100%;">
-			<!-- <view class="award1" @click="fhui">
-				<image :src="`${ASSETSURL}ad_18.png`"></image>
-				<u-navbar class="custom-navbar" title=" " autoBack bgColor="transparent" height="88rpx" placeholder></u-navbar>
-			</view> -->
 			<view class="" style="padding-top: 20rpx; box-sizing: border-box;">
 				<view class="card1 oh">
 					<view class="myKp">
@@ -16,8 +12,8 @@
 						<view class="imgImg">
 							<image class="img" :src="`${ASSETSURL}img/X.png`"></image>
 							<image class="img" :src="`${ASSETSURL}img/${compositionCount[0]}.png`"></image>
-							<image class="img" style="margin-left: -6rpx;"
-								:src="`${ASSETSURL}img/${compositionCount[1]}.png`"></image>
+							<image class="img" style="margin-left: -6rpx;" :src="`${ASSETSURL}img/${compositionCount[1]}.png`">
+							</image>
 							<image class="img" v-if="compositionCount[2]" style="margin-left: -12rpx;"
 								:src="`${ASSETSURL}img/${compositionCount[2]}.png`"></image>
 						</view>
@@ -27,29 +23,27 @@
 					</view>
 				</view>
 				<view class="card2 oh">
-					<view class="card21 le" @click="syz" :style="{'opacity' : current == 3 ? '0.5' : ''}">
+					<view class="card23 ri" @click="xyz" :style="{'opacity' : current == 0 ? '0.5' : ''}">
 						<image :src="`${ASSETSURL}card/card3.png`"></image>
 					</view>
 					<view class="card22 le">
 						<!-- <view class="add221" v-show="!list[current].id">
 							<view class="add2211"></view>
 						</view> -->
-						<u-swiper radius="16" bgColor="transparent" imgMode="aspectFit" :autoplay='false'
-							:current='current' :list="list3" height="337" style="width: 100%;" @change="swiper">
+						<u-swiper radius="16" bgColor="transparent" imgMode="aspectFit" :autoplay='false' :current='current'
+							keyName="img" :list="list" height="337" style="width: 100%;" @change="swiper">
 						</u-swiper>
 					</view>
-					<view class="card23 ri" @click="xyz" :style="{'opacity' : current == 0 ? '0.5' : ''}">
+					<view class="card21 le" @click="syz" :style="{'opacity' : current == 3 ? '0.5' : ''}">
 						<image :src="`${ASSETSURL}card/card4.png`"></image>
 					</view>
 				</view>
 				<view class="card3">
-					<view class="card31 tc"
-						v-if="list[0].id == 0 && list[1].id == 0 && list[2].id == 0 && list[3].id == 0"
+					<view class="card31 tc" v-if="list[0].num == 0 && list[1].id == 0 && list[2].id == 0 && list[3].id == 0"
 						@click="compound1_sq">
 						<image :src="`${ASSETSURL}card/card51.png`"></image>
 					</view>
-					<view class="card31 tc"
-						v-else-if="list[0].hqu > 0 && list[1].hqu > 0 && list[2].hqu > 0 && list[3].hqu > 0"
+					<view class="card31 tc" v-else-if="list[0].hqu > 0 && list[1].hqu > 0 && list[2].hqu > 0 && list[3].hqu > 0"
 						@click="compound">
 						<image :src="`${ASSETSURL}card/card61.png`"></image>
 					</view>
@@ -70,15 +64,15 @@
 					<view class="card41 le" v-for="(item,index) in list" :key="index" @click="dq_src_sq(index,item.id)">
 						<view class="card411">
 							<image :src="`${ASSETSURL}card/card6.png`"></image>
-							<text>{{item.id}}</text>
+							<text>{{item.num}}</text>
 						</view>
 						<view class="card412">
 							<image :src="item.img"></image>
 						</view>
-						<view class="card413">
-							<view class="mceng" v-show="item.hqu == 0"></view>
+						<!-- 	<view class="card413">
+							<view class="mceng" v-show="item.id == 0"></view>
 							<image :src="`${ASSETSURL}card/card8${index}.png`"></image>
-						</view>
+						</view> -->
 					</view>
 					<!-- </u-scroll-list> -->
 				</view>
@@ -110,21 +104,17 @@
 							<sequenceEffect ref="bgGx" :sequenceList="bgGx2"></sequenceEffect>
 						</view>
 						<!-- 卡片翻转动画 -->
-						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;"
-							v-show="dq_src == '2'">
+						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;" v-show="dq_src == '2'">
 							<card-flip ref="showfect2" :option="starList"></card-flip>
 						</view>
-						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;"
-							v-show="dq_src == '0'">
+						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;" v-show="dq_src == '0'">
 
 							<card-flip ref="showfect0" :option="starList2"></card-flip>
 						</view>
-						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;"
-							v-show="dq_src == '1'">
+						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;" v-show="dq_src == '1'">
 							<card-flip ref="showfect1" :option="starList3"></card-flip>
 						</view>
-						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;"
-							v-show="dq_src == '3'">
+						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;" v-show="dq_src == '3'">
 							<card-flip ref="showfect3" :option="starList4"></card-flip>
 						</view>
 					</view>
@@ -149,9 +139,9 @@
 					<view class="compound14">
 						恭喜你获得集卡奖励，集卡套数排行榜前3名即可获得最高奖励——<text>宝藏金条项链</text>，快去集卡合成冲榜吧！
 					</view>
-					<view class="compound15" @click="show = false,htxb_myCard()">
+					<!-- <view class="compound15" @click="show = false,htxb_myCard()">
 						<image :src="`${ASSETSURL}card/compound5.png`" mode="widthFix"></image>
-					</view>
+					</view> -->
 
 				</view>
 			</view>
@@ -187,40 +177,51 @@
 				compositionCount: 0, //数量
 				dq_src: null, //当前赠送卡片
 				list: [{
-						id: 0,
+						id: 1,
 						type: 'qs_card', //qs_card 全身宝藏卡 yy_card 营养宝藏卡 xjb_card 性价比宝藏卡 bd_card 百搭宝藏卡
 						hqu: 0, // 0未获得 1获得
 						name: '全身宝藏卡',
-						img: 'https://cdn.vrupup.com/s/116/ka_1.png',
+						img: 'https://cdn.vrupup.com/s/116/img/qs1.png',
+						img1: 'https://cdn.vrupup.com/s/116/ka_1.png',
+						img2: 'https://cdn.vrupup.com/s/116/img/qs1.png',
+						num: 0,
 					},
 					{
-						id: 0,
+						id: 2,
 						type: 'yy_card',
 						hqu: 0,
 						name: '营养宝藏卡',
-						img: 'https://cdn.vrupup.com/s/116/ka_2.png',
+						img: 'https://cdn.vrupup.com/s/116/img/yy1.png',
+						img1: 'https://cdn.vrupup.com/s/116/ka_2.png',
+						img2: 'https://cdn.vrupup.com/s/116/img/yy1.png',
+						num: 0,
 					},
 					{
-						id: 0,
+						id: 3,
 						type: 'bd_card',
 						hqu: 0,
 						name: '百搭宝藏卡',
-						img: 'https://cdn.vrupup.com/s/116/ka_4.png',
+						img1: 'https://cdn.vrupup.com/s/116/ka_4.png',
+						img: 'https://cdn.vrupup.com/s/116/img/bd2.png',
+						num: 0,
 					},
 					{
-						id: 0,
+						id: 4,
 						type: 'xjb_card',
 						hqu: 0,
 						name: '性价比宝藏卡',
-						img: 'https://cdn.vrupup.com/s/116/ka_3.png',
+						img: 'https://cdn.vrupup.com/s/116/img/xjb1.png',
+						img1: 'https://cdn.vrupup.com/s/116/ka_3.png',
+						img2: 'https://cdn.vrupup.com/s/116/img/xjb1.png',
+						num: 0,
 					}
 
 				],
 				list3s: [
-					['https://cdn.vrupup.com/s/116/ka_1.png', 'https://cdn.vrupup.com/s/116/ka_1s.png'],
-					['https://cdn.vrupup.com/s/116/ka_2.png', 'https://cdn.vrupup.com/s/116/ka_2s.png'],
-					['https://cdn.vrupup.com/s/116/ka_4.png', 'https://cdn.vrupup.com/s/116/ka_4s.png'],
-					['https://cdn.vrupup.com/s/116/ka_3.png', 'https://cdn.vrupup.com/s/116/ka_3s.png'],
+					['https://cdn.vrupup.com/s/116/ka_1.png', 'https://cdn.vrupup.com/s/116/img/qs1.png'],
+					['https://cdn.vrupup.com/s/116/ka_2.png', 'https://cdn.vrupup.com/s/116/img/yy1.png'],
+					['https://cdn.vrupup.com/s/116/ka_4.png', 'https://cdn.vrupup.com/s/116/img/bd2.png'],
+					['https://cdn.vrupup.com/s/116/ka_3.png', 'https://cdn.vrupup.com/s/116/img/xjb1.png'],
 				],
 				list3: [
 					'https://cdn.vrupup.com/s/116/ka_1.png',
@@ -312,6 +313,7 @@
 				}).then((res) => {
 					store.commit('storeShareCode1', res.data.operateCode)
 					console.log(store.state.shareCode1, '-------shareCode1-------');
+					this.htxb_myCard()
 				})
 			},
 			// 赠送卡片
@@ -355,92 +357,26 @@
 			},
 			// 查询我的卡片
 			htxb_myCard() {
+				console.log("查询我的卡片3")
 				api.htxb_myCard().then((res) => {
 						console.log(res.data, '查询我的卡片');
 						this.show = false
-						// this.list = res.data.card
-						// for (var i = 0; i < res.data.card.length; i++) {
-						//qs_card 全身宝藏卡 yy_card 营养宝藏卡 xjb_card 性价比宝藏卡 bd_card 百搭宝藏卡
-						// }
-
-
-						for (var i = 0; i < res.data.card.length; i++) {
-							if (res.data.card[i].cardType == 'qs_card') {
-								this.list[0].id = res.data.card[i].cardCount
-								if (res.data.card[i].cardCount > 0) {
-									this.list[0].hqu = 1
-								} else {
-									this.list[0].hqu = 0
-									this.list3[0] = 'https://cdn.vrupup.com/s/116/img/qs1.png'
+						this.list.forEach((item, index) => {
+							res.data.card.forEach(item1 => {
+								if (item.type == item1.cardType) {
+									console.log(item1.cardCount, 'item1.cardType')
+									item.num = item1.cardCount
+									if (item1.cardCount > 0) {
+										item.img = item.img1
+									}else{
+										item.img = item.img2
+									}
 								}
-							} else {
-								this.list[0].hqu = 0
-								this.list3[0] = 'https://cdn.vrupup.com/s/116/img/qs1.png'
-							}
-							if (res.data.card[i].cardType == 'yy_card') {
-								this.list[1].id = res.data.card[i].cardCount
-								if (res.data.card[i].cardCount > 0) {
-									this.list[1].hqu = 1
-								} else {
-									this.list[1].hqu = 0
-									this.list3[1] = 'https://cdn.vrupup.com/s/116/img/yy1.png'
-								}
-							} else {
-								this.list[1].hqu = 0
-								this.list3[1] = 'https://cdn.vrupup.com/s/116/img/yy1.png'
-							}
-							if (res.data.card[i].cardType == 'bd_card') {
-								this.list[2].id = res.data.card[i].cardCount
-								if (res.data.card[i].cardCount > 0) {
-									this.list[2].hqu = 1
-								} else {
-									this.list[2].hqu = 0
-									this.list3[2] = 'https://cdn.vrupup.com/s/116/img/bd1.png'
-								}
-							} else {
-								this.list[2].hqu = 0
-								this.list3[2] = 'https://cdn.vrupup.com/s/116/img/bd1.png'
-							}
-							if (res.data.card[i].cardType == 'xjb_card') {
-								this.list[3].id = res.data.card[i].cardCount
-								if (res.data.card[i].cardCount > 0) {
-									this.list[3].hqu = 1
-								} else {
-									this.list[3].hqu = 0
-									this.list3[3] = 'https://cdn.vrupup.com/s/116/img/xjb1.png'
-								}
-							} else {
-								this.list[3].hqu = 0
-								this.list3[3] = 'https://cdn.vrupup.com/s/116/img/xjb1.png'
-							}
-						}
-
-
-						// if (res.data.card[0].cardCount > 0) {
-						// 	this.list[0].hqu = 1
-						// } else {
-						// 	this.list[0].hqu = 0
-						// }
-						// if (res.data.card[1].cardCount > 0) {
-						// 	this.list[1].hqu = 1
-						// } else {
-						// 	this.list[1].hqu = 0
-						// }
-						// if (res.data.card[2].cardCount > 0) {
-						// 	this.list[2].hqu = 1
-						// } else {
-						// 	this.list[2].hqu = 0
-						// }
-						// if (res.data.card[3].cardCount > 0) {
-						// 	this.list[3].hqu = 1
-						// } else {
-						// 	this.list[3].hqu = 0
-						// }
-
-
-
-
+							})
+						})
+						console.log(this.list, 'this.listthis.listthis.list2')
 						this.compositionCount = res.data.compositionCount.toString().split("")
+						 window.location.reload();
 					})
 					.catch((err) => {});
 			},

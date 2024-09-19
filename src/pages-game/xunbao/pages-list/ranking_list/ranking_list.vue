@@ -36,8 +36,11 @@
 
 					<view class="ranking2 ranking2_lo">
 						<view class="ranking21 oh">
-							<view class="ranking211 le tc" style="width: 100%; padding: 30rpx; box-sizing: border-box; text-align: center;">
-								{{dq_list.rank || '暂未上榜,快去集卡冲榜赢取终极大奖吧!'}}
+							<view class="ranking211 le tc" v-if="!dq_list.rank" style="width: 100%; padding: 30rpx; box-sizing: border-box; text-align: center;">
+								{{'暂未上榜,快去集卡冲榜赢取终极大奖吧!'}}
+							</view>
+							<view class="ranking211 le tc" v-if="dq_list.rank" style="padding: 30rpx; box-sizing: border-box;">
+								{{dq_list.rank}}
 							</view>
 							<view class="ranking212 le" v-if="dq_list.headUrl">
 								<image mode="aspectFill" :src="dq_list.headUrl"></image>

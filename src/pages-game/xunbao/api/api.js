@@ -146,7 +146,7 @@ export default {
 
 	//获取地址详情
 	getAddressDetail: (data, url =
-		`https://iclub-backend-test.imeik.com/iclub/iclub/api/userReceiveAddress/get/${data}`) => {
+		`https://iclub-backend-test.imeik.com/iclub/api/userReceiveAddress/get/${data}`) => {
 		return myRequest(data, url, 'GET', false, 1)
 	},
 
