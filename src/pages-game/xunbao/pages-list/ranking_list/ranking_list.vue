@@ -1,6 +1,5 @@
 <template>
-	<z-paging ref="paging" v-model="dataList" @query="queryList" :loading-more-enabled="false"
-		:refresher-enabled="false">
+	<z-paging ref="paging" v-model="dataList" @query="queryList" :loading-more-enabled="false" :refresher-enabled="false" hide-empty-view> 
 		<view class="ranking_list">
 			<view class="rankingceng">
 				<!-- <view class="award1" @click="fhui">
@@ -37,14 +36,14 @@
 
 					<view class="ranking2 ranking2_lo">
 						<view class="ranking21 oh">
-							<view class="ranking211 le tc" style="margin-top:36rpx;">
-								{{dq_list.rank || '暂未上榜'}}
+							<view class="ranking211 le tc" style="width: 100%; padding: 30rpx; box-sizing: border-box; text-align: center;">
+								{{dq_list.rank || '暂未上榜,快去集卡冲榜赢取终极大奖吧!'}}
 							</view>
-							<view class="ranking212 le">
+							<view class="ranking212 le" v-if="dq_list.headUrl">
 								<image mode="aspectFill" :src="dq_list.headUrl"></image>
 							</view>
-							<view class="ranking213 le">{{dq_list.nickName}}</view>
-							<view class="ranking214 ri" style="margin-right:30rpx;">{{dq_list.compositionCount}}</view>
+							<view class="ranking213 le" v-if="dq_list.nickName">{{dq_list.nickName}}</view>
+							<view class="ranking214 ri" style="margin-right:30rpx;" v-if="dq_list.compositionCount">{{dq_list.compositionCount}}</view>
 						</view>
 					</view>
 				</view>

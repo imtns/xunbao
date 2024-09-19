@@ -78,12 +78,17 @@
 						<view class="" v-if="item.prizeInfoList.length > 0 && item.prizeType == 'jichu'">
 							<view class="" v-for="(item2,index2) in item.prizeInfoList" :key="index2">
 								<view class="award3">
-									<view class=" award31_add1">
+									<view class="award31_add1">
 										<view class="award31 oh award31_add">
 											<view class="award311 le">
-												<image :src="item2.prizeImage"></image>
-												<view class="award5312" v-if="item2.prizeStatus == 0">
-													{{timeDiff}}
+												<image :src="item2.prizeImage" v-if="item2.prizeStatus != 0"></image>
+												<view class="theAddress" v-if="item2.prizeStatus == 0">
+													<view class="address">
+														填写地址
+													</view>
+													<view class="time" v-if="timeDiff">
+														{{timeDiff}}
+													</view>
 												</view>
 											</view>
 											<view class="award312 le oh">
@@ -94,17 +99,18 @@
 													{{prizeStatus[item2.prizeStatus]}}
 												</view>
 											</view>
-										</view>
-										<view class="award31_mc"
-											v-if="item2.prizeStatus == 2 || item2.prizeStatus == 3 || item2.prizeStatus == 4">
-											<view class="award31_mc1">
-												<view class="award31_mc11">
-													<!-- {{prizeStatus2[item2.prizeStatus]}} -->
-													<image :src="ASSETSURL + 'img/' + prizeStatus2[item2.prizeStatus]"
-														height="92rpx" mode="heightFix"></image>
-												</view>
-												<view class="award31_mc12">
-													奖品当前剩余数量：{{item2.goodCnt || 0}}个
+											<view class="award31_mc"
+												v-if="item2.prizeStatus == 2 || item2.prizeStatus == 3 || item2.prizeStatus == 4">
+												<view class="award31_mc1">
+													<view class="award31_mc11">
+														<!-- {{prizeStatus2[item2.prizeStatus]}} -->
+														<image
+															:src="ASSETSURL + 'img/' + prizeStatus2[item2.prizeStatus]"
+															height="92rpx" mode="heightFix"></image>
+													</view>
+													<view class="award31_mc12">
+														奖品当前剩余数量：{{item2.goodCnt || 0}}个
+													</view>
 												</view>
 											</view>
 										</view>
@@ -123,6 +129,17 @@
 						<view class="award5" v-show="item.prizeInfoList[0].prizeStatus == 1">
 							<view class="award51">
 								<image :src="`${ASSETSURL}img/zuiGao.png`" mode="widthFix"></image>
+								<view class="award53"
+									v-if="item.prizeInfoList[0].prizeStatus == 4 || item.prizeInfoList[0].prizeStatus == 2">
+									<view class="award531 oh" style="top:-548rpx;">
+										<view class="award5313" v-show="item.prizeInfoList[0].prizeStatus == 4">
+											<!-- 暂未开始发放 -->
+										</view>
+										<view class="award5313" v-show="item.prizeInfoList[0].prizeStatus == 2">
+											未获得
+										</view>
+									</view>
+								</view>
 							</view>
 							<view class="award52">
 								<image :src="`${ASSETSURL}ad_23.png`"></image>
@@ -131,6 +148,17 @@
 						<view class="award5" v-show="item.prizeInfoList[0].prizeStatus != 1">
 							<view class="award51">
 								<image :src="`${ASSETSURL}img/zuiGao.png`" mode="widthFix"></image>
+								<view class="award53"
+									v-if="item.prizeInfoList[0].prizeStatus == 4 || item.prizeInfoList[0].prizeStatus == 2">
+									<view class="award531 oh" style="top:-548rpx;">
+										<view class="award5313" v-show="item.prizeInfoList[0].prizeStatus == 4">
+											<!-- 暂未开始发放 -->
+										</view>
+										<view class="award5313" v-show="item.prizeInfoList[0].prizeStatus == 2">
+											未获得
+										</view>
+									</view>
+								</view>
 							</view>
 							<view class="award52" v-if="item.prizeInfoList[0].prizeStatus == 0" @click="show = true">
 								<image :src="`${ASSETSURL}ad_231.png`"></image>
@@ -147,17 +175,7 @@
 								</view>
 							</view>
 
-							<view class="award53"
-								v-if="item.prizeInfoList[0].prizeStatus == 4 || item.prizeInfoList[0].prizeStatus == 2">
-								<view class="award531 oh" style="top:-548rpx;">
-									<view class="award5313" v-show="item.prizeInfoList[0].prizeStatus == 4">
-										<!-- 暂未开始发放 -->
-									</view>
-									<view class="award5313" v-show="item.prizeInfoList[0].prizeStatus == 2">
-										未获得
-									</view>
-								</view>
-							</view>
+
 
 						</view>
 
@@ -657,10 +675,10 @@
 				// background: #fff;
 				.award31_mc {
 					position: absolute;
-					width: 671rpx;
-					height: 177rpx;
+					width: 100%;
+					height: 100%;
 					top: 0;
-					left: 41rpx;
+					left: 0;
 					background: rgba(0, 0, 0, 0.6);
 					border-radius: 20rpx 68rpx 37rpx 68rpx;
 
@@ -698,6 +716,7 @@
 				box-sizing: border-box;
 				background: #fff;
 				border-radius: 20rpx 68rpx 37rpx 68rpx;
+				position: relative;
 
 				.award311 {
 					position: relative;
@@ -842,6 +861,10 @@
 
 			.award51 {
 				margin-bottom: 62rpx;
+				position: relative;
+				width: 636rpx;
+				height: 487rpx;
+				margin: 0 auto;
 
 				image {
 					width: 636rpx;
@@ -857,16 +880,17 @@
 			}
 
 			.award53 {
-				position: relative;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index: 9;
+				background: rgba(0, 0, 0, 0.6);
+				border-radius: 19rpx 115rpx 19rpx 105rpx;
 
 				.award531 {
-					width: 628rpx;
-					height: 475rpx;
-					position: absolute;
-					left: 62rpx;
-					z-index: 9;
-					background: rgba(0, 0, 0, 0.6);
-					border-radius: 19rpx 115rpx 19rpx 105rpx;
+
 
 					.award5311 {
 						margin-top: 150rpx;

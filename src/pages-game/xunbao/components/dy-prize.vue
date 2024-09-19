@@ -63,7 +63,7 @@
 					<view class="bgGx">
 						<sequenceEffect ref="bgGx" :sequenceList="bgGx2"></sequenceEffect>
 					</view>
-					<image class="img" :src="ASSETSURL + 'img/diaoLuoJiangLI.png'" mode="aspectFit"></image>
+					<image class="img" :src="ASSETSURL + 'img/diaoLuoJiangLI.png'" mode="aspectFit" @click="advertising"></image>
 					<view class="xcolone" @click="close">
 						<image :src="ASSETSURL + 'img/Xclone.png'"></image>
 					</view>
@@ -84,160 +84,179 @@
 
 <script>
 import api from '@/pages-game/xunbao/api/api'
-import cardFlip from '@/pages-game/xunbao/components/card-flip/card-flip.vue'
+	import cardFlip from '@/pages-game/xunbao/components/card-flip/card-flip.vue'
+	import sequenceEffect from '@/pages-game/xunbao/components/sequenceEffect/sequenceEffect.vue'
+	import tool from '@/pages-game/xunbao/js/tool'
 import { reportClickEvent, reportExposeEvent } from '@/utils/report/report'
 export default {
 	name: 'dy-prize',
 	components: {
-		cardFlip
+		cardFlip,
+		sequenceEffect
 	},
-	props: {
-		seus: {
-			String,
-			default: null
-		},
-		// 奖品类型 0 没有奖品  1 卡片 2 留资
-		show: {
-			type: [Object, Boolean],
-			default: false
-		},
-		item: {
-			type: [Object, Boolean],
-			default: () => {
-				return {}
-			}
-		}
-	},
-	mounted() {},
-	data() {
-		return {
-			bgGxShow: false,
-			starList: {
-				imgList: ['https://img.vrupup.com/s/116/img/zpc1.png', 'https://img.vrupup.com/s/116/img/bd1.png'], //正反图片
-				speed: 1, //翻转速率，单位：s
-				borderRadius: 20, //卡牌圆角，单位：rpx
-				direction: 1 //翻转方向，1：正翻，2：反翻
-			},
-			starList2: {
-				imgList: ['https://img.vrupup.com/s/116/img/zpc1.png', 'https://img.vrupup.com/s/116/img/qs.png'], //正反图片
-				speed: 1, //翻转速率，单位：s
-				borderRadius: 20, //卡牌圆角，单位：rpx
-				direction: 1 //翻转方向，1：正翻，2：反翻
-			},
-			starList3: {
-				imgList: ['https://img.vrupup.com/s/116/img/zpc1.png', 'https://img.vrupup.com/s/116/img/xjb.png'], //正反图片
-				speed: 1, //翻转速率，单位：s
-				borderRadius: 20, //卡牌圆角，单位：rpx
-				direction: 1 //翻转方向，1：正翻，2：反翻
-			},
-			starList4: {
-				imgList: ['https://img.vrupup.com/s/116/img/zpc1.png', 'https://img.vrupup.com/s/116/img/yy.png'], //正反图片
-				speed: 1, //翻转速率，单位：s
-				borderRadius: 20, //卡牌圆角，单位：rpx
-				direction: 1 //翻转方向，1：正翻，2：反翻
-			},
-			bgGx2: {
-				url: `https://cdn.vrupup.com/s/116/bgGx/1.png`,
-				num: 60,
-				initIndex: 1,
-				speed: 68,
-				loop: true,
-				autoplay: true
-			},
-			_kpTypeIndex: null //翻牌索引
-		}
-	},
-	methods: {
-		//随机出现一句话
-		getRandomSentence() {
-			const sentences = [
-				'嗨体滋养，满满能量',
-				'完美搭配，效果翻倍',
-				'一起嗨体，全身活力',
-				'嗨体一下，活力高效',
-				'嗨体——真皮层宝藏',
-				'肌肤营养靠嗨体',
-				'全身活力、全身能量',
-				'肌肤活力选嗨体',
-				'嗨体滋养，满满能量',
-				'嗨体，赶走肌肤焦虑',
-				'活力全开靠嗨体',
-				'我们都是嗨星人'
-			]
-			const randomIndex = Math.floor(Math.random() * sentences.length)
-			return sentences[randomIndex]
-		},
-		loadOk(e) {
-			this.bgGxShow = true
-			console.log(e, '--------')
-			// setTimeout(() => {
-			// 	this.$refs[e].play(15).then(() => {
-			// 		console.log('序列完成----');
-			// 	})
-			// })
-		},
-		//播放
-		play2() {
-			this.bgGxShow = true
-			let _kpType = ['', 'bd_card', 'qs_card', 'yy_card', 'xjb_card']
-			this._kpTypeIndex = _kpType.findIndex((item) => item == this.item.card.cardType)
-			setTimeout(() => {
-				this.$refs[`showfect${this._kpTypeIndex}`].play()
-				this.share()
-			}, 300)
-		},
 
-		getbgGx() {
-			console.log('序列完成getbgGx')
-			this.$refs.bgGx.play()
-		},
-		//分享喜悦
-		share() {
-			api.shareActivity().then((res) => {
-				if (res.code == 200) {
-					this.$store.commit('storeShareCode', res.data.shareCode)
-					console.log(this.$store.state.shareCode, '-------shareCode-------')
+		props: {
+			seus: {
+				String,
+				default: null
+			},
+			// 奖品类型 0 没有奖品  1 卡片 2 留资
+			show: {
+				type: [Object, Boolean],
+				default: false
+			},
+			item: {
+				type: [Object, Boolean],
+				default: () => {
+					return {}
 				}
-			})
-		},
-		//分享 埋点
-		getShare() {
-			reportClickEvent({ activityName: '分享喜悦', actionRank: 0, activityId: 'game_xunbao_prize_click_share', activityContent: this.item })
-			// someClickEvent()  全局埋点
-		},
-		back() {
-			console.log('fhui')
-			if (this.item.card) {
-				this.item.card.cardType = -1
 			}
-			this.resetKpType()
-			this.$emit('close')
-			var pages = getCurrentPages()
-			let Page = pages[pages.length - 1] //当前页
-			console.log(Page, '当前页面路径')
-			if (Page.route != 'pages-game/xunbao/index') uni.navigateBack()
 		},
-		close() {
-			// this.show = false
-			if (this.item.card) {
-				this.item.card.cardType = -1
+		data() {
+			return {
+				bgGxShow: false,
+				starList: {
+					imgList: ['https://img.vrupup.com/s/116/img/zpc1.png',
+						'https://img.vrupup.com/s/116/img/bd1.png'
+					], //正反图片
+					speed: 1, //翻转速率，单位：s
+					borderRadius: 20, //卡牌圆角，单位：rpx
+					direction: 1 //翻转方向，1：正翻，2：反翻
+				},
+				starList2: {
+					imgList: ['https://img.vrupup.com/s/116/img/zpc1.png',
+						'https://img.vrupup.com/s/116/img/qs.png'
+					], //正反图片
+					speed: 1, //翻转速率，单位：s
+					borderRadius: 20, //卡牌圆角，单位：rpx
+					direction: 1 //翻转方向，1：正翻，2：反翻
+				},
+				starList3: {
+					imgList: ['https://img.vrupup.com/s/116/img/zpc1.png',
+						'https://img.vrupup.com/s/116/img/xjb.png'
+					], //正反图片
+					speed: 1, //翻转速率，单位：s
+					borderRadius: 20, //卡牌圆角，单位：rpx
+					direction: 1 //翻转方向，1：正翻，2：反翻
+				},
+				starList4: {
+					imgList: ['https://img.vrupup.com/s/116/img/zpc1.png',
+						'https://img.vrupup.com/s/116/img/yy.png'
+					], //正反图片
+					speed: 1, //翻转速率，单位：s
+					borderRadius: 20, //卡牌圆角，单位：rpx
+					direction: 1 //翻转方向，1：正翻，2：反翻
+				},
+				bgGx2: {
+					url: `https://cdn.vrupup.com/s/116/bgGx/1.png`,
+					num: 60,
+					initIndex: 1,
+					speed: 68,
+					loop: true,
+					autoplay: true
+				},
+				_kpTypeIndex: null //翻牌索引
 			}
-			this.resetKpType()
-			this.$emit('close')
 		},
-		//在来一次
-		getZlyq() {
-			this.resetKpType()
-			this.$emit('getZlyq')
-		},
-		//重置翻牌
-		resetKpType() {
-			if (this.$refs[`showfect${this._kpTypeIndex}`]) {
-				this.$refs[`showfect${this._kpTypeIndex}`].reset()
+		methods: {
+			//分享 埋点
+				getShare() {
+					reportClickEvent({ activityName: '分享喜悦', actionRank: 0, activityId: 'game_xunbao_prize_click_share', activityContent: this.item })
+					// someClickEvent()  全局埋点
+				},
+			back() {
+				console.log('fhui')
+				if (this.item.card) {
+					this.item.card.cardType = -1
+				}
+				this.resetKpType()
+				this.$emit('close')
+				var pages = getCurrentPages()
+				let Page = pages[pages.length - 1] //当前页
+				console.log(Page, '当前页面路径')
+				if (Page.route != 'pages-game/xunbao/index') uni.navigateBack()
+			},
+			//跳转到视频页
+			advertising() {
+				tool.jump_nav('/pages-game/xunbao/pages-list/advertising/advertising')
+			},
+			//随机出现一句话
+			getRandomSentence() {
+				const sentences = [
+					'嗨体滋养，满满能量',
+					'完美搭配，效果翻倍',
+					'一起嗨体，全身活力',
+					'嗨体一下，活力高效',
+					'嗨体——真皮层宝藏',
+					'肌肤营养靠嗨体',
+					'全身活力、全身能量',
+					'肌肤活力选嗨体',
+					'嗨体滋养，满满能量',
+					'嗨体，赶走肌肤焦虑',
+					'活力全开靠嗨体',
+					'我们都是嗨星人'
+				]
+				const randomIndex = Math.floor(Math.random() * sentences.length)
+				return sentences[randomIndex]
+			},
+			loadOk(e) {
+				this.bgGxShow = true
+				console.log(e, '--------')
+				// setTimeout(() => {
+				// 	this.$refs[e].play(15).then(() => {
+				// 		console.log('序列完成----');
+				// 	})
+				// })
+			},
+			//播放
+			play2() {
+				let that = this
+				this.bgGxShow = true
+				let _kpType = ['', 'bd_card', 'qs_card', 'yy_card', 'xjb_card']
+				this._kpTypeIndex = _kpType.findIndex((item) => item == this.item.card.cardType)
+				setTimeout(() => {
+					this.$refs[`showfect${this._kpTypeIndex}`].play()
+					that.myshare()
+					that.getShare()
+				}, 300)
+			},
+
+			getbgGx() {
+				console.log('序列完成getbgGx')
+				this.$refs.bgGx.play()
+			},
+			//分享喜悦
+			myshare() {
+				api.shareActivity().then((res) => {
+					if (res.code == 200) {
+						this.$store.commit('storeShareCode', res.data.shareCode)
+						console.log(this.$store.state.shareCode, '-------shareCode-------')
+					}
+				})
+			},
+			
+		
+			close() {
+				// this.show = false
+				if (this.item.card) {
+					this.item.card.cardType = -1
+				}
+				this.resetKpType()
+				this.$emit('close')
+			},
+			//在来一次
+			getZlyq() {
+				this.resetKpType()
+				this.$emit('getZlyq')
+			},
+			//重置翻牌
+			resetKpType() {
+				if (this.$refs[`showfect${this._kpTypeIndex}`]) {
+					this.$refs[`showfect${this._kpTypeIndex}`].reset()
+				}
 			}
 		}
 	}
-}
 </script>
 
 <style lang="scss" scoped>
