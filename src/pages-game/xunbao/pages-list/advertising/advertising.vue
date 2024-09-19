@@ -248,7 +248,9 @@
 		}
 	}
 </script>
-
+<style>
+	@import '@/pages-game/xunbao/css/base.css';
+</style>
 <style lang="scss" scoped>
 	.advertising {
 		background: #fea500;
