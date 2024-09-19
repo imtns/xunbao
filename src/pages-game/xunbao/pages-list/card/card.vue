@@ -84,7 +84,7 @@
 				</view>
 			</view>
 		</view>
-		<u-popup :show="show" mode="center" @close="close" @open="open" :overlayOpacity='0.8'>
+		<u-popup :show="show" mode="center" @close="show = false" @open="open" :overlayOpacity='0.8'>
 			<!-- 我的奖品 -->
 			<view class="compound_ceng" v-show="compound1 == 1">
 				<view class="compound1">
@@ -156,9 +156,9 @@
 				</view>
 			</view>
 			<!-- 卡片不足 -->
-			<view class="compound_ceng" v-show="compound1 == 2">
+			<view class="compound_ceng" v-show="compound1 == 2" >
 				<view class="compound1">
-					<view class="compound16" @click="show = false">
+					<view class="compound16" >
 						<image :src="`${ASSETSURL}card/compound6.png`" mode="widthFix"></image>
 					</view>
 				</view>

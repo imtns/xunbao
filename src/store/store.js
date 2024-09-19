@@ -7,7 +7,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     commonConfig: {},
-    isLogin: !!lsGet('token'),
+    isLogin: !!lsGet('iclubUserToken3'),
     captchaFlag: false,
     userInfo: lsGet('userInfo') || {},
     commentList: [],

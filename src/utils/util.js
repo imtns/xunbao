@@ -165,7 +165,7 @@ const pageJump = (url) => {
   }
   // webview跳转外网地址带上token
   if (isHttpLink(url)) {
-    url += (url.indexOf('?') > -1 ? '&' : '?') + '&token=' + lsGet('token')
+    url += (url.indexOf('?') > -1 ? '&' : '?') + '&token=' + lsGet('iclubUserToken3')
     url = '/pages/webview/webView?url=' + encodeURIComponent(url)
   }
   uni.navigateTo({
@@ -212,7 +212,7 @@ const refreshCurrentPage = () => {
 
 // 判断是否登录
 const isLogin = () => {
-  return !!lsGet('token')
+  return !!lsGet('iclubUserToken3')
 }
 
 // 获取微信二维码进来的参数

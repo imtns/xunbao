@@ -131,7 +131,7 @@ export default {
     async handleLoginOK(res) {
       console.log('登录成功，已获取token', res.token)
 
-      ls('token', res.token || '')
+      ls('iclubUserToken3', res.token || '')
       this.$store.dispatch('getUserInfo')
       wx.navigateBack()
     },

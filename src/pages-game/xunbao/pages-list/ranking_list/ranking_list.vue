@@ -30,7 +30,7 @@
 							<view class="ranking213 le">{{item.nickName}}</view>
 							<view class="ranking214 ri">{{item.compositionCount}}</view>
 						</view>
-						<view v-show="dataList.length == 0" class="ranking21_1">
+						<view v-if="dataList.length == 0" class="ranking21_1">
 							<image mode="widthFix" :src="`${ASSETSURL}wu_zt.png`" style="width: 325rpx;"></image>
 						</view>
 					</view>
@@ -38,7 +38,7 @@
 					<view class="ranking2 ranking2_lo">
 						<view class="ranking21 oh">
 							<view class="ranking211 le tc" style="margin-top:36rpx;">
-								{{dq_list.rank || '未上榜'}}
+								{{dq_list.rank || '暂未上榜'}}
 							</view>
 							<view class="ranking212 le">
 								<image mode="aspectFill" :src="dq_list.headUrl"></image>

@@ -3,7 +3,7 @@ import store from '@/store/store'
 
 // 是否登录
 uni.hasLogin = () => {
-  return !!lsGet('token')
+  return !!lsGet('iclubUserToken3')
 }
 
 // 清除登录信息

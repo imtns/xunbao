@@ -10,8 +10,8 @@
 					</view>
 					<view class="adText" style="margin-top: 108rpx">{{ sayData }}</view>
 				</view>
-				<view class="" :style="{ opacity: endRecordShow ? '1' : '0' }">
-					<u-image :src="`${ASSETSURL}tan2_2.png`" @touchstart.stop="startRecord" @touchend.stop="endRecord" width="233rpx" height="233rpx"></u-image>
+				<view class="" :style="{ opacity: endRecordShow ? '1' : '0' }" @touchstart.stop="startRecord" @touchend.stop="endRecord">
+					<u-image :src="`${ASSETSURL}tan2_2.png`"  width="233rpx" height="233rpx"></u-image>
 				</view>
 				<!-- 	<view class="" v-else>
 						123
@@ -33,7 +33,7 @@ const APPID = '08c1a943'
 const API_SECRET = 'NmQ5YmY0Nzg4MmU0YTQzNGU0NmM5OWMy'
 const API_KEY = '5cbaed332e3e5b1dbbb8959e4d59b879'
 // 获取录音
-const recorderManager = uni.getRecorderManager()
+let recorderManager
 export default {
 	name: 'dy-record',
 	props: {
@@ -48,6 +48,7 @@ export default {
 	},
 	mounted() {
 		this.queryAd()
+		this.getSetting()
 		// 链接 WebSocket
 		// this.connectWebSocket();
 		//自动播放语音
@@ -73,7 +74,7 @@ export default {
 			code: '10007',
 			sayData: '识别结果',
 			endRecordShow: true, //是否录音
-			isScopeShow: true, //	是否授权录音
+			
 			myConnectSocket: null //WebSocket
 		}
 	},
@@ -91,32 +92,36 @@ export default {
 		//查询是否授权
 		getSetting() {
 			console.log('查询授权')
+			let that = this
 			tool.getSetting('scope.record').then((res) => {
+				console.log(res, '录音授权123123')
 				if (!res.status) {
-					this.isScopeShow = false
-					if (res.data.authSetting['scope.record'] === false) {
-						uni.showModal({
-							title: '授权录音',
-							content: '需要您的授权才能使用录音功能',
-							success: (res) => {
-								if (res.confirm) {
-									uni.openSetting({
-										success: (res) => {
-											if (res.authSetting['scope.record'] === true) {
-												this.isScopeShow = true
-											} else {
-												this.isScopeShow = false
+					wx.authorize({
+						scope: 'scope.record',
+						success() {
+							// 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
+							recorderManager = uni.getRecorderManager()
+						},
+						fail() {
+							uni.showModal({
+								title: '授权录音',
+								content: '需要您的授权才能使用录音功能',
+								success: (res) => {
+									if (res.confirm) {
+										uni.openSetting({
+											success: (res) => {
+												if (res.authSetting['scope.record'] === true) {
+													recorderManager = uni.getRecorderManager()
+												}
 											}
-										}
-									})
-								} else if (res.cancel) {
-									this.isScopeShow = false
+										})
+									}
 								}
-							}
-						})
-					}
+							})
+						}
+					})
 				} else if (res.status == 1) {
-					this.isScopeShow = true
+					recorderManager = uni.getRecorderManager()
 				}
 			})
 		},
@@ -124,9 +129,6 @@ export default {
 		recorderManager_pz() {
 			let self = this
 			recorderManager.onStop(function (res) {
-				if (!self.isScopeShow) {
-					return self.getSetting()
-				}
 				self.voicePath = res.tempFilePath
 				var tempFilePath = res.tempFilePath //音频文件地址
 
@@ -150,7 +152,7 @@ export default {
 		// 获取广告词
 		async queryAd() {
 			let { code, data, message } = await api.queryAd()
-			this.getSetting()
+			
 			this.endRecordShow = true
 			if (code != 200) return tool.alert(message)
 			this.adText = data.ad
@@ -163,7 +165,6 @@ export default {
 		},
 		// 长按录制
 		startRecord() {
-			this.getSetting()
 			if (!this.endRecordShow) return
 			this.sayData = '录音中'
 			this.recorderManager_pz()
@@ -194,10 +195,8 @@ export default {
 		},
 		// 松开停止
 		endRecord() {
-			console.log('录音结束', this.isScopeShow)
-			if (this.isScopeShow) {
-				this.endRecordShow = false
-			}
+			
+		this.endRecordShow = false
 			// 隐藏 loading 提示框
 			// uni.hideLoading();
 			this.sayData = '识别中'
