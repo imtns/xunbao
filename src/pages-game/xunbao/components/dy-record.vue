@@ -1,42 +1,67 @@
 <template>
 	<view>
+		
 		<u-popup :show="showRecord" mode="center" :safeAreaInsetBottom="false" bgColor="transparent" @close="close"
 			:overlayOpacity="0.8" :closeOnClickOverlay="closeOnClickOverlay">
 			<view class="tanctow flex-cen-col">
+				
 				<image class="ad_14" @click="close" :src="`${ASSETSURL}ad_14.png`"></image>
-				<view class="por" style="margin-left: -40rpx">
+				<view class="por" style="margin-left: -40rpx;margin-bottom: 30rpx">
 					<u-image :src="`${ASSETSURL}tan2_1.png`" width="610rpx" height="568rpx"></u-image>
 					<view class="adText" :style="{ color: code == 10007 ? '#000' : '' }">
 						{{ code == 10007 ? '识别失败，再来一次' : adText }}
 					</view>
-					<view class="adText" style="margin-top: 108rpx">{{ sayData }}</view>
+					<view class="adText" style="margin-top: 108rpx" :style="{ color: code == 10007 ? '#000' : '' }">{{ sayData }}</view>
 				</view>
-				<view class="" :style="{ opacity: endRecordShow ? '1' : '0' }" @touchstart="startRecord"
+				<view class="voice fade-show">
+					<sequenceEffect ref="voice" :sequenceList="voiceList"></sequenceEffect>
+				</view>
+				<u-image :src="`${ASSETSURL}back.png`" v-if="task.now >= task.max"  @click="close" width="273rpx" height="94rpx"></u-image>
+				<u-image :src="`${ASSETSURL}again.png`" v-else-if="code == 10007" @click="again" width="273rpx" height="94rpx"></u-image>
+				<view class="por" v-else :style="{ opacity: endRecordShow ? '1' : '0' }" @touchstart="startRecord"
 					@touchend="endRecord">
-					<u-image :src="`${ASSETSURL}tan2_2.png`" width="233rpx" height="233rpx"></u-image>
+					
+					<view class="mike fade-show">
+						<sequenceEffect ref="mike" :sequenceList="mikeList"></sequenceEffect>
+					</view>
+					<u-image :src="`${ASSETSURL}tan2_2.png`"  width="234rpx" height="234rpx"></u-image>
 				</view>
 				<!-- 	<view class="" v-else>
 						123
 					</view> -->
+					<u-popup :show="noPrize" mode="center" :safeAreaInsetBottom="false" bgColor="transparent" @close="noPrize = false;close()" >
+						<view class=" por">
+							<u-image :src="ASSETSURL + 'noPrize.png'" width="540rpx" height="674rpx"></u-image>
+							<view class="close" @click="noPrize = false;close()">
+								<u-icon :name="ASSETSURL + 'close.png'" color="#fff" size="60rpx"></u-icon>
+							</view>
+						</view>
+					</u-popup>
 			</view>
+			
 		</u-popup>
+		
 		<dy-prize :show="showPrize" :item="prizeDetail" v-if="code != 10007" @close="showPrize = false"
 			@getZlyq="showPrize = false"></dy-prize>
 	</view>
 </template>
-
+<style>
+	@import '@/pages-game/xunbao/css/base.css';
+</style>
 <script>
 	import {
 		Base64
 	} from '@/pages-game/xunbao/components/js/base64js.js'
 	import '@/pages-game/xunbao/components/js/enc-base64-min'
 	import CryptoJS from '@/pages-game/xunbao/components/js/hmac-sha256.js'
+	import sequenceEffect from '@/pages-game/xunbao/components/sequenceEffect/sequenceEffect.vue'
 	import api from '@/pages-game/xunbao/api/api.js'
 	import tool from '@/pages-game/xunbao/js/tool.js'
 	// 鉴权码：从讯飞开放平台申请appid，并添加（流式接口）获取接口密钥APIKey 和 APISecret
 	const APPID = '08c1a943'
 	const API_SECRET = 'NmQ5YmY0Nzg4MmU0YTQzNGU0NmM5OWMy'
 	const API_KEY = '5cbaed332e3e5b1dbbb8959e4d59b879'
+	import { reportClickEvent, reportExposeEvent } from '@/utils/report/report'
 	// 获取录音
 	let recorderManager
 	export default {
@@ -49,7 +74,16 @@
 			closeOnClickOverlay: {
 				type: Boolean,
 				default: false
+			},
+			task:{
+				type: Object,
+				default: () => {
+					return {}
+				}
 			}
+		},
+		components: {
+			sequenceEffect
 		},
 		mounted() {
 			this.queryAd()
@@ -61,6 +95,23 @@
 		},
 		data() {
 			return {
+				voiceList:{
+					url: `https://cdn.vrupup.com/s/116/voice/1.png`,
+					num: 30,
+					initIndex: 1,
+					speed: 68,
+					loop: true,
+					autoplay: false
+				},
+				mikeList:{
+					url: `https://cdn.vrupup.com/s/116/mike/1.png`,
+					num: 30,
+					initIndex: 1,
+					speed: 68,
+					loop: true,
+					autoplay: false
+				},
+				noPrize: false,
 				showPrize: false,
 				prizeDetail: false,
 				webSocket: '',
@@ -94,6 +145,11 @@
 		},
 		onShow() {},
 		methods: {
+			again(){
+				this.queryAd();
+				this.endRecordShow = true;
+				this.code = 0;
+			},
 			//查询是否授权
 			getSetting() {
 				console.log('查询授权')
@@ -107,6 +163,7 @@
 							success() {
 								// 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
 								recorderManager = uni.getRecorderManager()
+								reportClickEvent({ activityName: '允许授权麦克风', actionRank: 0, activityId: 'game_xunbao_audio_click_auth', activityContent: {} })
 							},
 							fail() {
 								uni.showModal({
@@ -119,6 +176,7 @@
 													if (res.authSetting[
 															'scope.record'] ===
 														true) {
+															reportClickEvent({ activityName: '允许授权麦克风', actionRank: 0, activityId: 'game_xunbao_audio_click_auth', activityContent: {} })
 														recorderManager = uni
 															.getRecorderManager()
 													}
@@ -179,8 +237,10 @@
 			},
 			// 长按录制
 			startRecord() {
+				this.$refs.voice.play();
+				this.$refs.mike.play();
 				this.getSetting()
-
+				reportClickEvent({ activityName: '录制广告词', actionRank: 0, activityId: 'game_xunbao_audio_click_record', activityContent: {} })
 				if (!this.endRecordShow || !this.isNoreadAuto) return
 				this.sayData = '录音中'
 				this.recorderManager_pz()
@@ -213,6 +273,8 @@
 			},
 			// 松开停止
 			endRecord() {
+				this.$refs.voice.pause();
+				this.$refs.mike.play();
 				if (!this.isNoreadAuto) return
 				this.endRecordShow = false
 				// 隐藏 loading 提示框
@@ -367,17 +429,19 @@
 				}
 				if (jsonData.code === 0 && jsonData.data.status === 2) {
 					uni.onSocketClose(function(res) {
-						console.log('WebSocket 已关闭！')
+						console.log('WebSocket 已关闭！2')
+						that.myConnectSocket = null
 						// uni.hideLoading();
 						// tool.alert('识别失败')
 						// that.queryAd()
-						that.sayData = '识别失败'
-						that.adText = '识别失败，再来一次'
+						// that.sayData = '识别失败'
+						// that.adText = '识别失败，再来一次'
 					})
 				}
 				if (jsonData.code !== 0) {
 					uni.onSocketClose(function(res) {
-						console.log('WebSocket 已关闭！')
+						console.log('WebSocket 已关闭！1')
+						that.myConnectSocket = null
 					})
 					console.log(`${jsonData.code}:${jsonData.message}`)
 				}
@@ -403,35 +467,54 @@
 							data,
 							message
 						}) => {
+							reportClickEvent({ activityName: '语音识别接口', actionRank: 0, activityId: 'game_xunbao_audio_click_tell', activityContent: that.formData })
 							// someClickEvent() 全局埋点
-							if (code == 10007 || code == 1002) {
-								that.code = 10007
-								// tool.alert(message)
-								// this.queryAd()
-								that.sayData = '识别失败'
-								that.adText = '识别失败，再来一次'
-								return
+						
+							reportClickEvent({ activityName: '语音识别成功', actionRank: 0, activityId: 'game_xunbao_audio_click_success', activityContent: that.formData })
+							if (data.prizeType != 'kong') {
+								reportClickEvent({
+									activityName: '语言获得奖品',
+									actionRank: 0,
+									activityId: 'game_xunbao_audio_click_prize',
+									activityContent: data
+								})
 							}
-							if (code == 500) return tool.alert(message)
-
 							if (data.prizeType == 'kapian') {
-								// that.showRecord = false
 								that.close()
+								// that.showRecord = false
 							} else if (data.prizeType == 'jiangli') {
 								// that.showRecord = false
 								that.close()
 								that.queryAd()
 								tool.jump_nav('/pages-game/xunbao/pages-list/advertising/advertising')
 								return
-							} else {}
+							}
+							
+							
 							// that.prizeDetail = data;
 							// setTimeout(() => {
 							// 	that.showPrize = true;
 							// }, 200)
-							console.log('出弹窗')
-							that.$emit('detailCloce', data)
+							
 							uni.closeSocket()
-							that.myConnectSocket = null
+							console.log('出弹窗')
+							if (data.prizeType != 'kong') that.$emit('detailCloce', data)
+							else{
+								
+							 that.noPrize = true;
+							 }
+							 uni.closeSocket()
+							
+						}).catch((err)=>{
+							uni.closeSocket()
+							let { code, message } = err
+							if (code == 10007 || code == 1002) {
+								that.code = 10007
+								that.sayData = '识别失败'
+								that.adText = '识别失败，再来一次'
+								return
+							}
+							if (code == 500) return tool.alert(message)
 						})
 					})
 					.catch((err) => {
@@ -461,4 +544,28 @@
 		left: 114rpx;
 		top: 174rpx;
 	}
+	.voice{
+		width: 96rpx;
+		height: 70rpx;
+		position: absolute;
+		left: 256rpx;
+		top: 356rpx;
+	     
+		opacity: 0;
+	}
+	.mike{
+		width: 244rpx;
+		height: 248rpx;
+		position: absolute;
+		left: 0;
+		top: -4px;
+		opacity: 0;
+		 // transform:	tranxlateX(-50%);
+	}
+	
+		.close {
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
 </style>
