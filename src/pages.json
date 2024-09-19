@@ -55,6 +55,7 @@
           "style": {
             "navigationBarTitleText": "我的奖励",
             "enablePullDownRefresh": false
+			
           }
         },
 
@@ -102,7 +103,8 @@
         {
           "path": "xunbao/pages-list/advertising/advertising",
           "style": {
-            "navigationStyle": "custom",
+			  "navigationBarTitleText": "观看视频",
+            
             "app-plus": {
               "titleNView": false
             }

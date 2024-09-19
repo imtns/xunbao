@@ -47,7 +47,7 @@ export default {
   },
 
   //查询视频
-  queryVideo: (data, url = '/iclub/iclub/openApi/activity/htxb/queryVideo') => {
+  queryVideo: (data, url = '/iclub/openApi/activity/htxb/queryVideo') => {
     return myRequest(data, url, 'POST', false, 0)
   },
 
