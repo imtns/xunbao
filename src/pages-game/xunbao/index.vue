@@ -180,6 +180,7 @@
 </template>
 
 <script>
+	import { lsGet } from '@/utils/util'
 	import api from '@/pages-game/xunbao/api/api';
 	import tool from '@/pages-game/xunbao/js/tool';
 	import store from '@/store';
@@ -303,6 +304,7 @@
 				this.$refs.homeDx.play()
 			},
 			handleDoubleClick1() {
+				if(!lsGet('token')) return tool.jump_nav('/pages-sub/login/index')
 				// 单击或双击
 				let _this = this;
 				let curTime = new Date().getTime();
@@ -459,15 +461,18 @@
 				}, 30);
 			},
 			renw_1() {
+				if(!lsGet('token')) return tool.jump_nav('/pages-sub/login/index')
 				// someClickEvent() 全局埋点
 				this.getActivityTaskList();
 				console.log(11);
 				this.show_1 = true;
 			},
 			renw_3() {
+				if(!lsGet('token')) return tool.jump_nav('/pages-sub/login/index')
 				tool.jump_nav('/pages-game/xunbao/pages-list/award/award');
 			},
 			renw_2() {
+				if(!lsGet('token')) return tool.jump_nav('/pages-sub/login/index')
 				tool.jump_nav('/pages-game/xunbao/pages-list/card/card');
 			},
 			// 用户完成新手引导

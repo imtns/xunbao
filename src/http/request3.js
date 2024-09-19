@@ -57,7 +57,7 @@ module.exports = {
           app: 'IClub'
         },
         success(res) {
-          console.log('%c%s', 'color: green; background: yellow; font-family: Micirosft Yahei; font-size: 24px;', ' 出参明细：', res)
+          console.log('%c%s', 'color: green; background: yellow; font-family: Micirosft Yahei; font-size: 24px;', ' 出参明细1：', res)
 
           // 新的token
           if (res.header && res.header['x-imeik-refreshToken']) {
