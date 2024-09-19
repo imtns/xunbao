@@ -1,0 +1,9 @@
+src/uni_*
+src/components/uni-*
+src/wxcomponent
+src/miniprogram_npm
+src/styles/style.scss
+src/uni.scss
+src/static/css/*
+src/pages-game/xunbao/*
+src/uview-ui

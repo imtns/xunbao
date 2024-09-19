@@ -1,0 +1,93 @@
+@font-face {
+  font-family: Pangmenzhengdao; /* 指定字体名称 */
+  src: url('https://udstatic.imeik.com/pcUploads/1712648373491/pangmenzhengdao.ttf');
+}
+.form-wrapper {
+  box-sizing: border-box;
+  padding: 48rpx 48rpx 10rpx;
+  background: white;
+  border-radius: 16rpx;
+  .uni-forms {
+    &-item {
+      &__inner {
+        padding-bottom: 48rpx !important;
+      }
+      &__label {
+        height: 42rpx;
+        margin-bottom: 24rpx !important;
+        padding: 0 !important;
+        .label-text {
+          color: #29323d;
+          font-weight: bold;
+          font-size: 30rpx !important;
+        }
+      }
+      .uni-easyinput__content {
+        &-input {
+          width: 100%;
+          height: 88rpx !important;
+          color: #5a6067;
+          font-size: 32rpx;
+          border-radius: 16rpx;
+        }
+        &.is-input-border {
+          border-radius: 16rpx;
+        }
+      }
+
+      .uni-error-message {
+        bottom: 0rpx;
+        color: #f4334a;
+        font-size: 24rpx;
+      }
+    }
+  }
+}
+
+view,
+text {
+  box-sizing: border-box;
+}
+checkbox .wx-checkbox-input {
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 4rpx;
+}
+/* checkbox选中后样式  */
+checkbox .wx-checkbox-input.wx-checkbox-input-checked {
+  background: #356ad3;
+  border-color: #356ad3;
+}
+/* checkbox选中后图标样式  */
+checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
+  width: 20rpx;
+  height: 20rpx;
+  color: #fff;
+  font-size: 22rpx;
+  line-height: 20rpx;
+  text-align: center;
+  background: transparent;
+  transform: translate(-50%, -50%) scale(1);
+}
+wx-slider {
+  margin: 3rpx 32rpx 6rpx;
+}
+wx-slider .wx-slider-handle-wrapper {
+  height: 6rpx;
+}
+.no-data.no-more {
+  color: #d3d3d3 !important;
+  font-size: 24rpx !important;
+  text-align: center;
+}
+image {
+  width: 100%;
+  height: auto;
+}
+.uni-popup .uni-popup__wrapper {
+  border-radius: 32rpx 32rpx 0 0 !important;
+}
+.uni-popup {
+  position: fixed;
+  z-index: 2000 !important;
+}

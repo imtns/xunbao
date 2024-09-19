@@ -1,0 +1,67 @@
+@font-face {
+  font-family: iplus-font; /* Project id 4404356 */
+  src: url('~@/static/font/iplus/iconfont.woff2?t=1704962444927') format('woff2'), url('~@/static/font/iplus/iconfont.woff?t=1704962444927') format('woff'),
+    url('~@/static/font/iplus/iconfont.ttf?t=1704962444927') format('truetype');
+}
+
+.iplus {
+  display: inline-block;
+  font-size: 16px;
+  font-family: iplus-font !important;
+  font-style: normal;
+  vertical-align: middle;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-pinglun::before {
+  content: '\e60c';
+}
+
+.icon-location::before {
+  content: '\e607';
+}
+
+.icon-heart::before {
+  content: '\e608';
+}
+
+.icon-filter::before {
+  content: '\e609';
+}
+
+.icon-location-s::before {
+  content: '\e60a';
+}
+
+.icon-setting::before {
+  content: '\e60b';
+}
+
+.icon-close::before {
+  content: '\e60d';
+}
+
+.icon-arrow-down::before {
+  content: '\e60e';
+}
+
+.icon-comment-edit::before {
+  content: '\e60f';
+}
+
+.icon-clock::before {
+  content: '\e610';
+}
+
+.icon-arrow::before {
+  content: '\e606';
+}
+
+.icon_jiantou::before {
+  content: '\e605';
+}
+
+.icon-search::before {
+  content: '\e604';
+}

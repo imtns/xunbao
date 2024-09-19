@@ -1,0 +1,18 @@
+page {
+  height: 100%;
+  overflow: auto;
+}
+
+.container {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  border: none;
+}
+
+.no-data {
+  padding: 32rpx;
+  color: #ccc;
+  font-size: 24rpx;
+  text-align: center;
+}

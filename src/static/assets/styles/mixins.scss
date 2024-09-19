@@ -1,0 +1,239 @@
+@charset "UTF-8";
+@mixin text-overflow {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-wrap: normal !important;
+  word-break: normal !important;
+}
+@mixin selection($bg-color, $color) {
+  &::selection {
+    color: $color;
+    background: $bg-color;
+  }
+  &::selection {
+    color: $color;
+    background: $bg-color;
+  }
+}
+
+// 水平居中
+@mixin box-center {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+// 定义左右 margin
+@mixin margin-h($margin) {
+  margin-right: $margin;
+  margin-left: $margin;
+}
+
+// 定义上下 margin
+@mixin margin-v($margin) {
+  margin-top: $margin;
+  margin-bottom: $margin;
+}
+
+// 定义左右 padding
+@mixin padding-h($padding) {
+  padding-right: $padding;
+  padding-left: $padding;
+}
+
+// 定义上下 padding
+@mixin padding-v($padding) {
+  padding-top: $padding;
+  padding-bottom: $padding;
+}
+
+@mixin user-select-none {
+  user-select: none;
+}
+
+@mixin not-allowed {
+  cursor: default !important;
+}
+
+@mixin fixed-ratio-box($ratio) {
+  position: relative;
+  &::before {
+    display: block;
+    width: 100%;
+    padding-top: $ratio;
+    overflow: hidden;
+    content: '';
+    @content;
+  }
+}
+
+@mixin fixed-ratio-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
+// 绝对居中
+@mixin position-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin position-center-y {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@mixin position-center-x {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+@mixin flex-center() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@mixin flex-center-y() {
+  display: flex;
+  align-items: center;
+}
+@mixin flex-center-x {
+  display: flex;
+  justify-content: center;
+}
+@mixin flex-spacebetween {
+  display: flex;
+  justify-content: space-between;
+}
+@mixin border($border-color) {
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    border: 1px solid $border-color;
+    transform: scale(0.5);
+    transform-origin: 0 0;
+    content: '';
+    @content;
+  }
+}
+
+@mixin border-h($border-color, $z-index: 20) {
+  position: absolute;
+  left: 0;
+  z-index: $z-index;
+  width: 200%;
+  border-bottom: 1px solid $border-color;
+  transform: scale(0.5);
+  content: '';
+  @content;
+}
+
+@mixin border-v($border-color, $z-index: 20) {
+  position: absolute;
+  top: 0;
+  z-index: $z-index;
+  height: 200%;
+  border-right: 1px solid $border-color;
+  transform: scale(0.5);
+  content: '';
+  @content;
+}
+
+@mixin border-bottom($border-color, $z-index: 20) {
+  &::before {
+    @include border-h($border-color, $z-index) {
+      transform-origin: 0 100%;
+    }
+
+    bottom: 0;
+    @content;
+  }
+}
+
+@mixin border-top($border-color, $z-index: 20) {
+  &::before {
+    @include border-h($border-color, $z-index) {
+      transform-origin: 0 0;
+    }
+
+    top: 0;
+    @content;
+  }
+}
+
+@mixin border-right($border-color, $z-index: 20) {
+  &::before {
+    @include border-v($border-color, $z-index) {
+      transform-origin: right 0;
+    }
+
+    right: 0;
+    @content;
+  }
+}
+
+@mixin border-left($border-color, $z-index: 20) {
+  &::before {
+    @include border-v($border-color, $z-index) {
+      transform-origin: 0 0;
+    }
+
+    left: 0;
+    @content;
+  }
+}
+
+@mixin border-circle($border-color) {
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    border: 1px solid $border-color;
+    border-radius: 50%;
+    transform: scale(0.5);
+    transform-origin: 0 0;
+    content: '';
+  }
+}
+
+@mixin multi-overflow($lines) {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+}
+@mixin button($width, $height: 76rpx, $radius: 32rpx, $size: 22rpx) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $width;
+  height: $height;
+  color: white;
+  font-size: $size;
+  background: #366bd5;
+  border-radius: $radius;
+}
+
+@mixin bg($url, $size: cover) {
+  background: url($url) no-repeat;
+  background-size: $size;
+}
+
+@mixin wh($width, $height) {
+  width: $width;
+  height: $heigh;
+}

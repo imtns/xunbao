@@ -1,0 +1,17 @@
+# 忽略打包的文件
+dist
+# 忽略uni-app官方的组件库错误和警告，官方的竟然通不过...
+src/components/uni-lechart
+src/components/uni-echarts
+src/uni_modules
+src/utils/aliyun-upload-sdk-1.0.0.min.js
+src/utils/aliplayercomponents-1.0.8.min.js
+src/utils/aliyun-webrtc-miniapp-sdk.js
+src/utils/report/xbosstrack.min.js
+src/utils/html-parser.js
+/src/common/permission.js
+src/miniprogram_npm
+src/utils/crypto
+src/pages/mine/sharing/fake.js
+src/components/painter/helper.js
+src/pages-game

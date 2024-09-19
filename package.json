@@ -1,0 +1,102 @@
+{
+  "name": "fe-wx-uni-client",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "cross-env NODE_ENV=test UNI_PLATFORM=mp-weixin VUE_APP_ENV=test vue-cli-service uni-build --watch"
+  },
+  "dependencies": {
+    "@dcloudio/uni-app-plus": "^2.0.1-34920220630001",
+    "@dcloudio/uni-h5": "^2.0.1-34920220630001",
+    "@dcloudio/uni-helper-json": "*",
+    "@dcloudio/uni-i18n": "^2.0.1-34920220630001",
+    "@dcloudio/uni-mp-vue": "^2.0.1-34920220630001",
+    "@dcloudio/uni-mp-weixin": "^2.0.1-34920220630001",
+    "@dcloudio/uni-stat": "^2.0.1-34920220630001",
+    "@vue/shared": "^3.0.0",
+    "confetti-ts-canvas": "^1.1.5",
+    "core-js": "^3.6.5",
+    "crypto": "^1.0.1",
+    "element-china-area-data": "^5.0.2",
+    "flyio": "^0.6.2",
+    "miniprogram-computed": "^4.3.6",
+    "moment": "^2.30.1",
+    "mp-html": "^2.3.1",
+    "regenerator-runtime": "^0.12.1",
+    "vue": "^2.6.11",
+    "vuex": "^3.2.0",
+    "webpack-bundle-analyzer": "^4.5.0"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.18.9",
+    "@babel/runtime": "~7.17.9",
+    "@dcloudio/types": "^3.0.4",
+    "@dcloudio/uni-automator": "^2.0.1-34920220630001",
+    "@dcloudio/uni-cli-i18n": "^2.0.1-34920220630001",
+    "@dcloudio/uni-cli-shared": "^2.0.1-34920220630001",
+    "@dcloudio/uni-migration": "^2.0.1-34920220630001",
+    "@dcloudio/uni-template-compiler": "^2.0.1-34920220630001",
+    "@dcloudio/vue-cli-plugin-hbuilderx": "^2.0.1-34920220630001",
+    "@dcloudio/vue-cli-plugin-uni": "^2.0.1-34920220630001",
+    "@dcloudio/vue-cli-plugin-uni-optimize": "^2.0.1-34920220630001",
+    "@dcloudio/webpack-uni-mp-loader": "^2.0.1-34920220630001",
+    "@dcloudio/webpack-uni-pages-loader": "^2.0.1-34920220630001",
+    "@vue/cli-plugin-babel": "~4.5.19",
+    "@vue/cli-service": "~4.5.19",
+    "ali-oss": "^6.17.1",
+    "babel-plugin-import": "^1.11.0",
+    "cross-env": "^7.0.2",
+    "crypto-js": "^4.1.1",
+    "eslint": "8.22.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "eslint-plugin-vue": "^9.2.0",
+    "husky": "^8.0.1",
+    "jest": "^25.4.0",
+    "js-base64": "^3.7.2",
+    "lint-staged": "^13.0.3",
+    "mini-types": "*",
+    "miniprogram-api-typings": "*",
+    "postcss": "^8.4.14",
+    "postcss-comment": "^2.0.0",
+    "postcss-html": "^1.5.0",
+    "postcss-scss": "4.0.4",
+    "sass": "^1.49.8",
+    "sass-loader": "^8.0.2",
+    "spa-custom-hooks": "^1.2.5",
+    "stylelint": "^14.9.1",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-config-recommended-vue": "^1.4.0",
+    "stylelint-config-standard": "^23.0.0",
+    "stylelint-config-standard-scss": "^4.0.0",
+    "stylelint-order": "^5.0.0",
+    "stylelint-scss": "^4.2.0",
+    "stylelint-webpack-plugin": "^3.3.0",
+    "vue-inset-loader": "^1.2.6",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "browserslist": [
+    "Android >= 4.4",
+    "ios >= 9"
+  ],
+  "resolutions": {
+    "@babel/runtime": "~7.17.9"
+  },
+  "uni-app": {
+    "scripts": {}
+  },
+  "lint-staged": {
+    "*.{js,vue}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{scss,vue}": [
+      "stylelint --custom-syntax postcss-html",
+      "git add"
+    ]
+  }
+}
