@@ -1,7 +1,7 @@
 <template>
 	<view class="codes">
 		<view class="codesceng">
-			<view class="award1" @click="fhui">
+			<view class="award1" >
 				<!-- <image :src="`${ASSETSURL}ad_18.png`"></image> -->
 				<!-- <u-navbar class="custom-navbar" title=" " autoBack bgColor="transparent" height="88rpx" placeholder></u-navbar> -->
 				<!-- <image src='https://cdn.vrupup.com/s/116/ad_2.png' style="position: fixed;bottom: 0;width: 100vw;z-index: 9999;" class="addd12" mode="widthFix"></image> -->
@@ -95,13 +95,15 @@ export default {
 			this.codes_type = 2
 		},
 		takePhoto() {
+			if (this.isSend) return tool.alert('太快了~')
+			this.isSend = true
 			const context = wx.createCameraContext()
 			let that = this
-			if (this.isSend) return
-			this.isSend = true
+			
 			context.takePhoto({
 				quality: 'high',
 				success: function (res) {
+					tool.loading();
 					reportClickEvent({ activityName: '点击AR拍照', actionRank: 0, activityId: 'game_xunbao_AR_click_photo', activityContent: {} })
 					tool.uploadFiles([res.tempImagePath], 'https://java.vrupup.com/identify/link/uploadFile').then((res) => {
 						console.log('返回', that.operateRecordCode, res)
@@ -111,6 +113,8 @@ export default {
 							imgUrl: res[0]
 						})
 							.then((res1) => {
+								tool.loading_h();
+								that.isSend = false
 								reportClickEvent({
 									activityName: 'AR识别接口',
 									actionRank: 0,
@@ -120,7 +124,7 @@ export default {
 										imgUrl: res[0]
 									}
 								})
-								that.isSend = false
+								
 								console.log('【识别返回】', res1)
 								if (res1.code == 500 || res1.code == 10006) {
 									that.codes_type = 0
@@ -151,7 +155,9 @@ export default {
 								}
 							})
 							.catch((err) => {
+								tool.loading_h();
 								console.log(err, '‘err173')
+								that.isSend = false
 								that.codes_type = 0
 							})
 					})
