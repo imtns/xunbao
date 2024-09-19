@@ -25,12 +25,12 @@ module.exports = {
     // iclub的请求走另外的接口域名
     const base = baseNewUrl
     const fullUrl = url.includes('http') ? url : `${base}${url}`
-    let token = lsGet('token')
+    let token = lsGet('iclubUserToken3')
 
     // #ifdef H5
-    if (getQueryParam('token')) {
-      token = getQueryParam('token')
-      ls('token', token)
+    if (getQueryParam('iclubUserToken3')) {
+      token = getQueryParam('iclubUserToken3')
+      ls('iclubUserToken3', token)
     }
     // #endif
 
