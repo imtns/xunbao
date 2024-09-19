@@ -114,7 +114,7 @@ export default {
 	arScan: (data, url = '/iclub/api/activity/htxb/arScan') => {
 		return myRequest(data, url, 'POST', false, 1)
 	},
-	//预语音识别接口
+	//预AR扫码接口
 	preArScan: (data, url = '/iclub/api/activity/htxb/preArScan') => {
 		return myRequest(data, url, 'POST', false, 0)
 	},

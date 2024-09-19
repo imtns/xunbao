@@ -48,7 +48,7 @@
 					</view>
 					<view class="card31 tc"
 						v-else-if="list[0].num > 0 && list[1].num > 0 && list[2].num > 0 && list[3].num > 0"
-						@click="compound">
+						@click="$u.throttle(compound, 2000)">
 						<image :src="`${ASSETSURL}card/card61.png`"></image>
 					</view>
 					<view v-else>
@@ -105,9 +105,9 @@
 				<view class="compound1">
 					<view class="compound11 tc">
 						<!-- <image :src="list3[dq_src]" style="width: 450rpx;height: 674rpx;"></image> -->
-						<view class="bgGx" v-if="bgGxShow">
+						<!-- <view class="bgGx" v-if="bgGxShow">
 							<sequenceEffect ref="bgGx" :sequenceList="bgGx2"></sequenceEffect>
-						</view>
+						</view> -->
 						<!-- 卡片翻转动画 -->
 						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;"
 							v-show="dq_src == '2'">
@@ -148,9 +148,9 @@
 					<view class="compound14">
 						恭喜你获得集卡奖励，集卡套数排行榜前3名即可获得最高奖励——<text>宝藏金条项链</text>，快去集卡合成冲榜吧！
 					</view>
-					<!-- <view class="compound15" @click="show = false,htxb_myCard()">
+					<view class="compound15" @click="show = false,htxb_myCard()">
 						<image :src="`${ASSETSURL}card/compound5.png`" mode="widthFix"></image>
-					</view> -->
+					</view>
 
 				</view>
 			</view>
@@ -163,6 +163,7 @@
 				</view>
 			</view>
 		</u-popup>
+		<!-- 合成效果序列 -->
 		<view class="bgGxBgGxShowFect" v-show="bgGxShowFect">
 			<sequenceEffect ref="bgGx" :sequenceList="bgGx2"></sequenceEffect>
 		</view>
@@ -373,12 +374,14 @@
 								this.show = true
 								this.compound1 = 1
 								this.bgGxShowFect = false
+								console.log( 'this.compound1 = 1');
 							})
 						} else {
 							this.$refs.bgGx.play(46).then(() => {
 								this.show = true
-								this.show = true
 								this.compound1 = 0
+								this.bgGxShowFect = false
+								console.log( 'this.compound1 = 0');
 							})
 						}
 						this.htxb_myCard()
@@ -399,7 +402,6 @@
 			// 查询我的卡片
 			htxb_myCard() {
 				console.log("查询我的卡片3")
-
 				api.htxb_myCard().then((res) => {
 						console.log(res.data, '查询我的卡片');
 						this.show = false
