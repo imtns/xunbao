@@ -41,20 +41,7 @@
             // }
           }
         },
-        {
-          "path": "xunbao/pages-list/auth/auth",
-          "style": {
-            "navigationBarTitleText": "用户授权",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
-          "path": "xunbao/pages-list/open-pdf/open-pdf",
-          "style": {
-            "navigationBarTitleText": "预览pdf",
-            "enablePullDownRefresh": false
-          }
-        },
+
         {
           "path": "xunbao/pages-list/poster/poster",
           "style": {
@@ -70,12 +57,7 @@
             "enablePullDownRefresh": false
           }
         },
-        {
-          "path": "xunbao/pages-list/ai",
-          "style": {
-            "navigationBarTitleText": "aa"
-          }
-        },
+
         {
           "path": "xunbao/pages-list/card/card",
           "style": {
