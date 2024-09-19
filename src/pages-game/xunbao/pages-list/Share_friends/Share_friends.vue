@@ -147,7 +147,7 @@
 			},
 			//跳转首页
 			getHome() {
-				tool.jump_red('/pages/index/index')
+				tool.jump_red('/pages-game/xunbao/index')
 			},
 			//核销分享code
 			getJoinActivity(code) {
