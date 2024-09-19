@@ -31,11 +31,11 @@
 						<image :src="`${ASSETSURL}card/card3.png`"></image>
 					</view>
 					<view class="card22 le">
-						<view class="add221" v-show="!list[current].id">
+						<!-- <view class="add221" v-show="!list[current].id">
 							<view class="add2211"></view>
-						</view>
-						<u-swiper bgColor="transparent" imgMode="aspectFit" :autoplay='false' :current='current'
-							:list="list3" height="337" style="width: 100%;" @change="swiper">
+						</view> -->
+						<u-swiper radius="16" bgColor="transparent" imgMode="aspectFit" :autoplay='false'
+							:current='current' :list="list3" height="337" style="width: 100%;" @change="swiper">
 						</u-swiper>
 					</view>
 					<view class="card23 ri" @click="xyz" :style="{'opacity' : current == 0 ? '0.5' : ''}">
@@ -156,9 +156,9 @@
 				</view>
 			</view>
 			<!-- 卡片不足 -->
-			<view class="compound_ceng" v-show="compound1 == 2" >
+			<view class="compound_ceng" v-show="compound1 == 2">
 				<view class="compound1">
-					<view class="compound16" >
+					<view class="compound16">
 						<image :src="`${ASSETSURL}card/compound6.png`" mode="widthFix"></image>
 					</view>
 				</view>
@@ -169,7 +169,6 @@
 </template>
 
 <script>
-	
 	import api from '@/pages-game/xunbao/api/api'
 	import tool from '@/pages-game/xunbao/js/tool'
 	import store from '@/store';
@@ -216,6 +215,12 @@
 						img: 'https://cdn.vrupup.com/s/116/ka_3.png',
 					}
 
+				],
+				list3s: [
+					['https://cdn.vrupup.com/s/116/ka_1.png', 'https://cdn.vrupup.com/s/116/ka_1s.png'],
+					['https://cdn.vrupup.com/s/116/ka_2.png', 'https://cdn.vrupup.com/s/116/ka_2s.png'],
+					['https://cdn.vrupup.com/s/116/ka_4.png', 'https://cdn.vrupup.com/s/116/ka_4s.png'],
+					['https://cdn.vrupup.com/s/116/ka_3.png', 'https://cdn.vrupup.com/s/116/ka_3s.png'],
 				],
 				list3: [
 					'https://cdn.vrupup.com/s/116/ka_1.png',
@@ -302,6 +307,12 @@
 			// 赠卡
 			zegnka() {
 				// somePageViewEvent() 全局埋点 
+				api.htxb_giveCard({
+					cardType: this.list[this.dq_src].type
+				}).then((res) => {
+					store.commit('storeShareCode1', res.data.operateCode)
+					console.log(store.state.shareCode1, '-------shareCode1-------');
+				})
 			},
 			// 赠送卡片
 			dq_src_sq(e, ee) {
@@ -311,12 +322,6 @@
 				this.compound1 = 3
 				this.dq_src = e
 				this.play2()
-				api.htxb_giveCard({
-					cardType: this.list[this.dq_src].type
-				}).then((res) => {
-					store.commit('storeShareCode1', res.data.operateCode)
-					console.log(store.state.shareCode1, '-------shareCode1-------');
-				})
 			},
 			compound1_sq() {
 				this.show = true
@@ -368,6 +373,9 @@
 									this.list[0].hqu = 0
 									this.list3[0] = 'https://cdn.vrupup.com/s/116/img/qs1.png'
 								}
+							} else {
+								this.list[0].hqu = 0
+								this.list3[0] = 'https://cdn.vrupup.com/s/116/img/qs1.png'
 							}
 							if (res.data.card[i].cardType == 'yy_card') {
 								this.list[1].id = res.data.card[i].cardCount
@@ -377,6 +385,9 @@
 									this.list[1].hqu = 0
 									this.list3[1] = 'https://cdn.vrupup.com/s/116/img/yy1.png'
 								}
+							} else {
+								this.list[1].hqu = 0
+								this.list3[1] = 'https://cdn.vrupup.com/s/116/img/yy1.png'
 							}
 							if (res.data.card[i].cardType == 'bd_card') {
 								this.list[2].id = res.data.card[i].cardCount
@@ -386,6 +397,9 @@
 									this.list[2].hqu = 0
 									this.list3[2] = 'https://cdn.vrupup.com/s/116/img/bd1.png'
 								}
+							} else {
+								this.list[2].hqu = 0
+								this.list3[2] = 'https://cdn.vrupup.com/s/116/img/bd1.png'
 							}
 							if (res.data.card[i].cardType == 'xjb_card') {
 								this.list[3].id = res.data.card[i].cardCount
@@ -395,6 +409,9 @@
 									this.list[3].hqu = 0
 									this.list3[3] = 'https://cdn.vrupup.com/s/116/img/xjb1.png'
 								}
+							} else {
+								this.list[3].hqu = 0
+								this.list3[3] = 'https://cdn.vrupup.com/s/116/img/xjb1.png'
 							}
 						}
 
@@ -713,6 +730,7 @@
 				margin-top: 50rpx;
 				position: relative;
 				z-index: 555;
+
 				.compound121 {
 					image {
 						width: 273rpx;

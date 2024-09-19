@@ -16,8 +16,7 @@
 			</view>
 			<view class="advertising2">
 				<view class="advertising21">
-					<!-- @play="add" -->
-					<video :src="video" :autoplay='true' :muted='false'></video>
+					<video :src="video" :autoplay='true' :muted='false' @pause="pause" @play="play"></video>
 				</view>
 				<view class="advertising22" v-show="time == 0">
 					完成
@@ -75,9 +74,8 @@
 				type: 2, //0提示  1最后一步
 				show: false,
 				video: null,
-				percentage: 1,
+				// percentage: 1,
 				triggerCode: uni.getStorageSync('triggerCode'),
-
 				// dropPrize: uni.getStorageSync('dropPrize'), //jiangli 信息
 				dropPrize: {
 					prizeName: '方法收纳盒的师傅',
@@ -104,14 +102,15 @@
 				dq_prizeImage: null, //当前奖品图片
 				dq_claas_i: 1, //当前奖品索引
 				shareCode2: null, //看完视频的code
-				isUseShare: true
+				isUseShare: true,
+				sharepro: 0, //分享进度
 			}
 		},
 		onShareAppMessage() {
 			this.shareWithFriends()
 			console.log('分享标题分享标题分享标题');
 			return {
-				title: '分享标题', 
+				title: '分享标题111',
 				path: '/pages-game/xunbao/pages-list/advertising/advertising',
 				success: function(res) {
 					// 转发成功
@@ -124,17 +123,18 @@
 			}
 		},
 		onLoad() {
-			this.add()
+			// this.play()
 			this.queryVideo()
 			wx.showShareMenu({
 				menus: ['shareAppMessage',
-				'shareTimeline'], //'shareAppMessage'打开分享好友功能 | 'shareTimeline'打开分享到朋友圈功能
+					'shareTimeline'
+				], //'shareAppMessage'打开分享好友功能 | 'shareTimeline'打开分享到朋友圈功能
 			});
 		},
-		 
+
 		//分享朋友圈
 		onShareTimeline(res) {
-			return { 
+			return {
 				title: '分享到朋友圈', //分享的标题
 				imageUrl: 'https://cdn.vrupup.com/s/116/dayAnswer/jiangp1.png', //展示的图片，这里是本地路径的写法，也可以写http或https开头的图片路径
 				query: 'from=shareTimeline', //页面打开的传参
@@ -153,7 +153,18 @@
 		onUnload() {
 			clearInterval(this.dsq)
 		},
+		
+		computed: {
+			//当前进度
+			percentage() {
+				return (15 - this.time) * 50 / 15 + this.sharepro
+			},
+		},
 		methods: {
+			//视频暂停
+			pause() {
+				clearInterval(this.dsq)
+			},
 			cs_fx() {
 				console.log('uni-app_pyq分享');
 				uni.share({
@@ -174,9 +185,9 @@
 			},
 			// 分享朋友圈
 			shareWithFriends() {
-				console.log('分享朋友圈0',this.time);
+				console.log('分享朋友圈0', this.time);
 				if (this.time > 1) return
-				console.log('分享朋友圈1',this.time);
+				console.log('分享朋友圈1', this.time);
 				api.shareWithFriends({
 						watchVideoCode: this.shareCode2
 					})
@@ -199,7 +210,9 @@
 					tool.jump_back()
 				}
 			},
-			watchVideo() {
+			//获取分享码
+			watchVideo2() {
+				console.log('获取分享码');
 				api.watchVideo({
 						triggerCode: this.triggerCode
 					})
@@ -210,10 +223,9 @@
 						// tool.alert(res.message)
 						this.shareCode2 = res.data.watchVideoCode
 						store.commit('storeShareCode2', res.data.watchVideoCode);
-
 					})
 					.catch((err) => {
-
+						console.log('获取分享码222', err);
 					});
 			},
 			//cx分享视频
@@ -222,7 +234,7 @@
 					.then((res) => {
 						console.log(res.data);
 						this.video = res.data
-						// this.add()
+						// this.play()
 					})
 					.catch((err) => {
 
@@ -235,13 +247,16 @@
 				this.show = false
 				// console.log('close');
 			},
-			add() {
+			//视频播放
+			play() {
+				let that = this
 				this.dsq = setInterval(() => {
 					this.time--
-					this.percentage = this.percentage + 6.6
-					if (this.time <= 0) {
+					// this.percentage = (15 - this.time) * 50 / 15
+					if (this.time < 0) {
+						console.log('播放结束');
+						that.watchVideo2()
 						clearInterval(this.dsq)
-						this.watchVideo()
 					}
 				}, 1000)
 			}
