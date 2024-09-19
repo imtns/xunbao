@@ -66,6 +66,7 @@
 			//序列帧播放
 			play(loop = this.sequenceLists[0].loop, sequence = "sequenceList") {
 				let _num = 1
+				this.sequenceListIndex = -1
 				clearInterval(this[sequence].autoSequence)
 				if (typeof loop == 'object') {
 					if (typeof loop[0] != 'number' || typeof loop[1] != 'number' || loop[0] >= loop[1]) {

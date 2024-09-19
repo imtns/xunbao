@@ -32,9 +32,9 @@
 						<text>x1</text>
 					</view>
 					<!-- 卡片翻转动画 -->
-					<view class="bgGx" v-if="bgGxShow">
+					<!-- <view class="bgGx" v-if="bgGxShow">
 						<sequenceEffect ref="bgGx" :sequenceList="bgGx2"></sequenceEffect>
-					</view>
+					</view> -->
 					<view class="fect" style="width: 474rpx; height: 702rpx; z-index: -1" v-show="item.card.cardType == 'bd_card'">
 						<!-- <sequenceEffect ref="showfect1" :sequenceList="starList" @loadOk="loadOk('showfect1')">
 						</sequenceEffect> -->
@@ -133,7 +133,7 @@ export default {
 				},
 				starList3: {
 					imgList: ['https://img.vrupup.com/s/116/img/zpc1.png',
-						'https://img.vrupup.com/s/116/img/xjb.png'
+						'https://img.vrupup.com/s/116/img/yy.png'
 					], //正反图片
 					speed: 1, //翻转速率，单位：s
 					borderRadius: 20, //卡牌圆角，单位：rpx
@@ -141,7 +141,7 @@ export default {
 				},
 				starList4: {
 					imgList: ['https://img.vrupup.com/s/116/img/zpc1.png',
-						'https://img.vrupup.com/s/116/img/yy.png'
+						'https://img.vrupup.com/s/116/img/xjb.png'
 					], //正反图片
 					speed: 1, //翻转速率，单位：s
 					borderRadius: 20, //卡牌圆角，单位：rpx
@@ -178,6 +178,7 @@ export default {
 			},
 			//跳转到视频页
 			advertising() {
+				this.$emit('close')
 				tool.jump_nav('/pages-game/xunbao/pages-list/advertising/advertising')
 			},
 			//随机出现一句话

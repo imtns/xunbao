@@ -8,12 +8,12 @@
 					<u-navbar class="custom-navbar" title=" " autoBack bgColor="transparent" height="88rpx" placeholder></u-navbar>
 				</view> -->
 				<view class="ranking">
-					<view class="ranking1 oh">
+					<view class="ranking1 oh flex-bet" :class="dataList.length == 0 ? '' : 'shows'" v-if="dataList.length || showRanking">
 						<view class="ranking11 le ranking11_wenzi">排名</view>
 						<view class="ranking12 le ranking11_wenzi">昵称</view>
-						<view class="ranking13 ri ranking11_wenzi">分数</view>
+						<view class="ranking13 ri ranking11_wenzi">集齐套数</view>
 					</view>
-					<view class="ranking2 oh" :class="listShow ? 'listShow' : ''">
+					<view class="ranking2 oh" :class="listShow || dataList.length == 0 ? 'listShow' : ''">
 						<view class="ranking21 oh" v-for="(item,index) in dataList">
 							<view class="ranking211 le " v-if="index == 0 || index == 1 || index == 2">
 								<image mode="widthFix" :src="`${ASSETSURL}image/ph_${index+1}.png`"></image>
@@ -27,7 +27,7 @@
 							<view class="ranking212 le">
 								<image :src="item.headUrl" lazy-load></image>
 							</view>
-							<view class="ranking213 le">{{item.nickName}}</view>
+							<view class="ranking213 ell le">{{item.nickName}}</view>
 							<view class="ranking214 ri">{{item.compositionCount}}</view>
 						</view>
 						<view v-if="dataList.length == 0" class="ranking21_1">
@@ -48,7 +48,7 @@
 							<view class="ranking212 le" v-if="dq_list.headUrl">
 								<image mode="aspectFill" :src="dq_list.headUrl"></image>
 							</view>
-							<view class="ranking213 le" v-if="dq_list.nickName">{{dq_list.nickName}}</view>
+							<view class="ranking213 ell le" v-if="dq_list.nickName">{{dq_list.nickName}}</view>
 							<view class="ranking214 ri" style="margin-right:30rpx;" v-if="dq_list.compositionCount">
 								{{dq_list.compositionCount}}</view>
 						</view>
@@ -75,6 +75,7 @@
 				},
 				dataList: [],
 				listShow: false,
+				showRanking: false
 			}
 		},
 		onShow() {
@@ -94,6 +95,7 @@
 						console.log(res.data, '查询排行榜');
 						this.dataList = []
 						this.dataList = res.data.rankList
+						if (!this.dataList.length) this.showRanking = true
 						this.dq_list = res.data.myRank
 						this.$refs.paging.complete(this.dataList)
 						setTimeout(() => {
@@ -146,9 +148,13 @@
 					box-sizing: border-box;
 					display: flex;
 					align-items: center;
-
+					opacity: 0;
+					&.shows{
+						opacity: 1;
+					}
 					.ranking12 {
-						padding: 0 199rpx;
+						// padding: 0 199rpx;
+						margin-left: 8rpx;
 					}
 
 					.ranking11_wenzi {
@@ -193,8 +199,8 @@
 						}
 
 						.ranking212 {
-							margin-left: 46rpx;
-							margin-right: 53rpx;
+							margin-left: 40rpx;
+							margin-right: 40rpx;
 
 							image {
 								width: 96rpx;
@@ -210,6 +216,7 @@
 							font-size: 25rpx;
 							color: #000000;
 							line-height: 33rpx;
+							width:200rpx;
 						}
 
 						.ranking214 {
@@ -219,7 +226,8 @@
 							font-size: 25rpx;
 							color: #000000;
 							line-height: 33rpx;
-							margin-right: 4%;
+							width: 120rpx;
+							text-align: center;
 						}
 					}
 				}

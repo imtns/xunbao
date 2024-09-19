@@ -12,7 +12,8 @@
 						<view class="imgImg">
 							<image class="img" :src="`${ASSETSURL}img/X.png`"></image>
 							<image class="img" :src="`${ASSETSURL}img/${compositionCount[0]}.png`"></image>
-							<image class="img" style="margin-left: -6rpx;" :src="`${ASSETSURL}img/${compositionCount[1]}.png`">
+							<image class="img" style="margin-left: -6rpx;"
+								:src="`${ASSETSURL}img/${compositionCount[1]}.png`">
 							</image>
 							<image class="img" v-if="compositionCount[2]" style="margin-left: -12rpx;"
 								:src="`${ASSETSURL}img/${compositionCount[2]}.png`"></image>
@@ -30,8 +31,9 @@
 						<!-- <view class="add221" v-show="!list[current].id">
 							<view class="add2211"></view>
 						</view> -->
-						<u-swiper radius="16" bgColor="transparent" imgMode="aspectFit" :autoplay='false' :current='current'
-							keyName="img" :list="list" height="337" style="width: 100%;" @change="swiper">
+						<u-swiper radius="16" bgColor="transparent" imgMode="aspectFit" :autoplay='false'
+							:current='current' keyName="img" :list="list" height="337" style="width: 100%;"
+							@change="swiper">
 						</u-swiper>
 					</view>
 					<view class="card21 le" @click="syz" :style="{'opacity' : current == 3 ? '0.5' : ''}">
@@ -39,11 +41,13 @@
 					</view>
 				</view>
 				<view class="card3">
-					<view class="card31 tc" v-if="list[0].num == 0 && list[1].id == 0 && list[2].id == 0 && list[3].id == 0"
+					<view class="card31 tc"
+						v-if="list[0].num == 0 && list[1].num == 0 && list[2].num == 0 && list[3].num == 0"
 						@click="compound1_sq">
 						<image :src="`${ASSETSURL}card/card51.png`"></image>
 					</view>
-					<view class="card31 tc" v-else-if="list[0].hqu > 0 && list[1].hqu > 0 && list[2].hqu > 0 && list[3].hqu > 0"
+					<view class="card31 tc"
+						v-else-if="list[0].num > 0 && list[1].num > 0 && list[2].num > 0 && list[3].num > 0"
 						@click="compound">
 						<image :src="`${ASSETSURL}card/card61.png`"></image>
 					</view>
@@ -61,7 +65,8 @@
 			<view class="card4">
 				<view class="card4ceng oh">
 					<!-- <u-scroll-list indicatorActiveColor="#ffb300" indicator='false'> -->
-					<view class="card41 le" v-for="(item,index) in list" :key="index" @click="dq_src_sq(index,item.id)">
+					<view class="card41 le" v-for="(item,index) in list" :key="index"
+						@click="dq_src_sq(index,item.num)">
 						<view class="card411">
 							<image :src="`${ASSETSURL}card/card6.png`"></image>
 							<text>{{item.num}}</text>
@@ -69,16 +74,16 @@
 						<view class="card412">
 							<image :src="item.img"></image>
 						</view>
-						<!-- 	<view class="card413">
-							<view class="mceng" v-show="item.id == 0"></view>
+						<view class="card413">
+							<!-- <view class="mceng"></view> -->
 							<image :src="`${ASSETSURL}card/card8${index}.png`"></image>
-						</view> -->
+						</view>
 					</view>
 					<!-- </u-scroll-list> -->
 				</view>
 			</view>
 		</view>
-		<u-popup :show="show" mode="center" @close="show = false" @open="open" :overlayOpacity='0.8'>
+		<u-popup :show="show" mode="center" @close="show = false" :overlayOpacity='0.8'>
 			<!-- 我的奖品 -->
 			<view class="compound_ceng" v-show="compound1 == 1">
 				<view class="compound1">
@@ -104,17 +109,21 @@
 							<sequenceEffect ref="bgGx" :sequenceList="bgGx2"></sequenceEffect>
 						</view>
 						<!-- 卡片翻转动画 -->
-						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;" v-show="dq_src == '2'">
+						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;"
+							v-show="dq_src == '2'">
 							<card-flip ref="showfect2" :option="starList"></card-flip>
 						</view>
-						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;" v-show="dq_src == '0'">
+						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;"
+							v-show="dq_src == '0'">
 
 							<card-flip ref="showfect0" :option="starList2"></card-flip>
 						</view>
-						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;" v-show="dq_src == '1'">
+						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;"
+							v-show="dq_src == '1'">
 							<card-flip ref="showfect1" :option="starList3"></card-flip>
 						</view>
-						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;" v-show="dq_src == '3'">
+						<view class="compound11ffect" style="width: 474rpx;height: 702rpx; z-index: 11;"
+							v-show="dq_src == '3'">
 							<card-flip ref="showfect3" :option="starList4"></card-flip>
 						</view>
 					</view>
@@ -154,7 +163,9 @@
 				</view>
 			</view>
 		</u-popup>
-
+		<view class="bgGxBgGxShowFect" v-show="bgGxShowFect">
+			<sequenceEffect ref="bgGx" :sequenceList="bgGx2"></sequenceEffect>
+		</view>
 	</view>
 </template>
 
@@ -163,13 +174,20 @@
 	import tool from '@/pages-game/xunbao/js/tool'
 	import store from '@/store';
 	import cardFlip from '@/pages-game/xunbao/components/card-flip/card-flip.vue';
-	import { reportClickEvent, reportExposeEvent } from '@/utils/report/report'
+	import sequenceEffect from '@/pages-game/xunbao/components/sequenceEffect/sequenceEffect';
+	import {
+		reportClickEvent,
+		reportExposeEvent
+	} from '@/utils/report/report'
 	export default {
 		components: {
-			cardFlip
+			cardFlip,
+			sequenceEffect
 		},
 		data() {
 			return {
+				bgGxShowFect: false, //展示合成弹窗效果
+				resetShow: true, //强制刷新变量
 				bgGxShow: false,
 				show: false,
 				current: 0, //当前轮播图下标
@@ -204,6 +222,7 @@
 						name: '百搭宝藏卡',
 						img1: 'https://cdn.vrupup.com/s/116/ka_4.png',
 						img: 'https://cdn.vrupup.com/s/116/img/bd2.png',
+						img2: 'https://cdn.vrupup.com/s/116/img/bd2.png',
 						num: 0,
 					},
 					{
@@ -271,6 +290,14 @@
 					autoplay: true,
 				},
 				_kpTypeIndex: null,
+				bgGx2: {
+					url: `https://cdn.vrupup.com/s/116/heCen/1.png`,
+					num: 46,
+					initIndex: 1,
+					speed: 68,
+					loop: false,
+					autoplay: false
+				},
 			}
 		},
 		onShow() {
@@ -293,10 +320,8 @@
 			play2() {
 				this.bgGxShow = true
 				let _kpType = ['', 'bd_card', 'qs_card', 'yy_card', 'xjb_card']
-				console.log(this.dq_src, '[[[[[[[[[]]]]]]]]]');
 				this._kpTypeIndex = parseInt(this.dq_src)
 				setTimeout(() => {
-					console.log(this.$refs[`showfect${this.dq_src}`], '-----------------');
 					this.$refs[`showfect${this.dq_src}`].play()
 				}, 300)
 			},
@@ -309,12 +334,18 @@
 			// 赠卡
 			zegnka() {
 				// somePageViewEvent() 全局埋点 
-				reportClickEvent({ activityName: '卡片赠送', actionRank: 0, activityId: 'game_xunbao_card_click_give', activityContent: {name:this.list[this.dq_src].name} })
+				reportClickEvent({
+					activityName: '卡片赠送',
+					actionRank: 0,
+					activityId: 'game_xunbao_card_click_give',
+					activityContent: {
+						name: this.list[this.dq_src].name
+					}
+				})
 				api.htxb_giveCard({
 					cardType: this.list[this.dq_src].type
 				}).then((res) => {
 					store.commit('storeShareCode1', res.data.operateCode)
-					console.log(store.state.shareCode1, '-------shareCode1-------');
 					this.htxb_myCard()
 				})
 			},
@@ -331,18 +362,26 @@
 				this.show = true
 				this.compound1 = 2
 			},
+			//合成卡片
 			compound() {
 				api.mergeCard()
 					.then((res) => {
 						console.log(res.data, '合成');
+						this.bgGxShowFect = true
 						if (res.data.first) {
-							this.show = true
-							this.compound1 = 1
-
+							this.$refs.bgGx.play(46).then(() => {
+								this.show = true
+								this.compound1 = 1
+								this.bgGxShowFect = false
+							})
 						} else {
-							this.show = true
-							this.compound1 = 0
+							this.$refs.bgGx.play(46).then(() => {
+								this.show = true
+								this.show = true
+								this.compound1 = 0
+							})
 						}
+						this.htxb_myCard()
 					})
 					.catch((err) => {
 
@@ -360,6 +399,7 @@
 			// 查询我的卡片
 			htxb_myCard() {
 				console.log("查询我的卡片3")
+
 				api.htxb_myCard().then((res) => {
 						console.log(res.data, '查询我的卡片');
 						this.show = false
@@ -370,7 +410,7 @@
 									item.num = item1.cardCount
 									if (item1.cardCount > 0) {
 										item.img = item.img1
-									}else{
+									} else {
 										item.img = item.img2
 									}
 								}
@@ -378,7 +418,7 @@
 						})
 						console.log(this.list, 'this.listthis.listthis.list2')
 						this.compositionCount = res.data.compositionCount.toString().split("")
-						 window.location.reload();
+
 					})
 					.catch((err) => {});
 			},
@@ -416,6 +456,11 @@
 	@import '@/pages-game/xunbao/css/base.css';
 </style>
 <style scoped lang="scss">
+	.bgGxBgGxShowFect {
+		width: 100vw;
+		height: 100vh;
+	}
+
 	.card {
 		padding-top: 0rpx;
 		background: #fea500;
@@ -424,7 +469,7 @@
 
 		.mceng {
 			position: absolute;
-			background: #000000;
+			// background: #000000;
 			width: 144rpx;
 			height: 76%;
 			top: 30rpx;
