@@ -14,6 +14,8 @@ const store = new Vuex.Store({
 		shareCode1: '',
 		//视频分享
 		shareCode2: '',
+		//分享喜悦
+		shareCode3: '',
 	},
 	mutations: {
 		//设置用户信息
@@ -31,6 +33,10 @@ const store = new Vuex.Store({
 		//视频分享
 		storeShareCode2(state, params) {
 			state.shareCode2 = params
+		},
+		//分享喜悦
+		storeShareCode3(state, params) {
+			state.shareCode3 = params
 		}
 	}
 })

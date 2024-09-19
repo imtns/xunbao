@@ -1,149 +1,150 @@
 {
-  "pages": [
-    {
-      "path": "pages/index"
-    }
-  ],
-  "subPackages": [
-    {
-      "root": "pages-sub",
-      "pages": [
-        {
-          "path": "login/index",
-          "style": {
-            "navigationStyle": "custom",
-            "mp-weixin": {
-              "usingComponents": {
-                "loginform": "plugin://myPlugin/loginform"
-              }
-            }
-          }
-        }
-      ],
-      "plugins": {
-        "myPlugin": {
-          "version": "1.0.14",
-          "provider": "wx49ba8c2e81bce02f"
-        }
-      }
-    },
-    {
-      "root": "pages-game",
-      "pages": [
-        {
-          "path": "xunbao/index",
-          "style": {
-            "navigationBarTitleText": "首页",
-            // "navigationStyle": "custom",
-            "backgroundColor": "#febd01"
-            // "app-plus": {
-            // 	"titleNView": false
-            // }
-          }
-        },
+	"pages": [{
+		"path": "pages/index"
+	}],
+	"subPackages": [{
+			"root": "pages-sub",
+			"pages": [{
+				"path": "login/index",
+				"style": {
+					"navigationStyle": "custom",
+					"mp-weixin": {
+						"usingComponents": {
+							"loginform": "plugin://myPlugin/loginform"
+						}
+					}
+				}
+			}],
+			"plugins": {
+				"myPlugin": {
+					"version": "1.0.14",
+					"provider": "wx49ba8c2e81bce02f"
+				}
+			}
+		},
+		{
+			"root": "pages-game",
+			"pages": [{
+					"path": "xunbao/index",
+					"style": {
+						"navigationBarTitleText": "首页",
+						// "navigationStyle": "custom",
+						"backgroundColor": "#febd01"
+						// "app-plus": {
+						// 	"titleNView": false
+						// }
+					}
+				},
 
-        {
-          "path": "xunbao/pages-list/poster/poster",
-          "style": {
-            "navigationBarTitleText": "",
-            "enablePullDownRefresh": false
-          }
-        },
+				{
+					"path": "xunbao/pages-list/poster/poster",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
 
-        {
-          "path": "xunbao/pages-list/award/award",
-          "style": {
-            "navigationBarTitleText": "我的奖励",
-            "enablePullDownRefresh": false
-			
-          }
-        },
+				{
+					"path": "xunbao/pages-list/award/award",
+					"style": {
+						"navigationBarTitleText": "我的奖励",
+						"enablePullDownRefresh": false
 
-        {
-          "path": "xunbao/pages-list/card/card",
-          "style": {
-            "navigationBarTitleText": "我的卡片",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
-          "path": "xunbao/pages-list/dayAnswer/dayAnswer",
-          "style": {
-            "navigationBarTitleText": "每日答题",
-            "app-plus": {
-              "titleNView": false
-            }
-          }
-        },
-        {
-          "path": "xunbao/pages-list/ranking_list/ranking_list",
-          "style": {
-            "navigationBarTitleText": "排行榜",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
-          "path": "xunbao/pages-list/Share_friends/Share_friends",
-          "style": {
-            "navigationStyle": "custom",
-            "app-plus": {
-              "titleNView": false
-            }
-          }
-        },
-        {
-          "path": "xunbao/pages-list/codes/codes",
-          "style": {
-            "navigationBarTitleText": "AR扫码",
-            "app-plus": {
-              "titleNView": false
-            }
-          }
-        },
-        {
-          "path": "xunbao/pages-list/advertising/advertising",
-          "style": {
-			  "navigationBarTitleText": "观看视频",
-			  "navigationStyle": "custom"
-          }
-        }
-      ]
-      //   "plugins": {
-      //     "wxparserPlugin": {
-      //       "version": "0.3.0",
-      //       "provider": "wx9d4d4ffa781ff3ac"
-      //     }
-      //   }
-    }
-  ],
-  "preloadRule": {},
-  "sitemapLocation": "sitemap.json",
-  "easycom": {
-    "autoscan": true,
-    "custom": {
-      "^ik-(.*)": "@/components/common/$1.vue",
-      "^global-(.*)": "@/components/global/$1.vue",
-      "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue",
-      "^dy-(.*)": "@/pages-game/xunbao/components/dy-$1.vue"
-    }
-  },
-  "globalStyle": {
-    "pageOrientation": "portrait",
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTitleText": "IMEIK 爱+",
-    "navigationBarTextStyle": "black",
-    "usingComponents": {
-      "t-captcha": "plugin://captcha/t-captcha"
-    }
-  },
-  "insetLoader": {
-    "config": {
-      "toast": "<x-toast ref='toast'></x-toast>",
-      "captcha": "<global-captcha ref='captcha'></global-captcha>",
-      "privacyPopup": "<global-privacy-popup ref='privacyComponent'></global-privacy-popup>"
-    },
-    "label": ["login", "captcha", "privacyPopup", "toast"],
-    "rootEle": ".*"
-  }
+					}
+				},
+				{
+					"path": "xunbao/pages-list/Share_friends/Share_friends",
+					"style": {
+						"navigationBarTitleText": "好友分享",
+						"enablePullDownRefresh": false
+
+					}
+				},
+				{
+					"path": "xunbao/pages-list/card/card",
+					"style": {
+						"navigationBarTitleText": "我的卡片",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "xunbao/pages-list/dayAnswer/dayAnswer",
+					"style": {
+						"navigationBarTitleText": "每日答题",
+						"app-plus": {
+							"titleNView": false
+						}
+					}
+				},
+				{
+					"path": "xunbao/pages-list/ranking_list/ranking_list",
+					"style": {
+						"navigationBarTitleText": "排行榜",
+						"enablePullDownRefresh": false
+					}
+				},
+				// {
+				// 	"path": "xunbao/pages-list/Share_friends/Share_friends",
+				// 	"style": {
+				// 		"navigationStyle": "custom",
+				// 		"app-plus": {
+				// 			"titleNView": false
+				// 		}
+				// 	}
+				// },
+				{
+					"path": "xunbao/pages-list/codes/codes",
+					"style": {
+						"navigationBarTitleText": "AR扫码",
+						"app-plus": {
+							"titleNView": false
+						}
+					}
+				},
+				{
+					"path": "xunbao/pages-list/advertising/advertising",
+					"style": {
+						"navigationBarTitleText": "观看视频",
+						"navigationStyle": "custom"
+					}
+				}
+			]
+			//   "plugins": {
+			//     "wxparserPlugin": {
+			//       "version": "0.3.0",
+			//       "provider": "wx9d4d4ffa781ff3ac"
+			//     }
+			//   }
+		}
+	],
+	"preloadRule": {},
+	"sitemapLocation": "sitemap.json",
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"^ik-(.*)": "@/components/common/$1.vue",
+			"^global-(.*)": "@/components/global/$1.vue",
+			"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue",
+			"^dy-(.*)": "@/pages-game/xunbao/components/dy-$1.vue"
+		}
+	},
+	"globalStyle": {
+		"pageOrientation": "portrait",
+		"backgroundTextStyle": "light",
+		"navigationBarBackgroundColor": "#ffffff",
+		"navigationBarTitleText": "IMEIK 爱+",
+		"navigationBarTextStyle": "black",
+		"usingComponents": {
+			"t-captcha": "plugin://captcha/t-captcha"
+		}
+	},
+	"insetLoader": {
+		"config": {
+			"toast": "<x-toast ref='toast'></x-toast>",
+			"captcha": "<global-captcha ref='captcha'></global-captcha>",
+			"privacyPopup": "<global-privacy-popup ref='privacyComponent'></global-privacy-popup>"
+		},
+		"label": ["login", "captcha", "privacyPopup", "toast"],
+		"rootEle": ".*"
+	}
 }

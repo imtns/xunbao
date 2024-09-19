@@ -7,11 +7,12 @@ function getShareInfo() {
 		const shareCode = store.state.shareCode
 		const shareCode1 = store.state.shareCode1
 		const shareCode2 = store.state.shareCode2
-		console.log(store.state,'分享中转',shareCode,shareCode1);
+		const shareCode3 = store.state.shareCode3
+		console.log(store.state, '分享中转', shareCode, shareCode1);
 		if (shareCode) {
 			return {
 				title: `参与活动`,
-				path: `pages/pages-list/Share_friends/Share_friends?shareCode=${shareCode}`,
+				path: `pages-game/xunbao/pages-list/Share_friends/Share_friends?shareCode=${shareCode}`,
 				imageUrl: 'https://img.vrupup.com/web/cdn/szq/other/share_01.jpg'
 			}
 		}
@@ -25,7 +26,14 @@ function getShareInfo() {
 		if (shareCode2) {
 			return {
 				title: `分享视频`,
-				path: `pages/pages-list/Share_friends/Share_friends?shareCode1=${shareCode2}`,
+				path: `pages/pages-list/Share_friends/Share_friends?shareCode2=${shareCode2}`,
+				imageUrl: 'https://img.vrupup.com/web/cdn/szq/other/share_01.jpg'
+			}
+		}
+		if (shareCode3) {
+			return {
+				title: `分享喜悦`,
+				path: `pages-game/xunbao/index?shareCode3=${shareCode3}`,
 				imageUrl: 'https://img.vrupup.com/web/cdn/szq/other/share_01.jpg'
 			}
 		}

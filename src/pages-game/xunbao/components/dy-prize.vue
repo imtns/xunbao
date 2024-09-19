@@ -88,6 +88,7 @@ import api from '@/pages-game/xunbao/api/api'
 	import sequenceEffect from '@/pages-game/xunbao/components/sequenceEffect/sequenceEffect.vue'
 	import tool from '@/pages-game/xunbao/js/tool'
 import { reportClickEvent, reportExposeEvent } from '@/utils/report/report'
+import store from '@/store/index.js'
 export default {
 	name: 'dy-prize',
 	components: {
@@ -230,8 +231,9 @@ export default {
 			myshare() {
 				api.shareActivity().then((res) => {
 					if (res.code == 200) {
-						this.$store.commit('storeShareCode', res.data.shareCode)
-						console.log(this.$store.state.shareCode, '-------shareCode-------')
+						console.log(res,'resres分享喜悦resres');
+						store.commit('storeShareCode3', res.data.shareCode)
+						console.log(store.state.shareCode3, '-------storeShareCode3-------')
 					}
 				})
 			},
