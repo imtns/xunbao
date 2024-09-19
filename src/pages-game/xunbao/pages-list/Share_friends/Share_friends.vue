@@ -143,7 +143,6 @@ export default {
 			api.htxb_acceptCard({
 				operateCode: this.operateCode
 			}).then((res) => {
-				reportClickEvent({ activityName: '收下卡片', actionRank: 0, activityId: 'game_xunbao_card_click_get', activityContent: { name: this.type } })
 				console.log(res, '-------------')
 				tool.alert(res.message)
 				if ((res.code = 200)) {
@@ -153,6 +152,7 @@ export default {
 		},
 		//跳转首页
 		getHome() {
+			reportClickEvent({ activityName: '参与活动', actionRank: 0, activityId: 'game_xunbao_share_click_getHome', activityContent:  {} } )
 			tool.jump_red('/pages-game/xunbao/index')
 		},
 		//核销分享code
@@ -166,8 +166,10 @@ export default {
 					let include = res.message.includes('不是新用户')
 					if (include) {
 						this.Share_type = 3
+					reportClickEvent({ activityName: '好友主力失败', actionRank: 0, activityId: 'game_xunbao_share_click_error', activityContent: {shareCode: code} })
 					} else {
 						this.Share_type = 1
+						reportClickEvent({ activityName: '好友主力成功', actionRank: 0, activityId: 'game_xunbao_share_click_success', activityContent:  {shareCode: code} })
 					}
 				}
 			})

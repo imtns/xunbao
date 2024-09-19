@@ -112,7 +112,7 @@ export default {
 						})
 							.then((res1) => {
 								reportClickEvent({
-									activityName: '点击AR拍照',
+									activityName: 'AR识别接口',
 									actionRank: 0,
 									activityId: 'game_xunbao_AR_click_tell',
 									activityContent: {
