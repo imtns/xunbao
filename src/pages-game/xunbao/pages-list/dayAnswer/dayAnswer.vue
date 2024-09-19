@@ -36,6 +36,7 @@
 	import api from '@/pages-game/xunbao/api/api.js'
 	import tool from '@/pages-game/xunbao/js/tool.js'
 	import dyPrize from '@/pages-game/xunbao/components/dy-prize.vue'
+	import { reportClickEvent, reportExposeEvent } from '@/utils/report/report'
 	export default {
 		components: {
 			dyPrize,
@@ -84,11 +85,13 @@
 				} = await api.submitQuestion({
 					...dataJson
 				})
+				reportClickEvent({ activityName: '完成每日问答任务', actionRank: 0, activityId: 'game_xunbao_answer_click_sub', activityContent: dataJson })
 				this.dq_cw = 1
 				for (var i = 0; i < this.detail.optionJson.length; i++) {
 					console.log(data, this.detail.optionJson[i], data.correctAnswern, this.cur, 'data56')
 					if (data.answerResult == 'success') {
 						console.log(i, '777')
+						reportClickEvent({ activityName: '回答正确', actionRank: 0, activityId: 'game_xunbao_answer_click_success', activityContent: dataJson })
 						this.dq_zq = this.cur
 						// settimeout(() => {
 						// 	tool.jump_back(); 
@@ -107,9 +110,9 @@
 					return
 				} else {}
 				this.prizeDetail = data
-				// if (res1.data.prizeType == 'kapian') {
-				// 	// someClickEvent()  全局埋点
-				// }
+				if (data.prizeType != 'kong') {
+					reportClickEvent({ activityName: '答题获得奖励', actionRank: 0, activityId: 'game_xunbao_answer_click_prize', activityContent: data })
+				}
 				this.showPrize = true
 				this.$nextTick(() => {
 					if (data.prizeType == 'kapian') {

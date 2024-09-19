@@ -303,6 +303,7 @@
 <script>
 	import api from '@/pages-game/xunbao/api/api'
 	import tool from '@/pages-game/xunbao/js/tool'
+	import { reportClickEvent, reportExposeEvent } from '@/utils/report/report'
 	export default {
 		data() {
 			return {
@@ -420,6 +421,7 @@
 					console.log(res, '===保存地址信息=======');
 					if (res.code == 200) {
 						tool.alert('提交成功')
+						reportClickEvent({ activityName: '完成留资', actionRank: 0, activityId: 'game_xunbao_prize_click_leave', activityContent: {} })
 						this.show = false
 						this.queryList()
 						// somePageViewEvent() 全局埋点 

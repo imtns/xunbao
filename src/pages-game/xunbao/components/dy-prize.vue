@@ -1,11 +1,9 @@
 <template>
 	<view>
-		<u-popup :show="show" @click="close" mode="center" :safeAreaInsetBottom="false" bgColor="transparent"
-			@close="close" :overlayOpacity="0.8" :closeOnClickOverlay="true">
+		<u-popup :show="show" @click="close" mode="center" :safeAreaInsetBottom="false" bgColor="transparent" @close="close" :overlayOpacity="0.8" :closeOnClickOverlay="true">
 			<view class="prizeBox">
 				<!-- kong -->
-				<view class="noPrize" v-if="item.prizeType == 'kong' && seus == 1"
-					style="margin-right: 40rpx; margin-top: -200rpx">
+				<view class="noPrize" v-if="item.prizeType == 'kong' && seus == 1" style="margin-right: 40rpx; margin-top: -200rpx">
 					<u-image :src="ASSETSURL + 'img/nothing.png'" width="459rpx" height="437rpx"></u-image>
 					<view class="nothingText">
 						{{ getRandomSentence() }}
@@ -37,31 +35,25 @@
 					<view class="bgGx" v-if="bgGxShow">
 						<sequenceEffect ref="bgGx" :sequenceList="bgGx2"></sequenceEffect>
 					</view>
-					<view class="fect" style="width: 474rpx; height: 702rpx; z-index: -1"
-						v-show="item.card.cardType == 'bd_card'">
+					<view class="fect" style="width: 474rpx; height: 702rpx; z-index: -1" v-show="item.card.cardType == 'bd_card'">
 						<!-- <sequenceEffect ref="showfect1" :sequenceList="starList" @loadOk="loadOk('showfect1')">
 						</sequenceEffect> -->
 						<card-flip ref="showfect1" :option="starList"></card-flip>
 					</view>
-					<view class="fect" style="width: 474rpx; height: 702rpx; z-index: -1"
-						v-show="item.card.cardType == 'qs_card'">
+					<view class="fect" style="width: 474rpx; height: 702rpx; z-index: -1" v-show="item.card.cardType == 'qs_card'">
 						<card-flip ref="showfect2" :option="starList2"></card-flip>
 					</view>
-					<view class="fect" style="width: 474rpx; height: 702rpx; z-index: -1"
-						v-show="item.card.cardType == 'yy_card'">
+					<view class="fect" style="width: 474rpx; height: 702rpx; z-index: -1" v-show="item.card.cardType == 'yy_card'">
 						<card-flip ref="showfect3" :option="starList3"></card-flip>
 					</view>
-					<view class="fect" style="width: 474rpx; height: 702rpx; z-index: -1"
-						v-show="item.card.cardType == 'xjb_card'">
+					<view class="fect" style="width: 474rpx; height: 702rpx; z-index: -1" v-show="item.card.cardType == 'xjb_card'">
 						<card-flip ref="showfect4" :option="starList4"></card-flip>
 					</view>
 					<view class="btnBox flex-bet">
 						<!-- 再来一次 -->
-						<image v-if="(item.canTimes && item.canTimes > 0) || itemcard" :src="ASSETSURL + 'img/zlyc.png'"
-							@click="getZlyq"> </image>
+						<image v-if="(item.canTimes && item.canTimes > 0) || itemcard" :src="ASSETSURL + 'img/zlyc.png'" @click="getZlyq"> </image>
 						<image v-else :src="ASSETSURL + 'back.png'" @click="back"></image>
-						<button type="primary" open-type="share" @click="getShare"
-							style="background: none; border: none; border-radius: 0; line-height: 0">
+						<button type="primary" open-type="share" @click="getShare" style="background: none; border: none; border-radius: 0; line-height: 0">
 							<image :src="ASSETSURL + 'share.png'"></image>
 						</button>
 					</view>
@@ -71,8 +63,7 @@
 					<view class="bgGx">
 						<sequenceEffect ref="bgGx" :sequenceList="bgGx2"></sequenceEffect>
 					</view>
-					<image class="img" :src="ASSETSURL + 'img/diaoLuoJiangLI.png'" mode="aspectFit"
-						@click="advertising"></image>
+					<image class="img" :src="ASSETSURL + 'img/diaoLuoJiangLI.png'" mode="aspectFit" @click="advertising"></image>
 					<view class="xcolone" @click="close">
 						<image :src="ASSETSURL + 'img/Xclone.png'"></image>
 					</view>
@@ -92,16 +83,18 @@
 </template>
 
 <script>
-	import api from '@/pages-game/xunbao/api/api'
+import api from '@/pages-game/xunbao/api/api'
 	import cardFlip from '@/pages-game/xunbao/components/card-flip/card-flip.vue'
 	import sequenceEffect from '@/pages-game/xunbao/components/sequenceEffect/sequenceEffect.vue'
 	import tool from '@/pages-game/xunbao/js/tool'
-	export default {
-		name: 'dy-prize',
-		components: {
-			cardFlip,
-			sequenceEffect
-		},
+import { reportClickEvent, reportExposeEvent } from '@/utils/report/report'
+export default {
+	name: 'dy-prize',
+	components: {
+		cardFlip,
+		sequenceEffect
+	},
+
 		props: {
 			seus: {
 				String,
@@ -119,7 +112,6 @@
 				}
 			}
 		},
-		mounted() {},
 		data() {
 			return {
 				bgGxShow: false,
@@ -167,6 +159,23 @@
 			}
 		},
 		methods: {
+			//分享 埋点
+				getShare() {
+					reportClickEvent({ activityName: '分享喜悦', actionRank: 0, activityId: 'game_xunbao_prize_click_share', activityContent: this.item })
+					// someClickEvent()  全局埋点
+				},
+			back() {
+				console.log('fhui')
+				if (this.item.card) {
+					this.item.card.cardType = -1
+				}
+				this.resetKpType()
+				this.$emit('close')
+				var pages = getCurrentPages()
+				let Page = pages[pages.length - 1] //当前页
+				console.log(Page, '当前页面路径')
+				if (Page.route != 'pages-game/xunbao/index') uni.navigateBack()
+			},
 			//跳转到视频页
 			advertising() {
 				tool.jump_nav('/pages-game/xunbao/pages-list/advertising/advertising')
@@ -225,23 +234,8 @@
 					}
 				})
 			},
-			//分享 埋点
-			getShare() {
-				// someClickEvent()  全局埋点
-				console.log(11111, 'getShare');
-			},
-			back() {
-				console.log('fhui')
-				if (this.item.card) {
-					this.item.card.cardType = -1
-				}
-				this.resetKpType()
-				this.$emit('close')
-				var pages = getCurrentPages()
-				let Page = pages[pages.length - 1] //当前页
-				console.log(Page, '当前页面路径')
-				if (Page.route != 'pages-game/xunbao/index') uni.navigateBack()
-			},
+			
+		
 			close() {
 				// this.show = false
 				if (this.item.card) {
@@ -266,115 +260,115 @@
 </script>
 
 <style lang="scss" scoped>
-	.fect ::v-deep .currency {
-		top: 54% !important;
+.fect ::v-deep .currency {
+	top: 54% !important;
+}
+
+.bgGx {
+	z-index: -1;
+}
+
+.noPrize {
+	position: relative;
+
+	.close {
+		position: absolute;
+		top: 0;
+		right: 0;
 	}
+
+	.nothingText {
+		position: absolute;
+		left: 0%;
+		top: 0%;
+		font-size: 32rpx;
+		font-weight: 700;
+		padding: 265rpx 50rpx 100rpx 89rpx;
+		text-align: center;
+		box-sizing: border-box;
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.cardPrize {
+	width: 100vw;
+	height: 100vh;
+	margin-top: -60rpx;
+	position: relative;
+
+	.back {
+		position: absolute;
+		top: 60rpx;
+		left: 34rpx;
+	}
+
+	.title {
+		font-weight: bold;
+		font-size: 38rpx;
+		color: #ffffff;
+		// margin-bottom: 28rpx;
+		position: absolute;
+		top: 16%;
+
+		text {
+			color: #fa7700;
+		}
+	}
+
+	.star {
+		width: 750rpx;
+		height: 953rpx;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: -1;
+	}
+}
+
+.flex-cen-col {
+	width: 100vw;
+	height: 100vh;
+	position: relative;
 
 	.bgGx {
 		z-index: -1;
 	}
 
-	.noPrize {
-		position: relative;
+	.img {
+		width: 70%;
+		height: 100%;
+	}
 
-		.close {
-			position: absolute;
-			top: 0;
-			right: 0;
-		}
+	.xcolone {
+		position: absolute;
+		top: 15%;
+		right: 15%;
+		width: 60rpx;
+		height: 60rpx;
+		z-index: 6666;
 
-		.nothingText {
-			position: absolute;
-			left: 0%;
-			top: 0%;
-			font-size: 32rpx;
-			font-weight: 700;
-			padding: 265rpx 50rpx 100rpx 89rpx;
-			text-align: center;
-			box-sizing: border-box;
+		image {
 			width: 100%;
 			height: 100%;
 		}
 	}
+}
 
-	.cardPrize {
-		width: 100vw;
-		height: 100vh;
-		margin-top: -60rpx;
-		position: relative;
+.btnBox {
+	width: 590rpx;
+	margin-top: 50rpx;
 
-		.back {
-			position: absolute;
-			top: 60rpx;
-			left: 34rpx;
-		}
+	image {
+		width: 273rpx;
 
-		.title {
-			font-weight: bold;
-			font-size: 38rpx;
-			color: #ffffff;
-			// margin-bottom: 28rpx;
-			position: absolute;
-			top: 16%;
-
-			text {
-				color: #fa7700;
-			}
-		}
-
-		.star {
-			width: 750rpx;
-			height: 953rpx;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			z-index: -1;
-		}
+		height: 94rpx;
 	}
+}
 
-	.flex-cen-col {
-		width: 100vw;
-		height: 100vh;
-		position: relative;
-
-		.bgGx {
-			z-index: -1;
-		}
-
-		.img {
-			width: 70%;
-			height: 100%;
-		}
-
-		.xcolone {
-			position: absolute;
-			top: 15%;
-			right: 15%;
-			width: 60rpx;
-			height: 60rpx;
-			z-index: 6666;
-
-			image {
-				width: 100%;
-				height: 100%;
-			}
-		}
-	}
-
-	.btnBox {
-		width: 590rpx;
-		margin-top: 50rpx;
-
-		image {
-			width: 273rpx;
-
-			height: 94rpx;
-		}
-	}
-
-	.prizeImg {
-		width: 750rpx;
-		height: 837rpx;
-	}
+.prizeImg {
+	width: 750rpx;
+	height: 837rpx;
+}
 </style>

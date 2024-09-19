@@ -163,6 +163,7 @@
 	import tool from '@/pages-game/xunbao/js/tool'
 	import store from '@/store';
 	import cardFlip from '@/pages-game/xunbao/components/card-flip/card-flip.vue';
+	import { reportClickEvent, reportExposeEvent } from '@/utils/report/report'
 	export default {
 		components: {
 			cardFlip
@@ -308,6 +309,7 @@
 			// 赠卡
 			zegnka() {
 				// somePageViewEvent() 全局埋点 
+				reportClickEvent({ activityName: '卡片赠送', actionRank: 0, activityId: 'game_xunbao_card_click_give', activityContent: {name:this.list[this.dq_src].name} })
 				api.htxb_giveCard({
 					cardType: this.list[this.dq_src].type
 				}).then((res) => {
