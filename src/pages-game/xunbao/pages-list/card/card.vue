@@ -23,7 +23,7 @@
 						<image :src="`${ASSETSURL}card/card2.png`"></image>
 					</view>
 				</view>
-				<view class="card2 oh">
+				<view class="card2 oh" v-if="!bgGxShowFect">
 					<view class="card23 ri" @click="xyz" :style="{'opacity' : current == 0 ? '0.5' : ''}">
 						<image :src="`${ASSETSURL}card/card3.png`"></image>
 					</view>
@@ -40,7 +40,7 @@
 						<image :src="`${ASSETSURL}card/card4.png`"></image>
 					</view>
 				</view>
-				<view class="card3">
+				<view class="card3" v-if="!bgGxShowFect">
 					<view class="card31 tc"
 						v-if="list[0].num == 0 && list[1].num == 0 && list[2].num == 0 && list[3].num == 0"
 						@click="compound1_sq">
@@ -94,7 +94,7 @@
 						<view class="compound121 le" @click="show = false">
 							<image :src="`${ASSETSURL}card/compound2.png`"></image>
 						</view>
-						<view class="compound122 le" @click="show = false">
+						<view class="compound122 le" @click="show = false,shareAndDropShow = true">
 							<image :src="`${ASSETSURL}card/compound3.png`"></image>
 						</view>
 					</view>
@@ -194,7 +194,7 @@
 		},
 		data() {
 			return {
-				shareAndDropShow: true, //显示隐藏
+				shareAndDropShow: false, //显示隐藏
 				bgGxShowFect: false, //展示合成弹窗效果
 				resetShow: true, //强制刷新变量
 				bgGxShow: false,

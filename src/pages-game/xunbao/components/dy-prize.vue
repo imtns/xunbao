@@ -161,7 +161,6 @@ export default {
 		methods: {
 			//分享 埋点
 				getShare() {
-					that.myshare()
 					reportClickEvent({ activityName: '分享喜悦', actionRank: 0, activityId: 'game_xunbao_prize_click_share', activityContent: this.item })
 					// someClickEvent()  全局埋点
 				},
@@ -219,6 +218,7 @@ export default {
 				setTimeout(() => {
 					this.$refs[`showfect${this._kpTypeIndex}`].play()
 					that.getShare()
+					that.myshare()
 				}, 300)
 			},
 
