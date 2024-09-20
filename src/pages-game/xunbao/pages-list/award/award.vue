@@ -78,6 +78,11 @@
 													:class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'">
 													{{prizeStatus[item2.prizeStatus]}}
 												</view>
+												<view class="award3122" v-if="item2.prizeStatus == 66"
+													@click="item2.prizeStatus == 0 ? show = true : ''"
+													:class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'">
+													{{prizeStatus[3]}}
+												</view>
 											</view>
 											<view class="award31_mc"
 												v-if="item2.prizeStatus == 2 || item2.prizeStatus == 3 || item2.prizeStatus == 4">
@@ -88,7 +93,13 @@
 															:src="ASSETSURL + 'img/' + prizeStatus2[item2.prizeStatus]"
 															height="92rpx" mode="heightFix"></image>
 													</view>
-													<view class="award31_mc12">
+													<view class="award31_mc12" v-if="index2 == 0">
+														第1-2000名可得宝藏唱片音响
+													</view>
+													<view class="award31_mc12" v-if="index2 == 1">
+														第2001-6000名可得宝藏嗨嗨挂件
+													</view>
+													<view class="award31_mc12" style="margin-top: 15rpx;">
 														奖品当前剩余数量：{{item2.goodCnt || 0}}个
 													</view>
 												</view>
@@ -213,9 +224,8 @@
 
 			<!-- 地址弹窗 -->
 			<view style="margin-top: -100rpx;">
-				<shareAndDrop v-if="show" :addressDate="addressDate" :show="show"
-					@close="show = false" @selectAddress="selectAddress"
-					@saveAddressInfo2="saveAddressInfo" />
+				<shareAndDrop v-if="show" :addressDate="addressDate" :show="show" @close="show = false"
+					@selectAddress="selectAddress" @saveAddressInfo2="saveAddressInfo" />
 			</view>
 		</view>
 		</view>
@@ -283,6 +293,7 @@
 					'填写地址',
 					'已领取',
 					'未获得',
+					'需要切图XXX',
 					'预占',
 					'暂未开始发放',
 				],
@@ -300,7 +311,7 @@
 				name: '', //收货人
 				commodity: {}, //商品单个详情
 			}
-		},
+		}, 
 		computed: {
 			priceImgList() {
 				return [{
@@ -328,6 +339,7 @@
 			}
 		},
 		onShow() {
+			this.countdown("2024-10-11 12:00:00", 1000, this.onCountdownComplete)
 			// tool.storage('addressId', '1837064729768472578')
 			this.queryList()
 			this.jsq_sj()
@@ -412,6 +424,22 @@
 				tool.jump_nav('/pages/mine/address/list')
 				// tool.jump_nav('/pages-game/xunbao/pages-list/song-test/song-test')
 			},
+			// 倒计时函数
+			countdown(endTime, interval = 1000, onComplete) {
+				const timer = setInterval(() => {
+					const timeDiff = tool.getDateTime(endTime);
+					this.timeDiff = timeDiff.time
+					if (timeDiff.day === 0 && timeDiff.hour === 0 && timeDiff.minute === 0 && timeDiff.second ===
+						0) {
+						clearInterval(timer); // 时间到，清除定时器
+						onComplete(); // 调用完成回调函数
+					}
+				}, interval);
+			},
+			// 倒计时结束的回调函数
+			onCountdownComplete() {
+				console.log('倒计时结束！1');
+			},
 			// 算时间差
 			jsq_sj() {
 				// 获取当前日期
@@ -447,6 +475,22 @@
 									}
 								})
 							})
+						}
+						if (item.prizeType == "jichu") {
+							let firstZeroIndex = -1; // 初始化第一个0的索引
+							// 遍历列表找到第一个prizeStatus为0的元素索引
+							for (let i = 0; i < item.prizeInfoList.length; i++) {
+								if (item.prizeInfoList[i].prizeStatus === 0) {
+									firstZeroIndex = i;
+									break; // 找到第一个0，记录索引后退出循环
+								}
+							}
+							// 如果找到了第一个0，则将剩余的所有元素的prizeStatus设置为1
+							if (firstZeroIndex !== -1) {
+								for (let i = firstZeroIndex + 1; i < item.prizeInfoList.length; i++) {
+									item.prizeInfoList[i].prizeStatus = 66;
+								}
+							}
 						}
 						// if (item.prizeType == "zuigao") {
 						// 	item.prizeInfoList.forEach(item2 => {
@@ -639,8 +683,8 @@
 						line-height: 29rpx;
 						text-stroke: 1px #FFCF5E;
 						-webkit-text-stroke: 1px #FFCF5E;
-						// margin-top: 15rpx;
 						text-align: center;
+						margin-top: -10rpx;
 
 						image {
 							height: 110rpx;
@@ -649,6 +693,7 @@
 					}
 
 					.award31_mc12 {
+						margin-top: -20rpx;
 						font-family: Alibaba PuHuiTi;
 						font-weight: 500;
 						font-size: 25rpx;
@@ -666,9 +711,12 @@
 				background: #fff;
 				border-radius: 20rpx 68rpx 37rpx 68rpx;
 				position: relative;
-
+				display: flex;
 				.award311 {
 					position: relative;
+					border: 4rpx solid #FE8A01;
+					border-radius: 28rpx;
+					font-size: 0;
 
 					image {
 						width: 188rpx;
@@ -736,7 +784,7 @@
 
 							&::after {
 								content: "";
-								width: 50%;
+								width: 45%;
 								height: 4rpx;
 								background-color: #FFF;
 								position: absolute;
@@ -747,7 +795,7 @@
 
 							&::before {
 								content: "";
-								width: 50%;
+								width: 45%;
 								height: 4rpx;
 								background-color: #FFF;
 								position: absolute;

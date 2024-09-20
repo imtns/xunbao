@@ -1,5 +1,13 @@
 import tool from './tool.js'
 
+//保存图片到相册
+const saveImageToPhotosAlbum = (imgUrl) => {
+	tool.saveImageToPhotosAlbum(imgUrl).then(res => {
+		if (res.status === 0) {
+			tool.showModal("添加到相册授权", "您拒绝了添加到相册授权，打开指引：右上角“・・・” > 设置 > 添加到相册  > 开启", false)
+		}
+	})
+}
 //判断渠道-determineTheSceneJump(options.scene, 1154, '/page')
 const determineTheSceneJump = (scene, scencVal, pageUrl) => {
 	console.log("场景值", scene)
@@ -1031,6 +1039,7 @@ const compressImg = (file, scale = 1, quality) => {
 }
 
 module.exports = {
+	saveImageToPhotosAlbum,
 	determineTheSceneJump,
 	getQueryString,
 	showHidePopup,

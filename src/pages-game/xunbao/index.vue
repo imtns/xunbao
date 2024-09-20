@@ -73,7 +73,7 @@
 					<view class="warper1">
 						<view class="warper11" style="overflow-y: auto; overflow-x: hidden; width: 100%; height: 100%">
 							<!-- <u-parse :content="content" :tagStyle="style"></u-parse> -->
-							<image :src="`${ASSETSURL}image/guize.png`" mode="widthFix" style="width: 560rpx"></image>
+							<image :src="`${ASSETSURL}image/guize2.png`" mode="widthFix" style="width: 560rpx"></image>
 							<!-- <u-image  mode="" width="560rpx"></u-image> -->
 						</view>
 					</view>
@@ -87,13 +87,13 @@
 				@click="show_3 = false" :overlayOpacity="0.8">
 				<view class="warper">
 					<view class="warperTanC">
-						<view class="warpertc">
+						<!-- <view class="warpertc">
 							分享专属链接 邀请新人参与 双方都将
 							<text style="color: #fa7700">获得卡片或丰厚奖励</text>
 							哦~ 记住，分享链接将在
 							<text style="color: #fa7700">每日0点失效</text>
 							抓紧时间行动起来吧！
-						</view>
+						</view> -->
 						<view class="yaoQin">
 							<button type="primary" open-type="share" class="btn">
 								<image :src="`${ASSETSURL}show_hyou1.png`"></image>
@@ -188,6 +188,7 @@
 	import api from '@/pages-game/xunbao/api/api'
 	import tool from '@/pages-game/xunbao/js/tool'
 	import store from '@/store'
+	import util from '@/pages-game/xunbao/js/util'
 	import dyRecord from '@/pages-game/xunbao/components/dy-record.vue'
 	import dyPrize from '@/pages-game/xunbao/components/dy-prize.vue'
 	import sequenceEffect from '@/pages-game/xunbao/components/sequenceEffect/sequenceEffect.vue'
@@ -295,6 +296,7 @@
 		},
 
 		onShow() {
+			 console.log(process.env,'envenvenv')
 			reportExposeEvent({
 				activityName: '游戏首页浏览',
 				actionRank: 0,
@@ -309,11 +311,18 @@
 					this.youx_zdao = false
 				}
 			}, 100)
+			this.queryActivityInfo()
 		},
 		onLoad(ope) {
 			this.add_jsq()
 		},
 		methods: {
+			//查询活动过期
+			queryActivityInfo() {
+				api.queryActivityInfo().then(res => {
+					conlsole.log(res, '--------查询活动过期-------')
+				})
+			},
 			//loading加载完成
 			loadingOk() {
 				this.isShowLoadinPage = false
@@ -813,7 +822,7 @@
 				background-size: 100% 100%;
 				width: 677rpx;
 				height: 1196rpx;
-				padding: 273rpx 40rpx 158rpx 80rpx;
+				padding: 273rpx 40rpx 90rpx 80rpx;
 
 				.warper11 {
 					image {
@@ -825,8 +834,9 @@
 			.warperTanC {
 				width: 622rpx;
 				height: 678rpx;
-				background: url('https://cdn.vrupup.com/s/116/image/fXTC.png') no-repeat;
+				background: url('https://cdn.vrupup.com/s/116/image/fXTC2.png') no-repeat;
 				background-size: 100% 100%;
+				position: relative;
 
 				.warpertc {
 					margin-top: 202rpx;
@@ -840,7 +850,12 @@
 				}
 
 				.yaoQin {
-					margin-top: 63rpx;
+					// margin-top: 63rpx;
+					position: absolute;
+					bottom: 20%;
+					left: 51%;
+					transform: translateX(-50%);
+					z-index: 333;
 
 					image {
 						width: 283rpx;

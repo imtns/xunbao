@@ -9,8 +9,9 @@
 				height="88rpx" placeholder></u-navbar>
 			<view class="advertising1 oh" :class="'isUs' + dq_claas_i">
 				<view class="advertising10 le">
-					<u-line-progress :showText="false" :percentage="percentage" activeColor="#fea500"
-						:height="15"></u-line-progress>
+					<u-line-progress :round="false" :showText="false" :percentage="percentage" inactiveColor="#CECECE"
+						activeColor="#FA7700" :height="15"></u-line-progress>
+					<view :style="{'left': percentage + '%'}" class="pro-circle"></view>
 				</view>
 				<view class="advertising11 le">
 					<image :src="`${ASSETSURL}advertising2.png`"></image>
@@ -137,15 +138,10 @@
 		onShareAppMessage() {
 			this.shareWithFriends()
 			console.log('分享标题分享标题分享标题');
-			// reportClickEvent({
-			// 	activityName: '用户完成分享任务',
-			// 	actionRank: 0,
-			// 	activityId: 'game_xunbao_video_click_share',
-			// 	activityContent: {}
-			// })
 			return {
-				title: '分享标题111',
-				path: '/pages-game/xunbao/pages-list/advertising/advertising',
+				title: '嗨体喊你一起探索真皮层宝藏啦！', //分享的标题
+				imageUrl: 'https://cdn.vrupup.com/s/116/img/fxTup.png', //展示的图片，这里是本地路径的写法，也可以写http或https开头的图片路径
+				query: 'id=1154', //页面打开的传参
 				success: function(res) {
 					// 转发成功
 					console.log("转发成功");
@@ -242,11 +238,11 @@
 			getAddressId(e) {
 				console.log("获取地址详情", e)
 				api.getAddressDetail(e).then(res => {
-					if(res.code == 200){
+					if (res.code == 200) {
 						console.log(res, '----获取地址详情----');
 						if (this.addressDate != '{}') this.addressDate = res.data
 						uni.removeStorageSync("addressId")
-					}else{
+					} else {
 						tool.alert(res.message)
 					}
 				})
@@ -418,6 +414,7 @@
 		height: 100vh;
 		position: relative;
 		overflow-X: hidden;
+
 		.advertisingceng {
 			.award1 {
 				position: relative;
@@ -440,11 +437,25 @@
 				left: 43rpx;
 
 				.advertising10 {
-					height: 60rpx;
 					width: 312rpx;
 					position: absolute;
-					right: 92px;
+					right: 88px;
 					top: 70rpx;
+				
+					::v-deep .u-line-progress {
+						border: 2rpx solid #000;
+					}
+				
+					.pro-circle {
+						width: 50rpx;
+						height: 50rpx;
+						border-radius: 50%;
+						background: #FA7700;
+						border: 2rpx solid #000;
+						position: absolute;
+						top: 50%;
+						transform: translateX(-40%) translateY(-50%);
+					}
 				}
 
 				.advertising11 {

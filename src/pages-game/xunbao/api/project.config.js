@@ -69,7 +69,8 @@ export default {
 	CONFIGURE: 'tJ4GXH2P2luArDVm0u9',
 	//接口请求url
 	REQUESTURL: function() {
-		return ['https://user-test.imeik.com/iclub', ''][this.DEV_ENV]
+		// return ['https://user-test.imeik.com/iclub', ''][this.DEV_ENV]
+		return process.env.VUE_APP_BASE_API
 	},
 	//线上cdn资源url
 	ASSETSURL: 'https://cdn.vrupup.com/s/116/',

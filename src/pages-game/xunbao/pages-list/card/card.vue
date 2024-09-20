@@ -10,7 +10,7 @@
 						<!-- <image :src="`${ASSETSURL}card/card1.png`"></image> -->
 						<!-- <text>x{{compositionCount}}</text> -->
 						<view class="imgImg">
-							<image class="img" :src="`${ASSETSURL}img/X.png`"></image>
+							<image class="img" :src="`${ASSETSURL}img/X.png`" style="height: 30rpx;"></image>
 							<image class="img" :src="`${ASSETSURL}img/${compositionCount[0]}.png`"></image>
 							<image class="img" style="margin-left: -6rpx;"
 								:src="`${ASSETSURL}img/${compositionCount[1]}.png`">
@@ -169,8 +169,8 @@
 		</view>
 		<!-- 地址弹窗 -->
 		<view style="margin-top: -100rpx;">
-			<shareAndDrop v-if="shareAndDropShow" :addressDate="addressDate" :show="shareAndDropShow" @close="shareAndDropShow = false"
-				@selectAddress="selectAddress" @saveAddressInfo2="saveAddressInfo2" />
+			<shareAndDrop v-if="shareAndDropShow" :addressDate="addressDate" :show="shareAndDropShow"
+				@close="shareAndDropShow = false" @selectAddress="selectAddress" @saveAddressInfo2="saveAddressInfo2" />
 		</view>
 	</view>
 </template>
@@ -195,12 +195,12 @@
 		data() {
 			return {
 				shareAndDropShow: false, //显示隐藏
-				addressDate:{},//地址数据
+				addressDate: {}, //地址数据
 				bgGxShowFect: false, //展示合成弹窗效果
 				resetShow: true, //强制刷新变量
 				bgGxShow: false,
-				show: false,
 				current: 0, //当前轮播图下标
+				show: false,
 				compound1: 3, //中奖0123
 				myCard: null,
 				compositionCount: 0, //数量
@@ -719,7 +719,7 @@
 								color: #080808;
 								left: 0;
 								top: 1rpx;
-								background: #fea500;
+								background: #FC7105;
 								border-radius: 120rpx;
 								width: 30rpx;
 								height: 30rpx;

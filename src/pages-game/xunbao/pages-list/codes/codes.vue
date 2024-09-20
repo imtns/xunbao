@@ -34,7 +34,10 @@
 		</view>
 		<dy-prize ref="dyPrize2" :show="showPrize" :item="prizeDetail" v-if="code != 10007" @close="showPrize = false"
 			@getZlyq="showPrize = false"></dy-prize>
-		<view class="takePhoto flex-cen"><image class="btn scale-wave" :src="`${ASSETSURL}image/song_btn_01.png`" @click="takePhoto"></image></view>
+		<view class="takePhoto flex-cen">
+			<image class="btn scale-wave" :src="`${ASSETSURL}image/song_btn_01.png`"
+				@click="$u.throttle(takePhoto, 3000)"></image>
+		</view>
 	</view>
 </template>
 <style>
@@ -95,9 +98,18 @@
 				this.codes_type = 2
 			},
 			takePhoto() {
-				api.preArScan({methodName: 'startScan'}).then(({
-					data
+				api.preArScan({
+					methodName: 'startScan'
+				}).then(({
+					data,
+					code,
+					message
 				}) => {
+					console.log('返回preArScanpreArScanpreArScan', '++++++++++------------')
+					if (code == 500) {
+						tool.alert(message)
+						return
+					}
 					this.operateRecordCode = data.operateRecordCode
 					reportClickEvent({
 						activityName: '允许授权摄像头',
@@ -105,92 +117,86 @@
 						activityId: 'game_xunbao_AR_click_auth',
 						activityContent: {}
 					})
-          this.startScan()
+					this.startScan()
 				})
 			},
-      startScan() {
-        if (this.isSend) return tool.alert('太快了~')
-        this.isSend = true
-        const context = wx.createCameraContext()
-        let that = this
+			startScan() {
+				if (this.isSend) return tool.alert('太快了~')
+				this.isSend = true
+				const context = wx.createCameraContext()
+				let that = this
 
-        context.takePhoto({
-          quality: 'high',
-          success: function(res) {
-            // tool.loading();
-            reportClickEvent({
-              activityName: '点击AR拍照',
-              actionRank: 0,
-              activityId: 'game_xunbao_AR_click_photo',
-              activityContent: {}
-            })
-            tool.uploadFiles([res.tempImagePath],
-              'https://java.vrupup.com/identify/link/uploadFile').then((res) => {
-              console.log('返回', that.operateRecordCode, res)
-              // someClickEvent()  全局埋点
-              api.arScan({
-                operateRecordCode: that.operateRecordCode,
-                imgUrl: res[0]
-              })
-              .then((res1) => {
-                // tool.loading_h();
-                that.isSend = false
-                reportClickEvent({
-                  activityName: 'AR识别接口',
-                  actionRank: 0,
-                  activityId: 'game_xunbao_AR_click_tell',
-                  activityContent: {
-                    operateRecordCode: that.operateRecordCode,
-                    imgUrl: res[0]
-                  }
-                })
+				context.takePhoto({
+					quality: 'high',
+					success: function(res) {
+						// tool.loading();
 
-                reportClickEvent({
-                  activityName: 'AR扫描成功',
-                  actionRank: 0,
-                  activityId: 'game_xunbao_AR_click_success',
-                  activityContent: {
-                    operateRecordCode: that.operateRecordCode,
-                    imgUrl: res[0]
-                  }
-                })
-                console.log(111)
-                that.prizeDetail = res1.data
-                that.showPrize = true
-                that.$nextTick(() => {
-                  if (res1.data.prizeType == 'kapian') {
-                    that.$refs.dyPrize2.play2()
-                  }
-                })
-                // api.preArScan().then(({
-                //                         data
-                //                       }) => {
-                //   that.operateRecordCode = data.operateRecordCode
-                // })
-                if (res1.data.prizeType != 'kong') {
-                  reportClickEvent({
-                    activityName: 'AR获得奖品',
-                    actionRank: 0,
-                    activityId: 'game_xunbao_AR_click_prize',
-                    activityContent: res1.data
-                  })
-                }
-              })
-              .catch((err) => {
-                tool.loading_h();
-                console.log(err, '‘err173')
-                that.isSend = false
-                that.codes_type = 0
-                // api.preArScan().then(({
-                //                         data
-                //                       }) => {
-                //   that.operateRecordCode = data.operateRecordCode
-                // })
-              })
-            })
-          }
-        })
-      }
+						reportClickEvent({
+							activityName: '点击AR拍照',
+							actionRank: 0,
+							activityId: 'game_xunbao_AR_click_photo',
+							activityContent: {}
+						})
+						tool.uploadFiles([res.tempImagePath],
+							'https://java.vrupup.com/identify/link/uploadFile').then((res) => {
+							api.arScan({
+									operateRecordCode: that.operateRecordCode,
+									imgUrl: res[0]
+								})
+								.then((res1) => {
+									console.log('返回arScanarScanarScanarScan', res1,
+										'++++++++++------------')
+									if (res1.code == 500) {
+										tool.alert(res1.message)
+										return
+									}
+									that.isSend = false
+									reportClickEvent({
+										activityName: 'AR识别接口',
+										actionRank: 0,
+										activityId: 'game_xunbao_AR_click_tell',
+										activityContent: {
+											operateRecordCode: that.operateRecordCode,
+											imgUrl: res[0]
+										}
+									})
+
+									reportClickEvent({
+										activityName: 'AR扫描成功',
+										actionRank: 0,
+										activityId: 'game_xunbao_AR_click_success',
+										activityContent: {
+											operateRecordCode: that.operateRecordCode,
+											imgUrl: res[0]
+										}
+									})
+									console.log(111)
+									that.prizeDetail = res1.data
+									that.showPrize = true
+									that.$nextTick(() => {
+										if (res1.data.prizeType == 'kapian') {
+											that.$refs.dyPrize2.play2()
+										}
+									})
+									if (res1.data.prizeType != 'kong') {
+										reportClickEvent({
+											activityName: 'AR获得奖品',
+											actionRank: 0,
+											activityId: 'game_xunbao_AR_click_prize',
+											activityContent: res1.data
+										})
+									}
+								})
+								.catch((err) => {
+									tool.loading_h();
+									console.log(err, '‘err173')
+									that.isSend = false
+									that.codes_type = 0
+								})
+						})
+					}
+				})
+			}
 		}
 	}
 </script>
@@ -201,8 +207,9 @@
 		top: 1222rpx;
 		left: 0;
 		width: 100%;
-		z-index:1;
-		.btn{
+		z-index: 1;
+
+		.btn {
 			width: 283rpx;
 			height: 85rpx;
 		}
@@ -320,7 +327,8 @@
 				background: rgba(0, 0, 0, 0.7);
 				width: 100vw;
 				height: 100vh;
-				z-index:10;
+				z-index: 10;
+
 				.codes11 {
 					padding-top: 420rpx;
 					margin-bottom: 165rpx;

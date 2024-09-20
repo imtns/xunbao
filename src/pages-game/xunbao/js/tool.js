@@ -1,4 +1,6 @@
-import { env } from '@/http/env'
+import {
+	env
+} from '@/http/env'
 //获取胶囊
 const getMenuButtonBoundingClientRect = () => {
 	const menuButtonInfo = wx.getMenuButtonBoundingClientRect();
@@ -20,18 +22,44 @@ const getMenuButtonBoundingClientRect = () => {
 	}
 }
 /**
+ * 保存图片到系统相册
+ * @param { String } imgUrl 图片路径，本地路径或线上路径
+ */
+const saveImageToPhotosAlbum = (imgUrl) => {
+	return new Promise(async (resolve, reject) => {
+		if (imgUrl.includes('https')) imgUrl = (await getImageInfo(imgUrl)).path
+			uni.saveImageToPhotosAlbum({
+				filePath: imgUrl,
+				success: function() {
+					resolve({ status: 1, msg: '保存图片到系统相册成功' })
+					alert('保存成功', 1)
+				},
+				fail(err) {
+					if (err.errMsg == 'saveImageToPhotosAlbum:fail auth deny') {
+						resolve({ status: 0, msg: err })
+						alert('您拒绝了添加到相册授权')
+					} else {
+						resolve({ status: -1, msg: err })
+					}
+				}
+			})
+		// })
+	})
+}
+
+/**
  * 订阅消息
  * @param { Array } tmplIds 需要订阅的消息模板的id的集合，一次调用最多可订阅3条消息
  */
 const requestSubscribeMessage = (tmplIds) => {
 	return new Promise((resolve, reject) => {
 		uni.requestSubscribeMessage({
-		  tmplIds,
-		  success (res) {
+			tmplIds,
+			success(res) {
 				console.log("订阅消息ok", res)
 				resolve(res)
 			},
-		  fail (err) {
+			fail(err) {
 				console.log("订阅消息ok", err)
 				resolve(err)
 			}
@@ -81,13 +109,11 @@ const showModal = (title = "确认", content = "您确认进行此操作？", ca
 			title: title,
 			content: content,
 			showCancel: cancels ? true : false,
-			cancelText: cancels ? (cancels.indexOf(',') != -1 ? cancels.split(",")[0] : cancels) :
-				'取消',
+			cancelText: cancels ? (cancels.indexOf(',') != -1 ? cancels.split(",")[0] : cancels) : '取消',
 			cancelColor: (cancels && cancels.indexOf(',') != -1) ? cancels.split(",")[1] : '#333',
 			confirmText: confirms ? (confirms.indexOf(',') != -1 ? confirms.split(",")[0] :
 				confirms) : '确认',
-			confirmColor: (confirms && confirms.indexOf(',') != -1) ? confirms.split(",")[1] :
-				'#333',
+			confirmColor: (confirms && confirms.indexOf(',') != -1) ? confirms.split(",")[1] : '#333',
 			success: (res) => {
 				if (res.confirm) {
 					resolve(true)
@@ -379,6 +405,7 @@ const previewImage = (urls, current) => {
  * @param { String } imgUrl 图片地址
  */
 const getImageInfo = imgUrl => {
+	console.log("获取图片信息", imgUrl)
 	return new Promise(resolve => {
 		uni.getImageInfo({
 			src: imgUrl,
@@ -708,13 +735,25 @@ const getSetting = scope => {
 		uni.getSetting({
 			success(res) {
 				if (!res.authSetting[scope]) {
-					resolve({ status: 0, msg: '用户尚未授权', data: res})
+					resolve({
+						status: 0,
+						msg: '用户尚未授权',
+						data: res
+					})
 				} else {
-					resolve({ status: 1, msg: '用户已授权', data: res})
+					resolve({
+						status: 1,
+						msg: '用户已授权',
+						data: res
+					})
 				}
 			},
 			fail(err) {
-				resolve({ status: -1, msg: '获取授权设置失败', data: err})
+				resolve({
+					status: -1,
+					msg: '获取授权设置失败',
+					data: err
+				})
 			}
 		});
 
@@ -726,6 +765,7 @@ const getSetting = scope => {
 module.exports = {
 	getSetting,
 	getDateTime,
+	saveImageToPhotosAlbum,
 	requestSubscribeMessage,
 	alert,
 	showModal,

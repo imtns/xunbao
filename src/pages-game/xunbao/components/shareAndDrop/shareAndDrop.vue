@@ -2,6 +2,9 @@
 	<view>
 		<u-popup :show="show" mode="center" @close="close" @open="open" @click="show = false">
 			<view class="award_tanc">
+				<view class="xcolone" @click="close">
+					<image :src="ASSETSURL + 'img/Xclone.png'"></image>
+				</view>
 				<view class="award_tanceng">
 					<view class="adddd">
 						<view class="award_tanc1 oh">
@@ -126,17 +129,32 @@
 		height: 1111rpx;
 		width: 750rpx;
 		margin-top: -27%;
+		position: relative;
+
+		.xcolone {
+			position: absolute;
+			top: 12%;
+			right: 10%;
+			width: 60rpx;
+			height: 60rpx;
+			z-index: 6666;
+
+			image {
+				width: 100%;
+				height: 100%;
+			}
+		}
 
 		.award_tanceng {
 			background: url("https://cdn.vrupup.com/s/116/award_tanc1.png") no-repeat;
-			background-size: 750rpx 1111rpx;
+			background-size: 100% 100%;
 			height: 1111rpx;
 			position: relative;
 
 			.adddd {
 				position: absolute;
 				top: 508rpx;
-				left: 183rpx;
+				left: 195rpx;
 			}
 
 			.award_tanc1 {
@@ -172,7 +190,7 @@
 			}
 
 			.award_tanc3 {
-				margin-left: -50rpx;
+				margin-left: -58rpx;
 				margin-top: 41rpx;
 
 				.award_tanc31 {
@@ -200,6 +218,7 @@
 				line-height: 29rpx;
 				width: 430rpx;
 				margin-top: 17rpx;
+				margin-left: -25rpx;
 			}
 		}
 

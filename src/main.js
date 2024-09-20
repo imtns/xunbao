@@ -38,7 +38,7 @@ Vue.filter('price', (v) => Number(v).toFixed(2))
 // Vue.mixin(MixinReport)
 Vue.mixin(Mixin)
 Vue.mixin(Share)
-// Vue.mixin(MixinToken)
+// Vue.mixin(MixinToken) 
 Vue.config.productionTip = false
 App.mpType = 'app'
 App.store = store

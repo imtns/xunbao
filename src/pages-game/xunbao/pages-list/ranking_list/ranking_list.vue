@@ -31,7 +31,7 @@
 							<view class="ranking214 ri">{{item.compositionCount}}</view>
 						</view>
 						<view v-if="dataList.length == 0" class="ranking21_1">
-							<image mode="widthFix" :src="`${ASSETSURL}wu_zt.png`" style="width: 325rpx;"></image>
+							<image mode="widthFix" :src="`${ASSETSURL}wu_zt2.png`" style="width: 325rpx;"></image>
 						</view>
 					</view>
 
@@ -216,7 +216,7 @@
 							font-size: 25rpx;
 							color: #000000;
 							line-height: 33rpx;
-							width:200rpx;
+							width:190rpx;
 						}
 
 						.ranking214 {
@@ -245,7 +245,7 @@
 						background: #FFF0CE;
 						border-radius: 16rpx;
 						padding: 19rpx 11rpx;
-						margin: 0 19rpx;
+						// margin: 0 19rpx;
 					}
 				}
 			}

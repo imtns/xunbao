@@ -559,7 +559,7 @@
 							} = err
 							if (code == 10007 || code == 1002) {
 								that.code = 10007
-								that.sayData = '识别失败'
+								that.sayData = ''
 								that.adText = '识别失败，再来一次'
 								return
 							}

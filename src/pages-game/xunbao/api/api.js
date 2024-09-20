@@ -158,5 +158,10 @@ export default {
 	//清除数据
 	cleanData: (data, url = '/iclub/api/activity/htxb/cleanData') => {
 		return myRequest(data, url, 'POST', false, 1)
+	},
+
+	//查询活动信息
+	queryActivityInfo: (data, url = '/openApi/activity/htxb/queryActivityInfo') => {
+		return myRequest(data, url, 'POST', false, 1)
 	}
 }
