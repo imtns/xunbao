@@ -96,7 +96,7 @@
 		data() {
 			return {
 				voiceList:{
-					url: `https://cdn.vrupup.com/s/116/voice/1.png`,
+					url: `https://cdn.vrupup.com/s/116/voice2/1.png`,
 					num: 30,
 					initIndex: 1,
 					speed: 68,
@@ -104,7 +104,7 @@
 					autoplay: false
 				},
 				mikeList:{
-					url: `https://cdn.vrupup.com/s/116/mike/1.png`,
+					url: `https://cdn.vrupup.com/s/116/mike2/1.png`,
 					num: 30,
 					initIndex: 1,
 					speed: 68,

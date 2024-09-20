@@ -148,7 +148,7 @@
 				<!-- <view class="award61">活动截止时间</view>
 				<view class="award62">10月11日12:00:00</view> -->
 			</view>
-			<view class="award6 img" style v-show="curNow == 1" style="margin-top: auto;bottom: 10%;">
+			<view class="award6 img" style v-show="curNow == 1" style="margin-top: auto;bottom: 10%;" @click="getMyAddressId">
 				<image :src="ASSETSURL + 'img/jikaText.png'" mode=""></image>
 			</view>
 
@@ -320,15 +320,44 @@
 			this.queryList()
 			this.jsq_sj()
 			this.countdown("2024-10-11 12:00:00", 1000, this.onCountdownComplete())
-			console.log("onShow8888888888")
+			console.log("onShow9999")
 			//获取地址
 			if (tool.storage('addressId')) {
-				this.addressId = tool.storage('addressId')
+				this.addressId = toold.storage('addressId')
 				this.getAddressId(this.addressId)
 			}
 			// this.getAddressId("1783425478279778305")
 		},
 		methods: {
+			//测试查询所有storage
+			getMyAddressId() {
+				uni.getStorageInfo({
+					success: function (res) {
+						console.log("查询所有storage");
+						console.log(res.keys);
+						console.log(res.currentSize);
+						console.log(res.limitSize);
+					}
+				});
+				 // tool.storage('addressId', '1837064729768472578')
+				uni.getStorage({
+					key: 'test_addressId',
+					success: function (res) {
+						console.log("查询ok")
+						console.log(res);
+					},
+					fail(err) {
+						console.log("查询no")
+						console.log(err);
+					},
+					complete(res) {
+						console.log("查询com")
+						console.log(res);
+					}
+				});
+				console.log('tool.storage查询')
+				console.log('tool.storage查询2', tool.storage('addressId'))
+			},
 			//保存地址信息
 			saveAddressInfo() {
 				if (this.addressDate && !this.addressDate.objectCode) return tool.alert('请选择地址')
@@ -361,7 +390,7 @@
 				}
 			},
 			//获取地址详情
-			getAddressId(e) {
+			getAddressId(e) { 
 				api.getAddressDetail(e).then(res => {
 					console.log(res, '----获取地址详情----');
 					this.addressDate = res.data
