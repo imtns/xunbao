@@ -166,7 +166,7 @@
 									收货人
 								</view>
 								<view class="award_tanc22 le">
-									<input disabled v-model="addressDate.provinceName" />
+									<input disabled v-model="addressDate.receiver" />
 								</view>
 							</view>
 							<view class="award_tanc2 oh">
@@ -323,7 +323,7 @@
 			console.log("onShow9999")
 			//获取地址
 			if (tool.storage('addressId')) {
-				this.addressId = toold.storage('addressId')
+				this.addressId = tool.storage('addressId')
 				this.getAddressId(this.addressId)
 			}
 			// this.getAddressId("1783425478279778305")

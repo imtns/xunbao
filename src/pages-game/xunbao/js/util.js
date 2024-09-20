@@ -1,3 +1,11 @@
+
+import tool from './tool.js'
+//判断渠道
+const determineTheSceneJump = (scenc, scencVal, pageUrl) => {
+	if (scenc == scencVal) {
+		tool.jump_rel(pageUrl)
+	}
+}
 //从地址栏获取传参
 const getQueryString = name => {
   let after = window.location.href.split("?")[1]

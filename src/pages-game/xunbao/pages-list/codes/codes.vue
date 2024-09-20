@@ -95,7 +95,7 @@
 				this.codes_type = 2
 			},
 			takePhoto() {
-				api.preArScan().then(({
+				api.preArScan({methodName: 'startScan'}).then(({
 					data
 				}) => {
 					this.operateRecordCode = data.operateRecordCode
@@ -105,89 +105,92 @@
 						activityId: 'game_xunbao_AR_click_auth',
 						activityContent: {}
 					})
+          this.startScan()
 				})
-				if (this.isSend) return tool.alert('太快了~')
-				this.isSend = true
-				const context = wx.createCameraContext()
-				let that = this
+			},
+      startScan() {
+        if (this.isSend) return tool.alert('太快了~')
+        this.isSend = true
+        const context = wx.createCameraContext()
+        let that = this
 
-				context.takePhoto({
-					quality: 'high',
-					success: function(res) {
-						// tool.loading();
-						reportClickEvent({
-							activityName: '点击AR拍照',
-							actionRank: 0,
-							activityId: 'game_xunbao_AR_click_photo',
-							activityContent: {}
-						})
-						tool.uploadFiles([res.tempImagePath],
-							'https://java.vrupup.com/identify/link/uploadFile').then((res) => {
-							console.log('返回', that.operateRecordCode, res)
-							// someClickEvent()  全局埋点
-							api.arScan({
-									operateRecordCode: that.operateRecordCode,
-									imgUrl: res[0]
-								})
-								.then((res1) => {
-									// tool.loading_h();
-									that.isSend = false
-									reportClickEvent({
-										activityName: 'AR识别接口',
-										actionRank: 0,
-										activityId: 'game_xunbao_AR_click_tell',
-										activityContent: {
-											operateRecordCode: that.operateRecordCode,
-											imgUrl: res[0]
-										}
-									})
+        context.takePhoto({
+          quality: 'high',
+          success: function(res) {
+            // tool.loading();
+            reportClickEvent({
+              activityName: '点击AR拍照',
+              actionRank: 0,
+              activityId: 'game_xunbao_AR_click_photo',
+              activityContent: {}
+            })
+            tool.uploadFiles([res.tempImagePath],
+              'https://java.vrupup.com/identify/link/uploadFile').then((res) => {
+              console.log('返回', that.operateRecordCode, res)
+              // someClickEvent()  全局埋点
+              api.arScan({
+                operateRecordCode: that.operateRecordCode,
+                imgUrl: res[0]
+              })
+              .then((res1) => {
+                // tool.loading_h();
+                that.isSend = false
+                reportClickEvent({
+                  activityName: 'AR识别接口',
+                  actionRank: 0,
+                  activityId: 'game_xunbao_AR_click_tell',
+                  activityContent: {
+                    operateRecordCode: that.operateRecordCode,
+                    imgUrl: res[0]
+                  }
+                })
 
-									reportClickEvent({
-										activityName: 'AR扫描成功',
-										actionRank: 0,
-										activityId: 'game_xunbao_AR_click_success',
-										activityContent: {
-											operateRecordCode: that.operateRecordCode,
-											imgUrl: res[0]
-										}
-									})
-									console.log(111)
-									that.prizeDetail = res1.data
-									that.showPrize = true
-									that.$nextTick(() => {
-										if (res1.data.prizeType == 'kapian') {
-											that.$refs.dyPrize2.play2()
-										}
-									})
-									api.preArScan().then(({
-										data
-									}) => {
-										that.operateRecordCode = data.operateRecordCode
-									})
-									if (res1.data.prizeType != 'kong') {
-										reportClickEvent({
-											activityName: 'AR获得奖品',
-											actionRank: 0,
-											activityId: 'game_xunbao_AR_click_prize',
-											activityContent: res1.data
-										})
-									}
-								})
-								.catch((err) => {
-									tool.loading_h();
-									console.log(err, '‘err173')
-									that.isSend = false
-									that.codes_type = 0
-									api.preArScan().then(({
-										data
-									}) => {
-										that.operateRecordCode = data.operateRecordCode
-									})
-								})
-						})
-					}
-				})
-			}
+                reportClickEvent({
+                  activityName: 'AR扫描成功',
+                  actionRank: 0,
+                  activityId: 'game_xunbao_AR_click_success',
+                  activityContent: {
+                    operateRecordCode: that.operateRecordCode,
+                    imgUrl: res[0]
+                  }
+                })
+                console.log(111)
+                that.prizeDetail = res1.data
+                that.showPrize = true
+                that.$nextTick(() => {
+                  if (res1.data.prizeType == 'kapian') {
+                    that.$refs.dyPrize2.play2()
+                  }
+                })
+                // api.preArScan().then(({
+                //                         data
+                //                       }) => {
+                //   that.operateRecordCode = data.operateRecordCode
+                // })
+                if (res1.data.prizeType != 'kong') {
+                  reportClickEvent({
+                    activityName: 'AR获得奖品',
+                    actionRank: 0,
+                    activityId: 'game_xunbao_AR_click_prize',
+                    activityContent: res1.data
+                  })
+                }
+              })
+              .catch((err) => {
+                tool.loading_h();
+                console.log(err, '‘err173')
+                that.isSend = false
+                that.codes_type = 0
+                // api.preArScan().then(({
+                //                         data
+                //                       }) => {
+                //   that.operateRecordCode = data.operateRecordCode
+                // })
+              })
+            })
+          }
+        })
+      }
 		}
 	}
 </script>
