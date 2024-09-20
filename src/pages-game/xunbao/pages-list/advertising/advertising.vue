@@ -18,7 +18,7 @@
 			</view>
 			<view class="advertising2">
 				<view class="advertising21">
-					<video :src="video" :autoplay="true" :muted="false" @pause="pause" @play="play"></video>
+					<video :src="video" :controls="false" :autoplay="true" :muted="false" @pause="pause" @play="play" @ended="ended" @timeupdate="timeupdate"></video>
 				</view>
 				<view class="advertising22" v-show="time <= 0"> 完成 </view>
 				<view class="advertising22" v-show="time > 0"> {{ time }}s </view>
@@ -45,20 +45,26 @@
 				<view class="advertising4" v-show="type == 1">
 					<view class="advertising43">
 						<view class="advertising431" style="margin-top: 100rpx;">
-							<image :src="`${ASSETSURL}img/zhiYing.png`"
-								style="position: absolute;top: -63%;right: 10%;width: 445rpx; height: 379rpx;"></image>
+							<!-- <image :src="`${ASSETSURL}img/zhiYing.png`"
+								style="position: absolute;top: 200rpx;right: 120rpx;width: 445rpx; height: 379rpx;"></image> -->
 							<image :src="`${ASSETSURL}img/fx${dq_claas_i + 1}.png`"></image>
 							<!-- <image :src="`${ASSETSURL}advertising7.png`" @click="close"></image> -->
-							<view class="advertising432">
+							<view class="advertising432" @click="openPyqPupup">
 								<!-- <button type="primary" open-type="share" style="background: none; border: none; border-radius: 0; line-height: 0"> -->
 									<image :src="`${ASSETSURL}advertising8.png`"></image>
 								<!-- </button> -->
 							</view>
 						</view>
-
-					</view>
+					</view> 
 				</view>
 			</u-popup>
+			<!-- 朋友圈弹窗 -->
+			<u-popup :show="showPyq" mode="center">
+				<view class="pyq-pop pof haze" @click="openPyqPupup"> 
+					<image :src="`${ASSETSURL}img/zhiYing.png`"
+						style="position: absolute;top: 200rpx;right: 120rpx;width: 445rpx; height: 379rpx;"></image>
+				</view>
+			 </u-popup>
 		</view>
 		<view style="margin-top: -100rpx;">
 			<shareAndDrop v-if="shareAndDropShow" :show="shareAndDropShow" @close="shareAndDropShow = false"
@@ -81,6 +87,7 @@
 		},
 		data() {
 			return {
+				showPyq: false,//朋友圈弹窗
 				shareAndDropShow: false, //显示隐藏
 				isUseShare: true,
 				time: 15,
@@ -177,8 +184,8 @@
 				}
 			}
 			//获取地址
-			console.log("获取地址")
-			this.getAddressId2()
+			console.log("onShow获取地址")
+			// this.getAddressId2()
 			console.log("tool.storage('addressId')", tool.storage('addressId'))
 			if (tool.storage('addressId')) {
 				this.addressId = tool.storage('addressId')
@@ -242,7 +249,7 @@
 				api.getAddressDetail(e).then(res => {
 					console.log(res, '----获取地址详情----');
 					if (this.addressDate != '{}') this.addressDate = res.data
-					uni.removeStorageSync(addressId)
+					uni.removeStorageSync("addressId")
 				})
 			},
 			//选择地址
@@ -272,9 +279,15 @@
 					}
 				})
 			},
+			//打开朋友圈弹窗
+			openPyqPupup() {
+				console.log("打开朋友圈弹窗")
+				this.showPyq = !this.showPyq
+			},
+			
 			//视频暂停
 			pause() {
-				clearInterval(this.dsq)
+				// clearInterval(this.dsq)
 			},
 			cs_fx() {
 				console.log('uni-app_pyq分享');
@@ -362,21 +375,30 @@
 				this.show = false
 				// console.log('close');
 			},
+			//视频播放中
+			timeupdate(e) {
+				this.time = 15 - Math.floor(e.detail.currentTime)
+				// this.percentage = (15 - this.time) * 50 / 15
+			},
+			//视频播放完成
+			ended() {
+				this.watchVideo2()
+			},
 			//视频播放
 			play() {
-				let that = this
-				this.dsq = setInterval(() => {
-					this.time--
-					console.log(this.time, 'this.timethis.time')
-					// this.percentage = (15 - this.time) * 50 / 15
-					if (this.time == 0) {
-						console.log('播放结束');
-						that.watchVideo2()
-					}
-					if (this.time < -1) {
-						clearInterval(this.dsq)
-					}
-				}, 1000)
+				// let that = this
+				// this.dsq = setInterval(() => {
+				// 	this.time--
+				// 	console.log(this.time, 'this.timethis.time')
+				// 	// this.percentage = (15 - this.time) * 50 / 15
+				// 	if (this.time == 0) {
+				// 		console.log('播放结束');
+				// 		that.watchVideo2()
+				// 	}
+				// 	if (this.time < -1) {
+				// 		clearInterval(this.dsq)
+				// 	}
+				// }, 1000)
 			}
 		}
 	}

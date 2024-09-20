@@ -256,7 +256,8 @@ export default {
         p: 'font-size:32rpx;line-height: 45rpx',
         span: 'font-size: 30rpx;line-height: 45rpx'
       },
-      percentage: 0
+      percentage: 0,
+	  PreventMultiplePoints: false//防止多次点击-主入口
     }
   },
   created () {
@@ -313,9 +314,11 @@ export default {
       let curTime = new Date().getTime()
       let lastTime = _this.lastTapDiffTime
       _this.lastTapDiffTime = curTime
-      //两次点击间隔小于300ms, 认为是双击
       let diff = curTime - lastTime
       if (diff < 300) {
+		if (this.PreventMultiplePoints) return
+		this.PreventMultiplePoints = true
+		setTimeout(() => { this.PreventMultiplePoints = false }, 2000)
         console.log('双击')
         this.showPrize = false
         this.triggerBuryPoint()
@@ -325,13 +328,11 @@ export default {
           activityId: 'game_xunbao_click_point',
           activityContent: {}
         })
-        //_this.handleVideo('screen',index)自定义事件
-        clearTimeout(_this.lastTapTimeoutFunc) // 成功触发双击事件时，取消单击事件的执行
+        clearTimeout(_this.lastTapTimeoutFunc)
       } else {
         // 单击事件延时300毫秒执行
         _this.lastTapTimeoutFunc = setTimeout(function () {
           console.log('单击')
-          //_this.handleVideo('playOrStop',index)自定义事件
         }, 300)
       }
     },

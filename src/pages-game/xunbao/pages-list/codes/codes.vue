@@ -28,13 +28,13 @@
 				</view>
 				<view class="youx_zdao12">
 					<image :src="`${ASSETSURL}image/ad_load1.png`"></image>
-					<view class="youx_zdao121">扫描任意“嗨体”文字，就能完成任务获取卡片或奖励!</view>
+					<view class="youx_zdao121">请对准扫描的“嗨体“点击“确认”拍照扫描,完成任务获得卡片或奖励!</view>
 				</view>
 			</view>
 		</view>
 		<dy-prize ref="dyPrize2" :show="showPrize" :item="prizeDetail" v-if="code != 10007" @close="showPrize = false"
 			@getZlyq="showPrize = false"></dy-prize>
-		<view class="takePhoto" @click="takePhoto"></view>
+		<view class="takePhoto flex-cen"><image class="btn scale-wave" :src="`${ASSETSURL}image/song_btn_01.png`" @click="takePhoto"></image></view>
 	</view>
 </template>
 <style>
@@ -196,10 +196,13 @@
 	.takePhoto {
 		position: absolute;
 		top: 1222rpx;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 100rpx;
-		height: 100rpx;
+		left: 0;
+		width: 100%;
+		z-index:1;
+		.btn{
+			width: 283rpx;
+			height: 85rpx;
+		}
 	}
 
 	.youx_zdao1 {
@@ -255,11 +258,11 @@
 
 	.camera {
 		position: absolute;
-		top: 262rpx;
+		top: 214rpx;
 		left: 50%;
 		transform: translateX(-50%);
-		width: 566rpx;
-		height: 645rpx;
+		width: 652rpx;
+		height: 742rpx;
 	}
 
 	.camera .cover-image {
@@ -284,12 +287,12 @@
 	}
 
 	camera {
-		width: 566rpx;
-		height: 645rpx;
+		width: 652rpxs;
+		height: 742rpx;
 	}
 
 	.codes {
-		background: url('https://cdn.vrupup.com/s/116/codes1.png') no-repeat;
+		background: url('https://cdn.vrupup.com/s/116/image/song_bg_01.png') no-repeat;
 		background-size: 100%;
 		height: 100vh;
 		background-color: #f2da72;
@@ -314,7 +317,7 @@
 				background: rgba(0, 0, 0, 0.7);
 				width: 100vw;
 				height: 100vh;
-
+				z-index:10;
 				.codes11 {
 					padding-top: 420rpx;
 					margin-bottom: 165rpx;

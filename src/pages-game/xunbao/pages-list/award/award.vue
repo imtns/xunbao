@@ -152,7 +152,7 @@
 				<image :src="ASSETSURL + 'img/jikaText.png'" mode=""></image>
 			</view>
 
-			<u-popup :show="show" mode="center" @close="close" @open="open" @click="show = false">
+			<u-popup :show="show" mode="center" @close="close" @click="show = false">
 				<view class="award_tanc">
 					<view class="award_tanceng">
 						<view class="adddd">
@@ -316,9 +316,11 @@
 			}
 		},
 		onShow() {
+			// tool.storage('addressId', '1837064729768472578')
 			this.queryList()
 			this.jsq_sj()
 			this.countdown("2024-10-11 12:00:00", 1000, this.onCountdownComplete())
+			console.log("onShow8888888888")
 			//获取地址
 			if (tool.storage('addressId')) {
 				this.addressId = tool.storage('addressId')
@@ -363,13 +365,14 @@
 				api.getAddressDetail(e).then(res => {
 					console.log(res, '----获取地址详情----');
 					this.addressDate = res.data
-					uni.removeStorageSync(addressId)
+					uni.removeStorageSync("addressId")
 				})
 			},
 			//选择地址
 			selectAddress() {
 				tool.jump_nav('/pages/mine/address/list')
-			},
+				// tool.jump_nav('/pages-game/xunbao/pages-list/song-test/song-test')
+			}, 
 			// 倒计时函数
 			countdown(endTime, interval = 1000, onComplete) {
 				const timer = setInterval(() => {
