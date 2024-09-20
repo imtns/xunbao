@@ -251,19 +251,18 @@ const jump_back = (delta) => {
  * @param { String } value 缓存数据
  * @param { Boolean } isEnv 是否自动拼接环境
  */
-const storage = (key, value, isEnv = true) => {
-	if (isEnv) key = `${env}_${key}`
+const storage = (key, value) => {
 	if (value != null) {
-		uni.setStorageSync(key, value)
+		uni.setStorageSync(`${env}_${key}`, value)
 	} else {
 		if (key == null) {
 			return uni.getStorageInfoSync()
 		} else {
 			if (key != '#') {
 				if (key[0] == '#') {
-					uni.removeStorageSync(key.slice(1))
+					uni.removeStorageSync(`${key.slice(1)}_${key}`)
 				} else {
-					return uni.getStorageSync(key)
+					return uni.getStorageSync(`${env}_${key}`)
 				}
 			} else if (key == '#') {
 				uni.clearStorageSync()
@@ -271,6 +270,26 @@ const storage = (key, value, isEnv = true) => {
 		}
 	}
 }
+// const storage = (key, value, isEnv = true) => {
+// 	if (isEnv) key = `${env}_${key}`
+// 	if (value != null) {
+// 		uni.setStorageSync(key, value)
+// 	} else {
+// 		if (key == null) {
+// 			return uni.getStorageInfoSync()
+// 		} else {
+// 			if (key != '#') {
+// 				if (key[0] == '#') {
+// 					uni.removeStorageSync(key.slice(1))
+// 				} else {
+// 					return uni.getStorageSync(key)
+// 				}
+// 			} else if (key == '#') {
+// 				uni.clearStorageSync()
+// 			}
+// 		}
+// 	}
+// }
 // const storage = (key, value, isEnv) => {
 // 	if (value != null) {
 // 		uni.setStorageSync(`${env}_${key}`, value)
