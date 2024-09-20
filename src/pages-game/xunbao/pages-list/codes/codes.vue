@@ -71,17 +71,6 @@
 				this.mengc = 1
 				return
 			}
-			api.preArScan().then(({
-				data
-			}) => {
-				this.operateRecordCode = data.operateRecordCode
-				reportClickEvent({
-					activityName: '允许授权摄像头',
-					actionRank: 0,
-					activityId: 'game_xunbao_AR_click_auth',
-					activityContent: {}
-				})
-			})
 		},
 		methods: {
 			youx_zdao_xyb() {
@@ -106,6 +95,17 @@
 				this.codes_type = 2
 			},
 			takePhoto() {
+				api.preArScan().then(({
+					data
+				}) => {
+					this.operateRecordCode = data.operateRecordCode
+					reportClickEvent({
+						activityName: '允许授权摄像头',
+						actionRank: 0,
+						activityId: 'game_xunbao_AR_click_auth',
+						activityContent: {}
+					})
+				})
 				if (this.isSend) return tool.alert('太快了~')
 				this.isSend = true
 				const context = wx.createCameraContext()
