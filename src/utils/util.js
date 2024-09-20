@@ -189,7 +189,7 @@ const backToPage = (url) => {
 const refreshCurrentPage = () => {
   const pages = getCurrentPages().reverse()
   const url = pages[0] && pages[0].$page.fullPath
-  console.log('刷新当前页面')
+  console.log(url,'urlurl刷新当前页面')
   function reloadPage() {
     console.log('页面列表', getCurrentPages())
     const pages = getCurrentPages().slice(0, -1)

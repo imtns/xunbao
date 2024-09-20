@@ -204,6 +204,7 @@
 				myCard: null,
 				compositionCount: 0, //数量
 				dq_src: null, //当前赠送卡片
+				isUseShare: true, //跳过全局分享
 				list: [{
 						id: 1,
 						type: 'qs_card', //qs_card 全身宝藏卡 yy_card 营养宝藏卡 xjb_card 性价比宝藏卡 bd_card 百搭宝藏卡
@@ -325,7 +326,29 @@
 				}
 			}
 		},
+		onShareAppMessage() {
+			const promise = new Promise(resolve => {
+				setTimeout(() => {
+					resolve({
+						title: `嗨体喊你一起探索真皮层宝藏啦！`,
+						path: `pages-game/xunbao/pages-list/Share_friends/Share_friends?shareCode1=${store.state.shareCode1}`,
+						imageUrl: 'https://img.vrupup.com/s/116/img/fxTup.png'
+					})
+				}, 1000)
+			})
+			return {
+				promise
+			}
+		},
 		methods: {
+			//获取地址详情
+			getAddressId(e) {
+				api.getAddressDetail(e).then(res => {
+					console.log(res, '----获取地址详情----');
+					this.addressDate = res.data
+					uni.removeStorageSync("addressId")
+				})
+			},
 			//选择地址
 			selectAddress() {
 				tool.jump_nav('/pages/mine/address/list')
@@ -388,6 +411,7 @@
 					cardType: this.list[this.dq_src].type
 				}).then((res) => {
 					store.commit('storeShareCode1', res.data.operateCode)
+					console.log(store.state, '-----storeShareCode1');
 					this.htxb_myCard()
 				})
 			},
@@ -409,23 +433,25 @@
 				api.mergeCard()
 					.then((res) => {
 						console.log(res.data, '合成');
-						this.bgGxShowFect = true
-						if (res.data.first) {
-							this.$refs.bgGx.play(46).then(() => {
-								this.show = true
-								this.compound1 = 1
-								this.bgGxShowFect = false
-								console.log('this.compound1 = 1');
-							})
+						if (res.code == 200) {
+							this.bgGxShowFect = true
+							if (res.data.first) {
+								this.$refs.bgGx.play(46).then(() => {
+									this.show = true
+									this.compound1 = 1
+									this.bgGxShowFect = false
+								})
+							} else {
+								this.$refs.bgGx.play(46).then(() => {
+									this.show = true
+									this.compound1 = 0
+									this.bgGxShowFect = false
+								})
+							}
+							this.htxb_myCard()
 						} else {
-							this.$refs.bgGx.play(46).then(() => {
-								this.show = true
-								this.compound1 = 0
-								this.bgGxShowFect = false
-								console.log('this.compound1 = 0');
-							})
+							tool.alert(res.message)
 						}
-						this.htxb_myCard()
 					})
 					.catch((err) => {
 

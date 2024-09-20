@@ -14,7 +14,7 @@
 								收货人
 							</view>
 							<view class="award_tanc22 le">
-								<input disabled v-model="addressDate.provinceName" />
+								<input disabled v-model="addressDate.receiver" />
 							</view>
 						</view>
 						<view class="award_tanc2 oh">

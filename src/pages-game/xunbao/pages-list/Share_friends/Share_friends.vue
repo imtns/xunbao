@@ -9,13 +9,13 @@
 				<!-- <u-navbar class="custom-navbar" title=" " autoBack bgColor="transparent" height="88rpx" placeholder></u-navbar> --
 			</view> -->
 
-			<view v-if="Share_type == 0">
+			<view v-if="Share_type == 0" style="text-align: center;">
 				<view class="Share4 tc">
 					<image mode="widthFix" :src="`${ASSETSURL}Share4.png`"></image>
 				</view>
 			</view>
 
-			<view v-if="Share_type == 1">
+			<view v-if="Share_type == 1" style="text-align: center;">
 				<view class="Share1 tc">
 					<image mode="widthFix" :src="`${ASSETSURL}Share1.png`"></image>
 				</view>
@@ -28,7 +28,7 @@
 				</view>
 			</view>
 
-			<view v-if="Share_type == 2" style="margin-top: 65rpx">
+			<view v-if="Share_type == 2" style="margin-top: 65rpx;text-align: center;">
 				<view class="Share1 tc">
 					<image mode="widthFix" :src="`${ASSETSURL}Share1.png`"></image>
 				</view>
@@ -60,7 +60,7 @@
 					<image mode="widthFix" :src="`${ASSETSURL}Share5.png`"></image>
 				</view>
 			</view>
-			<view v-if="Share_type == 3">
+			<view v-if="Share_type == 3" style="text-align: center;">
 				<view class="Share5 tc">
 					<image mode="widthFix" :src="`${ASSETSURL}Share6.png`"></image>
 				</view>
@@ -87,7 +87,7 @@
 		},
 		data() {
 			return {
-				Share_type: 3, //0 卡片被收下 1 参与活动  2 收下 3 你不是新用户无法助力
+				Share_type: 2, //0 卡片被收下 1 参与活动  2 收下 3 你不是新用户无法助力
 				timeData: {},
 				shareCode: null,
 				type: null,
@@ -159,7 +159,14 @@
 					tool.alert(res.message)
 					if ((res.code = 200)) {
 						// someClickEvent()  全局埋点
+						tool.alert('收卡成功')
+						setTimeout(() => {
+							tool.jump_red('/pages-game/xunbao/index')
+						}, 1000)
 					}
+				}).catch((err) => {
+					console.log(err, '-------------')
+					tool.alert(err.message)
 				})
 			},
 			//跳转首页

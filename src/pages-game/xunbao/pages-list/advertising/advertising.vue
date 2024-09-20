@@ -18,7 +18,8 @@
 			</view>
 			<view class="advertising2">
 				<view class="advertising21">
-					<video :src="video" :controls="false" :autoplay="true" :muted="false" @pause="pause" @play="play" @ended="ended" @timeupdate="timeupdate"></video>
+					<video :src="video" :controls="false" :autoplay="true" :muted="false" @pause="pause" @ended="ended"
+						@timeupdate="timeupdate"></video>
 				</view>
 				<view class="advertising22" v-show="time <= 0"> 完成 </view>
 				<view class="advertising22" v-show="time > 0"> {{ time }}s </view>
@@ -51,20 +52,20 @@
 							<!-- <image :src="`${ASSETSURL}advertising7.png`" @click="close"></image> -->
 							<view class="advertising432" @click="openPyqPupup">
 								<!-- <button type="primary" open-type="share" style="background: none; border: none; border-radius: 0; line-height: 0"> -->
-									<image :src="`${ASSETSURL}advertising8.png`"></image>
+								<image :src="`${ASSETSURL}advertising8.png`"></image>
 								<!-- </button> -->
 							</view>
 						</view>
-					</view> 
+					</view>
 				</view>
 			</u-popup>
 			<!-- 朋友圈弹窗 -->
 			<u-popup :show="showPyq" mode="center">
-				<view class="pyq-pop pof haze" @click="openPyqPupup"> 
+				<view class="pyq-pop pof haze" @click="openPyqPupup">
 					<image :src="`${ASSETSURL}img/zhiYing.png`"
 						style="position: absolute;top: 200rpx;right: 120rpx;width: 445rpx; height: 379rpx;"></image>
 				</view>
-			 </u-popup>
+			</u-popup>
 		</view>
 		<view style="margin-top: -100rpx;">
 			<shareAndDrop v-if="shareAndDropShow" :show="shareAndDropShow" @close="shareAndDropShow = false"
@@ -76,6 +77,7 @@
 <script>
 	import api from '@/pages-game/xunbao/api/api';
 	import tool from '@/pages-game/xunbao/js/tool';
+	import util from '@/pages-game/xunbao/js/util';
 	import {
 		reportClickEvent,
 		reportExposeEvent
@@ -88,7 +90,7 @@
 		},
 		data() {
 			return {
-				showPyq: false,//朋友圈弹窗
+				showPyq: false, //朋友圈弹窗
 				shareAndDropShow: false, //显示隐藏
 				isUseShare: true,
 				time: 15,
@@ -97,11 +99,11 @@
 				video: null,
 				// percentage: 1,
 				triggerCode: uni.getStorageSync('triggerCode'),
-				// dropPrize: uni.getStorageSync('dropPrize'), //jiangli 信息
-				dropPrize: {
-					prizeName: '方法收纳盒的师傅',
-					prizeImage: 'https://cdn.vrupup.com/s/116/advertising7.png'
-				},
+				dropPrize: uni.getStorageSync('dropPrize'), //jiangli 信息
+				// dropPrize: {
+				// 	prizeName: '方法收纳盒的师傅',
+				// 	prizeImage: 'https://cdn.vrupup.com/s/116/advertising7.png'
+				// },
 				dsq: null,
 				jiangp_list: [{
 						prizeImage: 'https://cdn.vrupup.com/s/116/dayAnswer/jiangp1.png',
@@ -152,12 +154,10 @@
 				}
 			}
 		},
-		onLoad() {
-			let _prizeName = this.priceImgList.filter(item => item.prizeName == '宝藏嗨嗨打光板')
-			console.log("_prizeName", _prizeName)
-			console.log("_prizeName.prizeImage", _prizeName.prizeImage)
-
-
+		onLoad(ope) {
+			if (ope.id) {
+				util.determineTheSceneJump(ope.id, 1154, '/pages-game/xunbao/index')
+			}
 			// this.play()
 			this.queryVideo()
 			wx.showShareMenu({
@@ -166,17 +166,16 @@
 				], //'shareAppMessage'打开分享好友功能 | 'shareTimeline'打开分享到朋友圈功能
 			});
 		},
-		//分享朋友圈
+		//分享朋友圈 
 		onShareTimeline(res) {
 			this.shareWithFriends()
 			return {
-				title: '分享到朋友圈11', //分享的标题
-				imageUrl: 'https://cdn.vrupup.com/s/116/dayAnswer/jiangp1.png', //展示的图片，这里是本地路径的写法，也可以写http或https开头的图片路径
-				query: 'from=shareTimeline', //页面打开的传参
+				title: '嗨体喊你一起探索真皮层宝藏啦！', //分享的标题
+				imageUrl: 'https://cdn.vrupup.com/s/116/img/fxTup.png', //展示的图片，这里是本地路径的写法，也可以写http或https开头的图片路径
+				query: 'id=1154', //页面打开的传参
 			}
 		},
 		onShow() {
-			this.dropPrize.prizeName = '方法贴纸的师傅'
 			for (var i = 0; i < this.jiangp_list.length; i++) {
 				if (this.dropPrize.prizeName.includes(this.jiangp_list[i].prizeName)) {
 					this.dq_prizeImage = this.jiangp_list[i].prizeImage
@@ -185,8 +184,6 @@
 				}
 			}
 			//获取地址
-			console.log("onShow获取地址")
-			// this.getAddressId2()
 			console.log("tool.storage('addressId')", tool.storage('addressId'))
 			if (tool.storage('addressId')) {
 				this.addressId = tool.storage('addressId')
@@ -238,12 +235,6 @@
 			}
 		},
 		methods: {
-			//获取地址详情2
-			getAddressId2() {
-				let _addressDate = tool.storage('address')
-				console.log("获取地址详情", _addressDate)
-				if (_addressDate) this.addressDate = JSON.parse(_addressDate)
-			},
 			//获取地址详情
 			getAddressId(e) {
 				console.log("获取地址详情", e)
@@ -285,7 +276,7 @@
 				console.log("打开朋友圈弹窗")
 				this.showPyq = !this.showPyq
 			},
-			
+
 			//视频暂停
 			pause() {
 				// clearInterval(this.dsq)
@@ -383,6 +374,7 @@
 			},
 			//视频播放完成
 			ended() {
+				this.time = 0
 				this.watchVideo2()
 			},
 			//视频播放

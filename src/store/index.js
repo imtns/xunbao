@@ -37,6 +37,13 @@ const store = new Vuex.Store({
 		//分享喜悦
 		storeShareCode3(state, params) {
 			state.shareCode3 = params
+		},
+		//清除数据
+		clearData(state) {
+			state.shareCode = ''
+			state.shareCode1 = ''
+			state.shareCode2 = ''
+			state.shareCode3 = ''
 		}
 	}
 })

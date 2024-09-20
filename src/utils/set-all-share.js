@@ -10,7 +10,7 @@ export default () => {
 				console.log(config, '---configconfigconfig----');
 				return config.SHAREINFO
 			}
-		} 
+		}
 	})
 }
 // import config from '../../api/project.config.js'

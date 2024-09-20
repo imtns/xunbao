@@ -20,6 +20,25 @@ const getMenuButtonBoundingClientRect = () => {
 	}
 }
 /**
+ * 订阅消息
+ * @param { Array } tmplIds 需要订阅的消息模板的id的集合，一次调用最多可订阅3条消息
+ */
+const requestSubscribeMessage = (tmplIds) => {
+	return new Promise((resolve, reject) => {
+		uni.requestSubscribeMessage({
+		  tmplIds,
+		  success (res) {
+				console.log("订阅消息ok", res)
+				resolve(res)
+			},
+		  fail (err) {
+				console.log("订阅消息ok", err)
+				resolve(err)
+			}
+		})
+	})
+}
+/**
  * 文字轻提示
  * @param { String } 提示文字 
  * @param { Number } icon 提示icon
@@ -707,6 +726,7 @@ const getSetting = scope => {
 module.exports = {
 	getSetting,
 	getDateTime,
+	requestSubscribeMessage,
 	alert,
 	showModal,
 	loading,

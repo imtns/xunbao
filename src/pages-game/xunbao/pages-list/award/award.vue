@@ -29,9 +29,9 @@
 													</view>
 												</view>
 											</view>
-											<!-- <view class="award311 le" v-else>
+											<view class="award311 le" v-else>
 												<image :src="item2.prizeImage"></image>
-											</view> -->
+											</view>
 											<view class="award312 le oh">
 												<view class="award3121">{{item2.prizeName}}</view>
 												<view class="award3122"

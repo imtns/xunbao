@@ -9,32 +9,36 @@ function getShareInfo() {
 		const shareCode2 = store.state.shareCode2
 		const shareCode3 = store.state.shareCode3
 		console.log(store.state, '分享中转', shareCode, shareCode1);
+		//参与活动
 		if (shareCode) {
 			return {
-				title: `参与活动`,
+				title: `嗨体喊你一起探索真皮层宝藏啦！`,
 				path: `pages-game/xunbao/pages-list/Share_friends/Share_friends?shareCode=${shareCode}`,
-				imageUrl: 'https://img.vrupup.com/web/cdn/szq/other/share_01.jpg'
+				imageUrl: 'https://img.vrupup.com/s/116/img/fxTup.png'
 			}
 		}
+		//分享卡片
 		if (shareCode1) {
 			return {
-				title: `分享卡片`,
+				title: `嗨体喊你一起探索真皮层宝藏啦！`,
 				path: `pages/pages-list/Share_friends/Share_friends?shareCode1=${shareCode1}`,
-				imageUrl: 'https://img.vrupup.com/web/cdn/szq/other/share_01.jpg'
+				imageUrl: 'https://img.vrupup.com/s/116/img/fxTup.png'
 			}
 		}
+		//分享视频
 		if (shareCode2) {
 			return {
-				title: `分享视频`,
+				title: `嗨体喊你一起探索真皮层宝藏啦！`,
 				path: `pages/pages-list/Share_friends/Share_friends?shareCode2=${shareCode2}`,
-				imageUrl: 'https://img.vrupup.com/web/cdn/szq/other/share_01.jpg'
+				imageUrl: 'https://img.vrupup.com/s/116/img/fxTup.png'
 			}
 		}
+		//分享喜悦
 		if (shareCode3) {
 			return {
-				title: `分享喜悦`,
+				title: `嗨体喊你一起探索真皮层宝藏啦！`,
 				path: `pages-game/xunbao/index?shareCode3=${shareCode3}`,
-				imageUrl: 'https://img.vrupup.com/web/cdn/szq/other/share_01.jpg'
+				imageUrl: 'https://img.vrupup.com/s/116/img/fxTup.png'
 			}
 		}
 	} else {

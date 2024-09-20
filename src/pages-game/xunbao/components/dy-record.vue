@@ -1,46 +1,52 @@
 <template>
 	<view>
-		
+
 		<u-popup :show="showRecord" mode="center" :safeAreaInsetBottom="false" bgColor="transparent" @close="close"
 			:overlayOpacity="0.8" :closeOnClickOverlay="closeOnClickOverlay">
 			<view class="tanctow flex-cen-col">
-				
+
 				<image class="ad_14" @click="close" :src="`${ASSETSURL}ad_14.png`"></image>
 				<view class="por" style="margin-left: -40rpx;margin-bottom: 30rpx">
-					<u-image :src="`${ASSETSURL}tan2_1.png`" width="610rpx" height="568rpx"></u-image>
+					<u-image :src="`${ASSETSURL}tan2_1s.png`" width="610rpx" height="568rpx"></u-image>
 					<view class="adText" :style="{ color: code == 10007 ? '#000' : '' }">
 						{{ code == 10007 ? '识别失败，再来一次' : adText }}
 					</view>
-					<view class="adText" style="margin-top: 108rpx" :style="{ color: code == 10007 ? '#000' : '' }">{{ sayData }}</view>
+					<view class="adText" style="margin-top: 108rpx" :style="{ color: code == 10007 ? '#000' : '' }">{{ sayData }}
+					</view>
 				</view>
 				<view class="voice fade-show">
 					<sequenceEffect ref="voice" :sequenceList="voiceList"></sequenceEffect>
 				</view>
-				<u-image :src="`${ASSETSURL}back.png`" v-if="task.now >= task.max"  @click="close" width="273rpx" height="94rpx"></u-image>
-				<u-image :src="`${ASSETSURL}again.png`" v-else-if="code == 10007" @click="again" width="273rpx" height="94rpx"></u-image>
-				<view class="por" v-else :style="{ opacity: endRecordShow ? '1' : '0' }" @touchstart="startRecord"
+				<u-image :src="`${ASSETSURL}back.png`" v-if="task.now >= task.max" @click="close" width="273rpx"
+					height="94rpx"></u-image>
+				<u-image :src="`${ASSETSURL}again.png`" v-else-if="code == 10007" @click="again" width="273rpx"
+					height="94rpx"></u-image>
+				<view class="record-btn por" v-else :style="{ opacity: endRecordShow ? '1' : '0' }" @touchstart="startRecord"
 					@touchend="endRecord">
-					
+
 					<view class="mike fade-show">
 						<sequenceEffect ref="mike" :sequenceList="mikeList"></sequenceEffect>
 					</view>
-					<u-image :src="`${ASSETSURL}tan2_2.png`"  width="234rpx" height="234rpx"></u-image>
+					<image class="btn-img" :src="`${ASSETSURL}tan2_2.png`"></image>
+					<!-- <u-image class="btn-img" :src="`${ASSETSURL}tan2_2.png`"  width="234rpx" height="234rpx"></u-image> -->
+					<!-- <u-image class="btn-img" width="100%" height="100%" :src="`${ASSETSURL}tan2_2.png`"></u-image> -->
 				</view>
 				<!-- 	<view class="" v-else>
 						123
 					</view> -->
-					<u-popup :show="noPrize" mode="center" :safeAreaInsetBottom="false" bgColor="transparent" @close="noPrize = false;close()" >
-						<view class=" por">
-							<u-image :src="ASSETSURL + 'noPrize.png'" width="540rpx" height="674rpx"></u-image>
-							<view class="close" @click="noPrize = false;close()">
-								<u-icon :name="ASSETSURL + 'close.png'" color="#fff" size="60rpx"></u-icon>
-							</view>
+				<u-popup :show="noPrize" mode="center" :safeAreaInsetBottom="false" bgColor="transparent"
+					@close="noPrize = false;close()">
+					<view class=" por">
+						<u-image :src="ASSETSURL + 'noPrize.png'" width="540rpx" height="674rpx"></u-image>
+						<view class="close" @click="noPrize = false;close()">
+							<u-icon :name="ASSETSURL + 'close.png'" color="#fff" size="60rpx"></u-icon>
 						</view>
-					</u-popup>
+					</view>
+				</u-popup>
 			</view>
-			
+
 		</u-popup>
-		
+
 		<dy-prize :show="showPrize" :item="prizeDetail" v-if="code != 10007" @close="showPrize = false"
 			@getZlyq="showPrize = false"></dy-prize>
 	</view>
@@ -61,7 +67,10 @@
 	const APPID = '08c1a943'
 	const API_SECRET = 'NmQ5YmY0Nzg4MmU0YTQzNGU0NmM5OWMy'
 	const API_KEY = '5cbaed332e3e5b1dbbb8959e4d59b879'
-	import { reportClickEvent, reportExposeEvent } from '@/utils/report/report'
+	import {
+		reportClickEvent,
+		reportExposeEvent
+	} from '@/utils/report/report'
 	// 获取录音
 	let recorderManager
 	export default {
@@ -75,7 +84,7 @@
 				type: Boolean,
 				default: false
 			},
-			task:{
+			task: {
 				type: Object,
 				default: () => {
 					return {}
@@ -95,7 +104,7 @@
 		},
 		data() {
 			return {
-				voiceList:{
+				voiceList: {
 					url: `https://cdn.vrupup.com/s/116/voice2/1.png`,
 					num: 30,
 					initIndex: 1,
@@ -103,8 +112,8 @@
 					loop: true,
 					autoplay: false
 				},
-				mikeList:{
-					url: `https://cdn.vrupup.com/s/116/mike2/1.png`,
+				mikeList: {
+					url: `https://cdn.vrupup.com/s/116/mike3/1.png`,
 					num: 30,
 					initIndex: 1,
 					speed: 68,
@@ -145,60 +154,78 @@
 		},
 		onShow() {},
 		methods: {
-			again(){
+			again() {
 				this.queryAd();
 				this.endRecordShow = true;
 				this.code = 0;
 			},
 			//查询是否授权
 			getSetting() {
-				console.log('查询授权')
-				let that = this
-				tool.getSetting('scope.record').then((res) => {
-					console.log(res, '录音授权123123')
-					if (!res.status) {
-						this.isNoreadAuto = false
-						wx.authorize({
-							scope: 'scope.record',
-							success() {
-								// 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
-								recorderManager = uni.getRecorderManager()
-								reportClickEvent({ activityName: '允许授权麦克风', actionRank: 0, activityId: 'game_xunbao_audio_click_auth', activityContent: {} })
-							},
-							fail() {
-								uni.showModal({
-									title: '授权录音',
-									content: '需要您的授权才能使用录音功能',
-									success: (res) => {
-										if (res.confirm) {
-											uni.openSetting({
-												success: (res) => {
-													if (res.authSetting[
-															'scope.record'] ===
-														true) {
-															reportClickEvent({ activityName: '允许授权麦克风', actionRank: 0, activityId: 'game_xunbao_audio_click_auth', activityContent: {} })
-														recorderManager = uni
-															.getRecorderManager()
+				return new Promise(resolve => {
+					console.log('查询授权')
+					let that = this
+					tool.getSetting('scope.record').then((res) => {
+						console.log(res, '录音授权123123')
+						if (!res.status) {
+							this.isNoreadAuto = false
+							wx.authorize({
+								scope: 'scope.record',
+								success() {
+									// 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
+									console.log("wx.authorize9999999")
+									this.isNoreadAuto = true
+									recorderManager = uni.getRecorderManager()
+									reportClickEvent({
+										activityName: '允许授权麦克风',
+										actionRank: 0,
+										activityId: 'game_xunbao_audio_click_auth',
+										activityContent: {}
+									})
+									resolve()
+								},
+								fail() {
+									uni.showModal({
+										title: '授权录音',
+										content: '需要您的授权才能使用录音功能',
+										success: (res) => {
+											if (res.confirm) {
+												uni.openSetting({
+													success: (res) => {
+														if (res.authSetting[
+																'scope.record'] ===
+															true) {
+															reportClickEvent({
+																activityName: '允许授权麦克风',
+																actionRank: 0,
+																activityId: 'game_xunbao_audio_click_auth',
+																activityContent: {}
+															})
+															recorderManager = uni.getRecorderManager()
+															resolve()
+														}
 													}
-												}
-											})
+												})
+											}
 										}
-									}
-								})
-							}
-						})
-					} else if (res.status == 1) {
-						this.isNoreadAuto = true
-						recorderManager = uni.getRecorderManager()
-					}
+									})
+								}
+							})
+						} else if (res.status == 1) {
+							this.isNoreadAuto = true
+							recorderManager = uni.getRecorderManager()
+							resolve()
+						}
+					})
 				})
 			},
 			//音频配置
 			recorderManager_pz() {
 				let self = this
 				recorderManager.onStop(function(res) {
+					console.log("录音stop", res)
 					self.voicePath = res.tempFilePath
 					var tempFilePath = res.tempFilePath //音频文件地址
+					console.log("音频文件地址", tempFilePath)
 
 					// #ifdef MP-WEIXIN
 					const fs = uni.getFileSystemManager()
@@ -239,36 +266,45 @@
 			startRecord() {
 				this.$refs.voice.play();
 				this.$refs.mike.play();
-				this.getSetting()
-				reportClickEvent({ activityName: '录制广告词', actionRank: 0, activityId: 'game_xunbao_audio_click_record', activityContent: {} })
-				if (!this.endRecordShow || !this.isNoreadAuto) return
-				this.sayData = '录音中'
-				this.recorderManager_pz()
-				if (!this.myConnectSocket) this.connectWebSocket()
-				api.preVoiceRecognition().then(({
-					data
-				}) => {
-					this.formData.operateRecordCode = data.operateRecordCode
-				})
-				console.log('开始录音')
-				// 显示 loading 提示框
-				// uni.showLoading({
-				// 	title: '录制中'
-				// });
-				/*
-					开发语言	任意，只要可以向讯飞云服务发起Websocket请求的均可
-					音频属性	采样率16k、位长16bit、单声道
-					音频格式	pcm、wav、mp3（需更改aue的值为lame）、speex-wb;7
-					音频大小	音频数据发送会话时长不能超过5分钟
-					语言种类	中文、英文
-					#
-					*/
-				// recorderManager.start();
-				recorderManager.start({
-					duration: 30000, // 600000（10 分钟）,默认值 60000（1 分钟）
-					numberOfChannels: 1, // 录音通道数，有效值 1/2
-					format: 'pcm', // 音频格式
-					sampleRate: 16000 // 采样率
+				this.getSetting().then(() => {
+					reportClickEvent({
+						activityName: '录制广告词',
+						actionRank: 0,
+						activityId: 'game_xunbao_audio_click_record',
+						activityContent: {}
+					})
+					console.log('!this.endRecordShow', !this.endRecordShow)
+					console.log('!this.isNoreadAuto', !this.isNoreadAuto)
+					if (!this.endRecordShow || !this.isNoreadAuto) return
+					this.sayData = '录音中'
+					this.recorderManager_pz()
+					if (!this.myConnectSocket) this.connectWebSocket()
+					api.preVoiceRecognition().then(({
+						data
+					}) => {
+						this.formData.operateRecordCode = data.operateRecordCode
+					})
+					console.log('开始录音')
+					// 显示 loading 提示框
+					// uni.showLoading({
+					// 	title: '录制中'
+					// });
+					/*
+						开发语言	任意，只要可以向讯飞云服务发起Websocket请求的均可
+						音频属性	采样率16k、位长16bit、单声道
+						音频格式	pcm、wav、mp3（需更改aue的值为lame）、speex-wb;7
+						音频大小	音频数据发送会话时长不能超过5分钟
+						语言种类	中文、英文
+						#
+						*/
+					// recorderManager.start();
+					recorderManager.start({
+						duration: 30000, // 600000（10 分钟）,默认值 60000（1 分钟）
+						numberOfChannels: 1, // 录音通道数，有效值 1/2
+						format: 'pcm', // 音频格式
+						sampleRate: 16000 // 采样率
+					})
+
 				})
 			},
 			// 松开停止
@@ -449,10 +485,10 @@
 			setResultText(result) {
 				let that = this
 				// console.log('最终结果' + result);
-				uni.showToast({
-					title: '讯飞返回结果成功',
-					icon: 'none'
-				})
+				// uni.showToast({
+				// 	title: '讯飞返回结果成功',
+				// 	icon: 'none'
+				// })
 				uni.hideLoading()
 				that.formData.voiceText = result
 				that.sayData = that.formData.voiceText
@@ -467,10 +503,20 @@
 							data,
 							message
 						}) => {
-							reportClickEvent({ activityName: '语音识别接口', actionRank: 0, activityId: 'game_xunbao_audio_click_tell', activityContent: that.formData })
+							reportClickEvent({
+								activityName: '语音识别接口',
+								actionRank: 0,
+								activityId: 'game_xunbao_audio_click_tell',
+								activityContent: that.formData
+							})
 							// someClickEvent() 全局埋点
-						
-							reportClickEvent({ activityName: '语音识别成功', actionRank: 0, activityId: 'game_xunbao_audio_click_success', activityContent: that.formData })
+
+							reportClickEvent({
+								activityName: '语音识别成功',
+								actionRank: 0,
+								activityId: 'game_xunbao_audio_click_success',
+								activityContent: that.formData
+							})
 							if (data.prizeType != 'kong') {
 								reportClickEvent({
 									activityName: '语言获得奖品',
@@ -489,25 +535,28 @@
 								tool.jump_nav('/pages-game/xunbao/pages-list/advertising/advertising')
 								return
 							}
-							
-							
+
+
 							// that.prizeDetail = data;
 							// setTimeout(() => {
 							// 	that.showPrize = true;
 							// }, 200)
-							
+
 							uni.closeSocket()
 							console.log('出弹窗')
 							if (data.prizeType != 'kong') that.$emit('detailCloce', data)
-							else{
-								
-							 that.noPrize = true;
-							 }
-							 uni.closeSocket()
-							
-						}).catch((err)=>{
+							else {
+
+								that.noPrize = true;
+							}
 							uni.closeSocket()
-							let { code, message } = err
+
+						}).catch((err) => {
+							uni.closeSocket()
+							let {
+								code,
+								message
+							} = err
 							if (code == 10007 || code == 1002) {
 								that.code = 10007
 								that.sayData = '识别失败'
@@ -544,28 +593,41 @@
 		left: 114rpx;
 		top: 174rpx;
 	}
-	.voice{
+
+	.voice {
 		width: 96rpx;
 		height: 70rpx;
 		position: absolute;
 		left: 256rpx;
 		top: 356rpx;
-	     
+
 		opacity: 0;
 	}
-	.mike{
-		width: 244rpx;
-		height: 248rpx;
+
+	.record-btn {
+		width: 314rpx;
+		height: 283rpx;
+	}
+
+	.btn-img {
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+	}
+
+	.mike {
+		width: 100%;
+		height: 100%;
 		position: absolute;
 		left: 0;
 		top: -4px;
 		opacity: 0;
-		 // transform:	tranxlateX(-50%);
+		// transform:	tranxlateX(-50%);
 	}
-	
-		.close {
-			position: absolute;
-			top: 0;
-			right: 0;
-		}
+
+	.close {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
 </style>

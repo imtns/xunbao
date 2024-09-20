@@ -20,10 +20,8 @@
 			console.log('App Show')
 		},
 		onHide: function() {
+			store.commit('clearData')
 			console.log('1-------======22222111', store.state);
-			store.state.shareCode = null
-			store.state.shareCode1 = null
-			store.state.shareCode2 = null
 		},
 		globalData: {},
 		methods: {}
