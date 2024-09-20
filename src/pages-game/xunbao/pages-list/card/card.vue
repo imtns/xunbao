@@ -328,7 +328,7 @@
 		methods: {
 			//选择地址
 			selectAddress() {
-				tool.jump_nav('/pages/mine/address/list?type=1')
+				tool.jump_nav('/pages/mine/address/list')
 			},
 			//保存地址信息
 			saveAddressInfo2() {

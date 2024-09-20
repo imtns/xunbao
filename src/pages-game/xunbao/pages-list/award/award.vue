@@ -368,7 +368,7 @@
 			},
 			//选择地址
 			selectAddress() {
-				tool.jump_nav('/pages/mine/address/list?type=1')
+				tool.jump_nav('/pages/mine/address/list')
 			},
 			// 倒计时函数
 			countdown(endTime, interval = 1000, onComplete) {

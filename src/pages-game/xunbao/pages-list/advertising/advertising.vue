@@ -177,8 +177,12 @@
 				}
 			}
 			//获取地址
+			console.log("获取地址")
+			this.getAddressId2()
+			console.log("tool.storage('addressId')", tool.storage('addressId'))
 			if (tool.storage('addressId')) {
 				this.addressId = tool.storage('addressId')
+				console.log("this.addressId", this.addressId)
 				this.getAddressId(this.addressId)
 			}
 			// if (this.shareDate) {
@@ -226,17 +230,24 @@
 			}
 		},
 		methods: {
+			//获取地址详情2
+			getAddressId2() {
+				let _addressDate = tool.storage('address')
+				console.log("获取地址详情", _addressDate)
+				if (_addressDate) this.addressDate = JSON.parse(_addressDate)
+			},
 			//获取地址详情
 			getAddressId(e) {
+				console.log("获取地址详情", e)
 				api.getAddressDetail(e).then(res => {
 					console.log(res, '----获取地址详情----');
-					this.addressDate = res.data
+					if (this.addressDate != '{}') this.addressDate = res.data
 					uni.removeStorageSync(addressId)
 				})
 			},
 			//选择地址
 			selectAddress() {
-				tool.jump_nav('/pages/mine/address/list?type=1')
+				tool.jump_nav('/pages/mine/address/list')
 			},
 			//保存地址信息
 			saveAddressInfo2() {
