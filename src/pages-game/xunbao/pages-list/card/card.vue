@@ -169,7 +169,7 @@
 		</view>
 		<!-- 地址弹窗 -->
 		<view style="margin-top: -100rpx;">
-			<shareAndDrop v-if="shareAndDropShow" :show="shareAndDropShow" @close="shareAndDropShow = false"
+			<shareAndDrop v-if="shareAndDropShow" :addressDate="addressDate" :show="shareAndDropShow" @close="shareAndDropShow = false"
 				@selectAddress="selectAddress" @saveAddressInfo2="saveAddressInfo2" />
 		</view>
 	</view>
@@ -195,6 +195,7 @@
 		data() {
 			return {
 				shareAndDropShow: false, //显示隐藏
+				addressDate:{},//地址数据
 				bgGxShowFect: false, //展示合成弹窗效果
 				resetShow: true, //强制刷新变量
 				bgGxShow: false,

@@ -148,11 +148,12 @@
 				<!-- <view class="award61">活动截止时间</view>
 				<view class="award62">10月11日12:00:00</view> -->
 			</view>
-			<view class="award6 img" style v-show="curNow == 1" style="margin-top: auto;bottom: 10%;" @click="getMyAddressId">
+			<view class="award6 img" style v-show="curNow == 1" style="margin-top: auto;bottom: 10%;"
+				@click="getMyAddressId">
 				<image :src="ASSETSURL + 'img/jikaText.png'" mode=""></image>
 			</view>
 
-			<u-popup :show="show" mode="center" @close="close" @click="show = false">
+			<!-- 	<u-popup :show="show" mode="center" @close="close" @click="show = false">
 				<view class="award_tanc">
 					<view class="award_tanceng">
 						<view class="adddd">
@@ -208,7 +209,14 @@
 						</view>
 					</view>
 				</view>
-			</u-popup>
+			</u-popup> -->
+
+			<!-- 地址弹窗 -->
+			<view style="margin-top: -100rpx;">
+				<shareAndDrop v-if="show" :addressDate="addressDate" :show="show"
+					@close="show = false" @selectAddress="selectAddress"
+					@saveAddressInfo2="saveAddressInfo" />
+			</view>
 		</view>
 		</view>
 	</z-paging>
@@ -221,7 +229,11 @@
 		reportClickEvent,
 		reportExposeEvent
 	} from '@/utils/report/report'
+	import shareAndDrop from '@/pages-game/xunbao/components/shareAndDrop/shareAndDrop.vue'
 	export default {
+		components: {
+			shareAndDrop
+		},
 		data() {
 			return {
 				show: false,
@@ -319,8 +331,6 @@
 			// tool.storage('addressId', '1837064729768472578')
 			this.queryList()
 			this.jsq_sj()
-			this.countdown("2024-10-11 12:00:00", 1000, this.onCountdownComplete())
-			console.log("onShow9999")
 			//获取地址
 			if (tool.storage('addressId')) {
 				this.addressId = tool.storage('addressId')
@@ -332,17 +342,17 @@
 			//测试查询所有storage
 			getMyAddressId() {
 				uni.getStorageInfo({
-					success: function (res) {
+					success: function(res) {
 						console.log("查询所有storage");
 						console.log(res.keys);
 						console.log(res.currentSize);
 						console.log(res.limitSize);
 					}
 				});
-				 // tool.storage('addressId', '1837064729768472578')
+				// tool.storage('addressId', '1837064729768472578')
 				uni.getStorage({
 					key: 'test_addressId',
-					success: function (res) {
+					success: function(res) {
 						console.log("查询ok")
 						console.log(res);
 					},
@@ -390,7 +400,7 @@
 				}
 			},
 			//获取地址详情
-			getAddressId(e) { 
+			getAddressId(e) {
 				api.getAddressDetail(e).then(res => {
 					console.log(res, '----获取地址详情----');
 					this.addressDate = res.data
@@ -401,22 +411,6 @@
 			selectAddress() {
 				tool.jump_nav('/pages/mine/address/list')
 				// tool.jump_nav('/pages-game/xunbao/pages-list/song-test/song-test')
-			}, 
-			// 倒计时函数
-			countdown(endTime, interval = 1000, onComplete) {
-				const timer = setInterval(() => {
-					const timeDiff = tool.getDateTime(endTime);
-					this.timeDiff = timeDiff.time
-					if (timeDiff.day === 0 && timeDiff.hour === 0 && timeDiff.minute === 0 && timeDiff.second ===
-						0) {
-						clearInterval(timer); // 时间到，清除定时器
-						onComplete(); // 调用完成回调函数
-					}
-				}, interval);
-			},
-			// 倒计时结束的回调函数
-			onCountdownComplete() {
-				console.log('倒计时结束！');
 			},
 			// 算时间差
 			jsq_sj() {

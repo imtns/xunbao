@@ -163,7 +163,6 @@ export default {
 			//分享 埋点
 				getShare() {
 					reportClickEvent({ activityName: '分享喜悦', actionRank: 0, activityId: 'game_xunbao_prize_click_share', activityContent: this.item })
-					// someClickEvent()  全局埋点
 				},
 			back() {
 				console.log('fhui')

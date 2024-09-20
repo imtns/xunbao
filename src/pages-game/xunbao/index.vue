@@ -6,7 +6,7 @@
 		<!-- 	<view class="bacBG">
 			  <image :src="`${ASSETSURL}img/homeBG.png`" mode=""></image>
 		  </view> -->
-		<view class="add_container flex-ali-col" v-show="quan_tc">
+		<view class="add_container flex-ali-col" v-show="quan_tc" :style="{ opacity: pageLoadingOk ? '1' : '0' }">
 			<image :src="`${ASSETSURL}ad_16.png`" class="ad_16"></image>
 			<view class="add_container2">
 				<u-line-progress :percentage="percentage" :showText="false" activeColor="#FA7700"
@@ -14,7 +14,7 @@
 			</view>
 			<view class="add_container3">{{ percentage }}%</view>
 		</view>
-		<view class="container" v-show="!quan_tc">
+		<view class="container" v-show="!quan_tc" :style="{ opacity: pageLoadingOk ? '1' : '0' }">
 			<!-- <u-navbar title=" " leftIcon=" " :fixed="false" placeholder bgColor="#febd01"></u-navbar> -->
 			<view class="container_bj">
 				<u-image :src="ASSETSURL + 'image/ad_load11.png'" width="750rpx" height="1418rpx"
@@ -177,6 +177,7 @@
 				</view>
 			</u-popup>
 		</view>
+		<loadingPage v-if="isShowLoadinPage" :pageLoadingOk="pageLoadingOk" @loadingOk="loadingOk"></loadingPage>
 	</view>
 </template>
 
@@ -198,16 +199,20 @@
 		mapState
 	} from 'vuex'
 	const TMPLIDS = ['k-Un-Eunu1kIlcELc-7ZzkC3phsNsm5Et7I2SAwAMsI'] //订阅信息模版ID
+	import loadingPage from '@/pages-game/xunbao/components/loading-page/loading-page.vue'
 	export default {
 		components: {
 			dyRecord,
 			dyPrize,
 			sequenceEffect,
+			loadingPage,
 			...mapState(['isLogin', 'userInfo'])
 		},
 
 		data() {
 			return {
+				isShowLoadinPage: true, //显示隐藏加载页
+				pageLoadingOk: false, //页面是否加载完成
 				effEShow: false, //首页特效
 				homeDxList: {
 					url: `https://cdn.vrupup.com/s/116/homeDx/1.png`,
@@ -284,7 +289,8 @@
 			}
 		},
 		created() {
-			this.getUserInfo()
+			if (!this.isShowLoadinPage) this.getUserInfo()
+			// this.getUserInfo()
 			tool.loading('')
 		},
 
@@ -295,7 +301,7 @@
 				activityId: 'game_xunbao_home_view',
 				activityContent: {}
 			})
-			this.getActivityTaskList()
+			if (!this.isShowLoadinPage) this.getActivityTaskList()
 			setTimeout(() => {
 				console.log(uni.getStorageSync('todaySignStatus'), 'aaa306')
 				if (uni.getStorageSync('todaySignStatus') == 1) {
@@ -308,6 +314,12 @@
 			this.add_jsq()
 		},
 		methods: {
+			//loading加载完成
+			loadingOk() {
+				this.isShowLoadinPage = false
+				this.getUserInfo()
+				this.getActivityTaskList()
+			},
 			//订阅消息
 			requestSubscribeMessage() {
 				// if (tool.storage("SubscribeMessage")) return
@@ -316,6 +328,11 @@
 					console.log("订阅消息回调3", res[TMPLIDS[0]])
 					if (res[TMPLIDS[0]] == "accept") {
 						tool.storage("SubscribeMessage", 1)
+						reportClickEvent({
+							activityName: '用户授权',
+							actionRank: 0,
+							activityId: 'game_xunbao_prize_click_requestSubscribeMessage'
+						})
 					} else if (res[TMPLIDS[0]] == "reject") {
 						tool.showModal("订阅消息", "您拒绝了订阅消息授权，打开指引：右上角“・・・” > 设置 > 订阅消息  > 活动进度提醒 > 接收", false)
 					}
@@ -333,6 +350,7 @@
 				console.log('序列完成1111')
 				this.effEShow = true
 				tool.loading_h()
+				this.pageLoadingOk = true
 				this.$refs.homeDx.play()
 			},
 			handleDoubleClick1() {
@@ -437,7 +455,6 @@
 			},
 			//签到
 			continueSign(e, inx) {
-
 				api.continueSign().then((res) => {
 					console.log(res, '--------')
 					tool.alert(res.message)
@@ -450,7 +467,19 @@
 								this.$refs.dyPrize2.play2()
 							}
 						})
+						reportClickEvent({
+							activityName: '用户完成连续签到任务获得卡片奖励的数量',
+							actionRank: 0,
+							activityId: 'game_xunbao_index_click_continueSign',
+							activityContent: {}
+						})
 					}
+					reportClickEvent({
+						activityName: '每个用户完成签到的记录时间',
+						actionRank: 0,
+						activityId: 'game_xunbao_index_click_continueSign',
+						activityContent: {}
+					})
 					// this.$set(this.taskList[inx].btnList, 0, '已签到');
 				})
 			},
@@ -465,7 +494,6 @@
 					}
 				})
 				console.log(e, '------------')
-				// someClickEvent() 全局埋点
 				if (e.id == 4) {
 					uni.$u.debounce(() => this.continueSign(e, inx), 500)
 				}

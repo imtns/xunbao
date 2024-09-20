@@ -18,8 +18,8 @@
 			</view>
 			<view class="advertising2">
 				<view class="advertising21">
-					<video :src="video" :controls="false" :autoplay="true" :muted="false" @pause="pause" @ended="ended"
-						@timeupdate="timeupdate"></video>
+					<video :src="video" :enable-progress-gesture="false" :controls="false" :autoplay="true"
+						:muted="false" @pause="pause" @ended="ended" @timeupdate="timeupdate"></video>
 				</view>
 				<view class="advertising22" v-show="time <= 0"> 完成 </view>
 				<view class="advertising22" v-show="time > 0"> {{ time }}s </view>
@@ -63,13 +63,13 @@
 			<u-popup :show="showPyq" mode="center">
 				<view class="pyq-pop pof haze" @click="openPyqPupup">
 					<image :src="`${ASSETSURL}img/zhiYing.png`"
-						style="position: absolute;top: 200rpx;right: 120rpx;width: 445rpx; height: 379rpx;"></image>
+						style="position: absolute;top: 200rpx;right: 120rpx;width: 480rpx;" mode="widthFix"></image>
 				</view>
 			</u-popup>
 		</view>
 		<view style="margin-top: -100rpx;">
-			<shareAndDrop v-if="shareAndDropShow" :show="shareAndDropShow" @close="shareAndDropShow = false"
-				@selectAddress="selectAddress" @saveAddressInfo2="saveAddressInfo2" />
+			<shareAndDrop v-if="shareAndDropShow" :addressDate="addressDate" :show="shareAndDropShow"
+				@close="shareAndDropShow = false" @selectAddress="selectAddress" @saveAddressInfo2="saveAddressInfo2" />
 		</view>
 	</view>
 </template>
@@ -92,6 +92,7 @@
 			return {
 				showPyq: false, //朋友圈弹窗
 				shareAndDropShow: false, //显示隐藏
+				addressDate: {}, //地址数据
 				isUseShare: true,
 				time: 15,
 				type: 2, //0提示  1最后一步
@@ -130,17 +131,18 @@
 				shareDate: null, //分享后的奖品数据
 				addressDate: {}, //地址详情
 				addressId: null, //获取地址
+				unpDate: true, //15后只触发一次
 			}
 		},
 		onShareAppMessage() {
 			this.shareWithFriends()
 			console.log('分享标题分享标题分享标题');
-			reportClickEvent({
-				activityName: '用户完成分享任务',
-				actionRank: 0,
-				activityId: 'game_xunbao_video_click_share',
-				activityContent: {}
-			})
+			// reportClickEvent({
+			// 	activityName: '用户完成分享任务',
+			// 	actionRank: 0,
+			// 	activityId: 'game_xunbao_video_click_share',
+			// 	activityContent: {}
+			// })
 			return {
 				title: '分享标题111',
 				path: '/pages-game/xunbao/pages-list/advertising/advertising',
@@ -190,6 +192,7 @@
 				console.log("this.addressId", this.addressId)
 				this.getAddressId(this.addressId)
 			}
+			// this.getAddressId("1783425478279778305")
 			// if (this.shareDate) {
 			// 	console.log(this.shareDate, '-----111111-----');
 			// 	this.sharepro = 100
@@ -239,9 +242,13 @@
 			getAddressId(e) {
 				console.log("获取地址详情", e)
 				api.getAddressDetail(e).then(res => {
-					console.log(res, '----获取地址详情----');
-					if (this.addressDate != '{}') this.addressDate = res.data
-					uni.removeStorageSync("addressId")
+					if(res.code == 200){
+						console.log(res, '----获取地址详情----');
+						if (this.addressDate != '{}') this.addressDate = res.data
+						uni.removeStorageSync("addressId")
+					}else{
+						tool.alert(res.message)
+					}
 				})
 			},
 			//选择地址
@@ -260,12 +267,12 @@
 					console.log(res, '===保存地址信息=======');
 					if (res.code == 200) {
 						tool.alert('提交成功')
-						reportClickEvent({
-							activityName: '完成留资',
-							actionRank: 0,
-							activityId: 'game_xunbao_prize_click_leave',
-							activityContent: {}
-						})
+						// reportClickEvent({
+						// 	activityName: '完成留资',
+						// 	actionRank: 0,
+						// 	activityId: 'game_xunbao_prize_click_leave',
+						// 	activityContent: {}
+						// })
 						this.show = false
 						tool.jump_back()
 					}
@@ -369,13 +376,18 @@
 			},
 			//视频播放中
 			timeupdate(e) {
+				if (!this.unpDate) return
 				this.time = 15 - Math.floor(e.detail.currentTime)
 				// this.percentage = (15 - this.time) * 50 / 15
+				if (Math.floor(e.detail.currentTime) >= 15 && this.unpDate) {
+					this.unpDate = false
+					this.watchVideo2()
+				}
 			},
 			//视频播放完成
 			ended() {
 				this.time = 0
-				this.watchVideo2()
+				// this.watchVideo2()
 			},
 			//视频播放
 			play() {
@@ -405,7 +417,7 @@
 		background-size: 100% 100%;
 		height: 100vh;
 		position: relative;
-
+		overflow-X: hidden;
 		.advertisingceng {
 			.award1 {
 				position: relative;

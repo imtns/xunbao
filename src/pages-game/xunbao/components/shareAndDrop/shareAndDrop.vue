@@ -7,7 +7,7 @@
 						<view class="award_tanc1 oh">
 							<view class="le">填写倒计时
 							</view>
-							<view class="le">{{timeDiff}}</view>
+							<view class="le" v-if="timeDiff">{{timeDiff}}</view>
 						</view>
 						<view class="award_tanc2 oh">
 							<view class="award_tanc21 le">
@@ -45,7 +45,7 @@
 							<view class="award_tanc31 le" @click="selectAddress">
 								<image :src="`${ASSETSURL}award_tanc2.png`"></image>
 							</view>
-							<view class="award_tanc32 le" @click="saveAddressInfo">
+							<view class="award_tanc32 le" @click="$u.throttle(saveAddressInfo, 2000)">
 								<image :src="`${ASSETSURL}award_tanc3.png`"></image>
 							</view>
 
@@ -61,10 +61,11 @@
 </template>
 
 <script>
+	import tool from '@/pages-game/xunbao/js/tool'
 	export default {
 		data() {
 			return {
-
+				timeDiff: null, //倒计时
 			};
 		},
 		props: {
@@ -80,13 +81,27 @@
 					return {}
 				}
 			},
-			// 倒计时
-			timeDiff: {
-				type: String,
-				default: ''
-			}
+		},
+		mounted() {
+			this.countdown("2024-10-11 12:00:00", 1000, this.onCountdownComplete)
 		},
 		methods: {
+			// 倒计时函数
+			countdown(endTime, interval = 1000, onComplete) {
+				const timer = setInterval(() => {
+					const timeDiff = tool.getDateTime(endTime);
+					this.timeDiff = timeDiff.time
+					if (timeDiff.day === 0 && timeDiff.hour === 0 && timeDiff.minute === 0 && timeDiff.second ===
+						0) {
+						clearInterval(timer); // 时间到，清除定时器
+						onComplete(); // 调用完成回调函数
+					}
+				}, interval);
+			},
+			// 倒计时结束的回调函数
+			onCountdownComplete() {
+				console.log('倒计时结束！1');
+			},
 			// 关闭
 			close() {
 				this.$emit('close')

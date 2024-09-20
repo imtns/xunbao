@@ -103,6 +103,7 @@
 			}
 		},
 		onLoad(ope) {
+			console.log(ope, '--------opeopeopeope-----')
 			if (!this.isLogin) {
 				reportClickEvent({
 					activityName: '好友分享页跳转登录',
@@ -121,9 +122,8 @@
 			if (ope.shareCode1) {
 				console.log(222)
 				this.operateCode = ope.shareCode1
-				this.htxb_cardDetail(ope.shareCode1)
-				this.Share_type = 2
 				this.shareCode = ope.shareCode
+				this.htxb_cardDetail(ope.shareCode1)
 			}
 		},
 		methods: {
@@ -136,7 +136,8 @@
 					operateCode: e
 				}).then((res) => {
 					console.log(res, '-------------')
-					if ((res.code = 200)) {
+					if ((res.code == 200)) {
+						this.Share_type = 2
 						if (res.data.cardType == 'qs_card') {
 							this.type = '全身宝藏卡'
 						} else if (res.data.cardType == 'yy_card') {
@@ -147,6 +148,11 @@
 							this.type = '百搭宝藏卡'
 						}
 						console.log(this.type, res.data)
+					} else if (res.code == 10005) {
+						this.Share_type = 0
+					} else if (res.code == 10009) {
+						this.Share_type = 2
+						tool.alert('分享链接已失效')
 					}
 				})
 			},
@@ -158,7 +164,12 @@
 					console.log(res, '-------------')
 					tool.alert(res.message)
 					if ((res.code = 200)) {
-						// someClickEvent()  全局埋点
+						reportClickEvent({
+							activityName: '用户通过分享活动任务获得卡片奖励的数量',
+							actionRank: 0,
+							activityId: 'game_xunbao_share_click_success',
+							activityContent: {}
+						})
 						tool.alert('收卡成功')
 						setTimeout(() => {
 							tool.jump_red('/pages-game/xunbao/index')
@@ -181,10 +192,11 @@
 			},
 			//核销分享code
 			getJoinActivity(code) {
+				console.log(code, '-----分享code分享code分享code分享code-')
 				api.joinActivity({
 					shareCode: code
 				}).then((res) => {
-					console.log(res, '-------------')
+					console.log(res, '-----核销分享-')
 					if ((res.code = 200)) {
 						// tool.alert(res.message)
 						let include = res.message.includes('不是新用户')
@@ -209,6 +221,11 @@
 								}
 							})
 						}
+					}
+				}).catch((err) => {
+					if (err.code == 10002) {
+						console.log(err, '-----errerrerrerr-')
+						this.Share_type = 3
 					}
 				})
 			},
