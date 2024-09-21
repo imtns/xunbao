@@ -324,8 +324,8 @@
 					console.log(code, data, '--------查询活动过期-------')
 					if (code == 200) {
 						// this.actEndFlag = data.actEndFlag
-						// store.commit('setActEndFlag', data.actEndFlag)
-						store.commit('setActEndFlag', true)
+						store.commit('setActEndFlag', data.actEndFlag)
+						// store.commit('setActEndFlag', true)
 						console.log('查询活动过期', store.state.actEndFlag ? '【过期】' : '【未过期】') 
 					}
 				})
