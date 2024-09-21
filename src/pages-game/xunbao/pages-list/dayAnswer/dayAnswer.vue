@@ -80,7 +80,8 @@
 				}
 				let dataJson = {
 					questionCode: this.detail.questionCode,
-					answer: answer
+					answer: answer,
+          methodName: 'sub'
 				}
 				let {
 					code,
@@ -108,7 +109,7 @@
 						})
 						this.dq_zq = this.cur
 						// settimeout(() => {
-						// 	tool.jump_back(); 
+						// 	tool.jump_back();
 						// }, 1000)
 						// someClickEvent() 全局埋点
 					} else if (data.answerResult == 'fail' && this.detail.optionJson[i] == data.correctAnswer) {

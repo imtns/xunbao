@@ -19,7 +19,7 @@
 export default {
   name: 'dy-button',
   props: {
-    fontSize: {
+    fontSize: { 
       type: [String, Number],
       default: '32'
     },
