@@ -209,7 +209,7 @@
 				compositionCount: 0, //数量
 				dq_src: null, //当前赠送卡片
 				isUseShare: true, //跳过全局分享
-				shareCode2: null,//合成奖品编码 
+				shareCode2: null,//合成奖品编码
 				list: [{
 						id: 1,
 						type: 'qs_card', //qs_card 全身宝藏卡 yy_card 营养宝藏卡 xjb_card 性价比宝藏卡 bd_card 百搭宝藏卡
@@ -363,7 +363,8 @@
 				console.log('----保存地址信息----商品编码', this.shareCode2);
 				if (this.addressDate && !this.addressDate.objectCode) return tool.alert('请选择地址')
 				let data = {
-					goodsCode: this.shareCode2, //商品编码
+          methodName: 'saveAddressInfo2',
+          goodsCode: this.shareCode2, //商品编码
 					receiveAddressCode: this.addressDate.objectCode
 				}
 				api.saveAddressInfo(data).then(res => {
@@ -403,7 +404,7 @@
 			},
 			// 赠卡
 			zegnka() {
-				// somePageViewEvent() 全局埋点 
+				// somePageViewEvent() 全局埋点
 				reportClickEvent({
 					activityName: '卡片赠送',
 					actionRank: 0,
@@ -434,11 +435,15 @@
 				this.show = true
 				this.compound1 = 2
 			},
-			//跳转到我的奖励			jump_nav_wodajl() {				this.show = false				tool.jump_nav('/pages-game/xunbao/pages-list/award/award?curNow=1')			},
+			//跳转到我的奖励
+			jump_nav_wodajl() {
+				this.show = false
+				tool.jump_nav('/pages-game/xunbao/pages-list/award/award?curNow=1')
+			},
 			//合成卡片
 			compound() {
-				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~') 
-				api.mergeCard()
+				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
+				api.mergeCard({ methodName: 'compound' })
 					.then((res) => {
 						console.log(res.data, '合成返回');
 						if (res.code == 200) {

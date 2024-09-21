@@ -14,7 +14,7 @@
 					<view :style="{'left': percentage + '%'}" class="pro-circle"></view>
 				</view>
 				<view class="advertising11 le">
-					<image :src="`${ASSETSURL}advertising2.png`"></image> 
+					<image :src="`${ASSETSURL}advertising2.png`"></image>
 				</view>
 			</view>
 			<view class="advertising2">
@@ -165,7 +165,7 @@
 				], //'shareAppMessage'打开分享好友功能 | 'shareTimeline'打开分享到朋友圈功能
 			});
 		},
-		//分享朋友圈 
+		//分享朋友圈
 		onShareTimeline(res) {
 			this.shareWithFriends()
 			return {
@@ -175,7 +175,7 @@
 			}
 		},
 		onShow() {
-			setInterval(() => { console.log("当前秒", this._currentTime) }, 2000) 
+			setInterval(() => { console.log("当前秒", this._currentTime) }, 2000)
 			for (var i = 0; i < this.jiangp_list.length; i++) {
 				if (this.dropPrize.prizeName.includes(this.jiangp_list[i].prizeName)) {
 					this.dq_prizeImage = this.jiangp_list[i].prizeImage
@@ -258,7 +258,8 @@
 				console.log('----保存地址信息----');
 				if (this.addressDate && !this.addressDate.objectCode) return tool.alert('请选择地址')
 				let data = {
-					goodsCode: this.shareCode2, //商品编码
+          methodName: 'saveAddressInfo2',
+          goodsCode: this.shareCode2, //商品编码
 					receiveAddressCode: this.addressDate.objectCode
 				}
 				api.saveAddressInfo(data).then(res => {
@@ -445,11 +446,11 @@
 					position: absolute;
 					right: 88px;
 					top: 70rpx;
-				
+
 					::v-deep .u-line-progress {
 						border: 2rpx solid #000;
 					}
-				
+
 					.pro-circle {
 						width: 50rpx;
 						height: 50rpx;

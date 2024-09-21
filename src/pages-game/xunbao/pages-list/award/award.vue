@@ -256,7 +256,7 @@
 			return {
 				show: false,
 				timeData: {},
-				list_dq: 1, // 0:无数据 1:有数据 
+				list_dq: 1, // 0:无数据 1:有数据
 				list: ['掉落奖励', '集卡奖励', '最高奖励'],
 				curNow: 0, //0:掉落奖励 1:集卡奖励 2:最高奖励
 				dataList: [],
@@ -399,7 +399,8 @@
 			saveAddressInfo() {
 				if (this.addressDate && !this.addressDate.objectCode) return tool.alert('请选择地址')
 				let data = {
-					goodsCode: this.commodity.goodsCode, //商品编码
+          methodName: 'saveAddressInfo',
+          goodsCode: this.commodity.goodsCode, //商品编码
 					receiveAddressCode: this.addressDate.objectCode
 				}
 				console.log("this.commodity", this.commodity)
@@ -417,7 +418,7 @@
 						})
 						this.show = false
 						this.queryList()
-						// somePageViewEvent() 全局埋点 
+						// somePageViewEvent() 全局埋点
 					}
 				})
 			},
