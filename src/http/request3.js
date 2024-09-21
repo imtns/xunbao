@@ -20,7 +20,9 @@ import {
 import {
 	SM4Util
 } from '@/utils/sm4'
-
+import {
+	mapState
+} from 'vuex'
 const {
 	baseNewUrl,
 	baseIclubUrl
@@ -38,6 +40,9 @@ module.exports = {
 	 * @param {*} hideLoading
 	 * @returns
 	 */
+	components: {
+		...mapState(['isLogin', 'userInfo'])
+	},
 	request: function(data = {}, url, method = 'POST', isMessage = true, isJson = false, noToast = false,
 		hideLoading = true, headers = {}) {
 		const json = 'application/json'
@@ -90,8 +95,12 @@ module.exports = {
 
 					// 请求成功，清除ticket
 					lsDel('ticket')
-
-					if (res.data.code === 10000) {
+					console.log(res.data.code, '-------codecodecode11------')
+					console.log(res.data.code, res.data.code === 10005,'console.log(res.data.code, res.data.code === 10005)')
+					if (res.data.code === 10005 || res.data.code === 10009) {
+						console.log(res, '------codecode222-------')
+						reject(res.data)
+					} else if (res.data.code === 10000) {
 						const pages = getCurrentPages().reverse()
 						const pageUrl = pages[0] && pages[0].route
 						uni.$emit(`captcha-${pageUrl}`, data.methodName)
@@ -118,11 +127,13 @@ module.exports = {
 						setTimeout(() => {
 							refreshCurrentPage()
 						}, 2000)
-					} else if (res.data.code === 300 && !token) {
-						wx.navigateTo({
-							url: '/pages-sub/login/index'
-						})
-					} else {
+					}
+					// else if (res.data.code === 300 && !token) {
+					// 	wx.navigateTo({
+					// 		url: '/pages-sub/login/index'
+					// 	})
+					// } 
+					else {
 						const msg = (res.data && res.data.message) || '接口问题，请检查'
 						// 有些业务自己处理错误信息，不需要这里toast
 						if (!noToast) {

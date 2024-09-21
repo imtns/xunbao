@@ -14,7 +14,7 @@
 					<view :style="{'left': percentage + '%'}" class="pro-circle"></view>
 				</view>
 				<view class="advertising11 le">
-					<image :src="`${ASSETSURL}advertising2.png`"></image> 
+					<image :src="`${ASSETSURL}advertising2.png`"></image>
 				</view>
 			</view>
 			<view class="advertising2">
@@ -72,6 +72,10 @@
 			<shareAndDrop v-if="shareAndDropShow" :addressDate="addressDate" :show="shareAndDropShow"
 				@close="shareAndDropShow = false" @selectAddress="selectAddress" @saveAddressInfo2="saveAddressInfo2" />
 		</view>
+		<!-- 获取奖品弹窗 -->
+		<u-popup :show="showPrizeTips" mode="center">
+			<prizeTips :showPrizeType="showPrizeType" @closePrizePup="closePrizePup" @jumpNext="jumpNext"></prizeTips>
+		</u-popup>
 	</view>
 </template>
 
@@ -84,15 +88,19 @@
 		reportExposeEvent
 	} from '@/utils/report/report'
 	import shareAndDrop from '@/pages-game/xunbao/components/shareAndDrop/shareAndDrop.vue'
+	import prizeTips from '@/pages-game/xunbao/components/prize-tips/prize-tips.vue'
 	import store from '../../../../store/index.js'
 	export default {
 		components: {
-			shareAndDrop
+			shareAndDrop,
+			prizeTips
 		},
 		data() {
 			return {
+				showPrizeTips: false, //奖品弹窗
+				showPrizeType: 0, //当前中奖图片索引//1-4
 				showPyq: false, //朋友圈弹窗
-				shareAndDropShow: false, //显示隐藏
+				shareAndDropShow: false, //显示隐藏收货地址
 				addressDate: {}, //地址数据
 				isUseShare: true,
 				time: 15,
@@ -175,12 +183,15 @@
 			}
 		},
 		onShow() {
-			setInterval(() => { console.log("当前秒", this._currentTime) }, 2000) 
+			setInterval(() => {
+				console.log("当前秒", this._currentTime)
+			}, 2000)
 			for (var i = 0; i < this.jiangp_list.length; i++) {
 				if (this.dropPrize.prizeName.includes(this.jiangp_list[i].prizeName)) {
 					this.dq_prizeImage = this.jiangp_list[i].prizeImage
 					console.log(i, this.jiangp_list[i].prizeName);
 					this.dq_claas_i = i
+					this.showPrizeType = i
 				}
 			}
 			//获取地址
@@ -236,6 +247,16 @@
 			}
 		},
 		methods: {
+			//奖品弹窗回调——我再想一想
+			closePrizePup() {
+				this.showPrizeTips = false
+				// tool.jump_back()
+			},
+			//奖品弹窗回调——跳转去留资
+			jumpNext() {
+				this.showPrizeTips = false
+				tool.jump_nav('/pages-game/xunbao/pages-list/award/award')
+			},
 			//获取地址详情
 			getAddressId(e) {
 				console.log("获取地址详情", e)
@@ -316,7 +337,9 @@
 						console.log(res.data);
 						this.shareDate = res.data
 						this.sharepro = 100
-						this.shareAndDropShow = true
+						// this.shareAndDropShow = true
+						this.showPrizeTips = true
+						this.showPyq = false
 						this.show = false
 					})
 					.catch((err) => {
@@ -370,6 +393,7 @@
 			},
 			close() {
 				this.show = false
+				tool.jump_back()
 				// console.log('close');
 			},
 			//视频播放中
@@ -445,11 +469,11 @@
 					position: absolute;
 					right: 88px;
 					top: 70rpx;
-				
+
 					::v-deep .u-line-progress {
 						border: 2rpx solid #000;
 					}
-				
+
 					.pro-circle {
 						width: 50rpx;
 						height: 50rpx;
@@ -499,10 +523,11 @@
 				width: 660rpx;
 				background-color: #393939;
 				margin: 0 auto;
-				margin-top: 44rpx;
+				margin-top: 20rpx;
 				position: relative;
 				z-index: 999;
 				border-radius: 20rpx;
+				overflow: hidden;
 
 				.advertising22 {
 					position: absolute;

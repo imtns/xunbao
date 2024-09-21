@@ -27,8 +27,9 @@
 			"pages": [{
 					"path": "xunbao/index",
 					"style": {
-						"navigationBarTitleText": "首页",
+						"navigationBarTitleText": "首页2",
 						// "navigationStyle": "custom",
+						"disableScroll": true,
 						"backgroundColor": "#febd01"
 						// "app-plus": {
 						// 	"titleNView": false
@@ -40,6 +41,7 @@
 					"path": "xunbao/pages-list/poster/poster",
 					"style": {
 						"navigationBarTitleText": "",
+						"disableScroll": true,
 						"enablePullDownRefresh": false
 					}
 				},
@@ -48,6 +50,7 @@
 					"path": "xunbao/pages-list/award/award",
 					"style": {
 						"navigationBarTitleText": "我的奖励",
+						"disableScroll": true,
 						"enablePullDownRefresh": false
 
 					}
@@ -56,6 +59,7 @@
 					"path": "xunbao/pages-list/Share_friends/Share_friends",
 					"style": {
 						"navigationBarTitleText": "好友分享",
+						"disableScroll": true,
 						"enablePullDownRefresh": false
 
 					}
@@ -64,6 +68,7 @@
 					"path": "xunbao/pages-list/card/card",
 					"style": {
 						"navigationBarTitleText": "我的卡片",
+						"disableScroll": true,
 						"enablePullDownRefresh": false
 					}
 				},
@@ -71,6 +76,7 @@
 					"path": "xunbao/pages-list/dayAnswer/dayAnswer",
 					"style": {
 						"navigationBarTitleText": "每日答题",
+						"disableScroll": true,
 						"app-plus": {
 							"titleNView": false
 						}
@@ -80,6 +86,7 @@
 					"path": "xunbao/pages-list/ranking_list/ranking_list",
 					"style": {
 						"navigationBarTitleText": "排行榜",
+						"disableScroll": true,
 						"enablePullDownRefresh": false
 					}
 				},
@@ -96,6 +103,7 @@
 					"path": "xunbao/pages-list/codes/codes",
 					"style": {
 						"navigationBarTitleText": "AR扫码",
+						"disableScroll": true,
 						"app-plus": {
 							"titleNView": false
 						}
@@ -105,6 +113,7 @@
 					"path": "xunbao/pages-list/advertising/advertising",
 					"style": {
 						"navigationBarTitleText": "观看视频",
+						"disableScroll": true,
 						"navigationStyle": "custom"
 					}
 				}

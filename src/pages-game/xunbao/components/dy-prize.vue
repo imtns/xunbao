@@ -26,10 +26,10 @@
 					</view>
 					<view class="title">
 						获得
+						<text v-if="item.card.cardType == 'bd_card'">百搭宝藏卡</text>
 						<text v-if="item.card.cardType == 'qs_card'">全身宝藏</text>
 						<text v-if="item.card.cardType == 'yy_card'">营养宝藏卡</text>
 						<text v-if="item.card.cardType == 'xjb_card'">性价比宝藏卡</text>
-						<text v-if="item.card.cardType == 'bd_card'">百搭宝藏卡</text>
 						卡片
 						<text>x1</text>
 					</view>
@@ -41,7 +41,7 @@
 						v-show="item.card.cardType == 'bd_card'">
 						<!-- <sequenceEffect ref="showfect1" :sequenceList="starList" @loadOk="loadOk('showfect1')">
 						</sequenceEffect> -->
-						<card-flip ref="showfect1" :option="starList"></card-flip>
+						<card-flip ref="showfect1" :option="starList1"></card-flip>
 					</view>
 					<view class="fect" style="width: 474rpx; height: 702rpx; z-index: -1"
 						v-show="item.card.cardType == 'qs_card'">
@@ -65,7 +65,7 @@
 							<image :src="ASSETSURL + 'share.png'"></image>
 						</button>
 					</view>
-					<view class="changAnBC">
+					<view class="changAnBC" @longpress="longpressSaveImg">
 						长按保存
 					</view>
 				</view>
@@ -74,7 +74,7 @@
 					<!-- <view class="bgGx">
 						<sequenceEffect ref="bgGx" :sequenceList="bgGx2"></sequenceEffect>
 					</view> -->
-					<image class="img" :src="ASSETSURL + 'img/diaoLuoJiangLI.png'" mode="aspectFit"
+					<image class="img" :src="ASSETSURL + 'img/diaoLuoJiangLI2.png'" mode="aspectFit"
 						@click="advertising"></image>
 					<view class="xcolone" @click="close">
 						<image :src="ASSETSURL + 'img/Xclone.png'"></image>
@@ -99,6 +99,7 @@
 	import cardFlip from '@/pages-game/xunbao/components/card-flip/card-flip.vue'
 	import sequenceEffect from '@/pages-game/xunbao/components/sequenceEffect/sequenceEffect.vue'
 	import tool from '@/pages-game/xunbao/js/tool'
+	import util from '@/pages-game/xunbao/js/util'
 	import {
 		reportClickEvent,
 		reportExposeEvent
@@ -131,7 +132,7 @@
 		data() {
 			return {
 				bgGxShow: false,
-				starList: {
+				starList1: {
 					imgList: ['https://img.vrupup.com/s/116/img/zpc1.png',
 						'https://img.vrupup.com/s/116/img/bd1.png'
 					], //正反图片
@@ -175,6 +176,13 @@
 			}
 		},
 		methods: {
+			//长按保存图片
+			longpressSaveImg() {
+				let _cardType = this.item.card.cardType, _cardTypeList = ['', 'bd_card', 'qs_card', 'yy_card', 'xjb_card']
+				let _cardIndex = _cardTypeList.findIndex(items => items == _cardType)
+				console.log('长按保存图片', _cardIndex, this[`starList${_cardIndex}`].imgList[1])
+				util.saveImageToPhotosAlbum(this[`starList${_cardIndex}`].imgList[1])
+			},
 			//分享 埋点
 			getShare() {
 				reportClickEvent({
@@ -286,10 +294,11 @@
 		color: #D7D2BE;
 		margin-top: 14rpx;
 		position: absolute;
-		bottom: 17%;
+		bottom: 13%;
 		left: 48%;
 		transform: translateX(-50%);
 		font-size: 20rpx;
+		padding: 40rpx 60rpx;
 	}
 
 	.fect ::v-deep .currency {
@@ -369,7 +378,7 @@
 		}
 
 		.img {
-			width: 70%;
+			width: 100%;
 			height: 100%;
 		}
 

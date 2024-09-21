@@ -12,7 +12,7 @@
 				<u-line-progress :percentage="percentage" :showText="false" activeColor="#FA7700"
 					height="18"></u-line-progress>
 			</view>
-			<view class="add_container3">{{ percentage }}%</view> 
+			<view class="add_container3">{{ percentage }}%</view>
 		</view>
 		<view class="container" v-show="!quan_tc" :style="{ opacity: pageLoadingOk ? '1' : '0' }">
 			<!-- <u-navbar title=" " leftIcon=" " :fixed="false" placeholder bgColor="#febd01"></u-navbar> -->
@@ -157,9 +157,9 @@
 									<!-- <dy-button fontSize="20" width="92rpx" height="36rpx" @click="tanc(item.tan)"
 										  v-if="item.tan">{{ item.btnList[0] }}</dy-button> -->
 									<!-- 	<dy-button fontSize="20" width="92rpx" height="36rpx" btn_bg="#847b73" v-if="item.id == 4 && item.now < item.max">{{ item.btnList[0] }}</dy-button> -->
-									<dy-button fontSize="20" width="92rpx" height="36rpx" btn_bg="#847b73"
+									<dy-button fontSize="24" width="92rpx" height="36rpx" btn_bg="#847b73"
 										v-if="item.todaySignStatus">{{ item.btnList[1] }}</dy-button>
-									<dy-button fontSize="20" width="92rpx" height="36rpx"
+									<dy-button fontSize="24" width="92rpx" height="36rpx"
 										@click="$u.route(item.page), getSignin(item, index), requestSubscribeMessage()"
 										v-else-if="item.now < item.max">
 										{{ item.btnList[0] }}
@@ -309,7 +309,7 @@
 
 		onShow() {
 			console.log(process.env, 'envenvenv')
-			if (!this.isShowLoadinPage) this.queryActivityInfo()
+			// if (!this.isShowLoadinPage) this.queryActivityInfo()
 			reportExposeEvent({
 				activityName: '游戏首页浏览',
 				actionRank: 0,
@@ -361,7 +361,7 @@
 					if (code == 200) {
 						// this.actEndFlag = data.actEndFlag
 						store.commit('setActEndFlag', data.actEndFlag)
-						// store.commit('setActEndFlag', true)
+						// store.commit('setActEndFlag', false)//本地调试
 						if (store.state.actEndFlag) this.getHtxbMyPrisjyqze()
 						console.log('查询活动过期', store.state.actEndFlag ? '【过期】' : '【未过期】')
 					}
@@ -408,6 +408,7 @@
 				this.$refs.homeDx.play()
 			},
 			handleDoubleClick1() {
+				console.log('this.isLogin', this.isLogin)
 				if (!this.isLogin) {
 					reportClickEvent({
 						activityName: '游戏首页跳转登录',
@@ -518,7 +519,7 @@
 						this.prizeDetail = res.data
 						this.showPrize = true
 						this.$nextTick(() => {
-							if (data.prizeType == 'kapian') {
+							if (res.data.prizeType == 'kapian') {
 								this.$refs.dyPrize2.play2()
 							}
 						})
@@ -960,10 +961,11 @@
 
 		.container_tanc {
 			background: url('https://cdn.vrupup.com/s/116/ad_6.png') no-repeat;
-			background-size: 100%;
+			background-size: 100% 100%;
 			width: 750rpx;
-			height: 944rpx;
+			height: 860rpx;
 			padding: 280rpx 40rpx 0;
+			box-sizing: border-box;
 			position: relative;
 
 			.arCard {

@@ -54,7 +54,9 @@
 
 						</view>
 						<view class="award_tanc4">
-							请仔细填写收货地址信息 确保奖励能够准确无误地送达您的手中 地址一经提交，不支持修改
+							语仔细境写收货地址信息<br>
+							确保奖励能够准确无误地送达您的手中<br>
+							地址一经提交，不支持修改
 						</view>
 					</view>
 				</view>
@@ -218,7 +220,8 @@
 				line-height: 29rpx;
 				width: 430rpx;
 				margin-top: 17rpx;
-				margin-left: -25rpx;
+				margin-left: -30rpx;
+				text-align: center;
 			}
 		}
 

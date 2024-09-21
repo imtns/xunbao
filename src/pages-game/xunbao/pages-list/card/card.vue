@@ -85,7 +85,7 @@
 		</view>
 		<u-popup :show="show" mode="center" @close="show = false" :overlayOpacity='0.8'>
 			<!-- 我的奖品 -->
-			<view class="compound_ceng" v-show="compound1 == 1">
+			<!-- 	<view class="compound_ceng" v-show="compound1 == 1">
 				<view class="compound1">
 					<view class="compound11 tc jpTu">
 						<image :src="`${ASSETSURL}card/compound1.png`"></image>
@@ -94,15 +94,12 @@
 						<view class="compound121 le" @click="show = false">
 							<image :src="`${ASSETSURL}card/compound2.png`"></image>
 						</view>
-						<!-- <view class="compound122 le" @click="show = false,shareAndDropShow = true">
-							<image :src="`${ASSETSURL}card/compound3.png`"></image>
-						</view> -->
 						<view class="compound122 le" @click="jump_nav_wodajl">
 							<image :src="`${ASSETSURL}card/compound3s.png`"></image>
 						</view>
 					</view>
 				</view>
-			</view>
+			</view> -->
 			<!-- 赠送卡片 -->
 			<view class="compound_ceng" v-show="compound1 == 3">
 				<view class="compound1">
@@ -175,6 +172,10 @@
 			<shareAndDrop v-if="shareAndDropShow" :addressDate="addressDate" :show="shareAndDropShow"
 				@close="shareAndDropShow = false" @selectAddress="selectAddress" @saveAddressInfo2="saveAddressInfo2" />
 		</view>
+		<!-- 获取奖品弹窗 -->
+		<u-popup :show="showPrizeTips" mode="center">
+			<prizeTips :showPrizeType="showPrizeType" @closePrizePup="closePrizePup" @jumpNext="jumpNext"></prizeTips>
+		</u-popup>
 	</view>
 </template>
 
@@ -184,6 +185,7 @@
 	import store from '@/store';
 	import cardFlip from '@/pages-game/xunbao/components/card-flip/card-flip.vue';
 	import sequenceEffect from '@/pages-game/xunbao/components/sequenceEffect/sequenceEffect';
+	import prizeTips from '@/pages-game/xunbao/components/prize-tips/prize-tips.vue'
 	import {
 		reportClickEvent,
 		reportExposeEvent
@@ -193,10 +195,13 @@
 		components: {
 			cardFlip,
 			sequenceEffect,
+			prizeTips,
 			shareAndDrop
 		},
 		data() {
 			return {
+				showPrizeTips: false, //奖品弹窗
+				showPrizeType: 0, //当前中奖图片索引，5-6
 				shareAndDropShow: false, //显示隐藏
 				addressDate: {}, //地址数据
 				bgGxShowFect: false, //展示合成弹窗效果
@@ -209,7 +214,7 @@
 				compositionCount: 0, //数量
 				dq_src: null, //当前赠送卡片
 				isUseShare: true, //跳过全局分享
-				shareCode2: null,//合成奖品编码 
+				shareCode2: null, //合成奖品编码 
 				list: [{
 						id: 1,
 						type: 'qs_card', //qs_card 全身宝藏卡 yy_card 营养宝藏卡 xjb_card 性价比宝藏卡 bd_card 百搭宝藏卡
@@ -346,6 +351,16 @@
 			}
 		},
 		methods: {
+			//奖品弹窗回调——我再想一想
+			closePrizePup() {
+				this.showPrizeTips = false
+				// tool.jump_back()
+			},
+			//奖品弹窗回调——跳转去留资
+			jumpNext() {
+				this.showPrizeTips = false
+				tool.jump_nav('/pages-game/xunbao/pages-list/award/award?curNow=1')
+			},
 			//获取地址详情
 			getAddressId(e) {
 				api.getAddressDetail(e).then(res => {
@@ -434,10 +449,14 @@
 				this.show = true
 				this.compound1 = 2
 			},
-			//跳转到我的奖励			jump_nav_wodajl() {				this.show = false				tool.jump_nav('/pages-game/xunbao/pages-list/award/award?curNow=1')			},
+			//跳转到我的奖励
+			jump_nav_wodajl() {
+				this.show = false
+				tool.jump_nav('/pages-game/xunbao/pages-list/award/award?curNow=1')
+			},
 			//合成卡片
 			compound() {
-				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~') 
+				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
 				api.mergeCard()
 					.then((res) => {
 						console.log(res.data, '合成返回');
@@ -447,7 +466,8 @@
 							if (res.data.first) {
 								this.$refs.bgGx.play(46).then(() => {
 									this.show = true
-									this.compound1 = 1
+									// this.compound1 = 1
+									this.showPrizeTips = true
 									this.bgGxShowFect = false
 								})
 							} else {

@@ -57,9 +57,20 @@ export {
 
 // 暴露一个函数来获取配置信息，而不是直接在模块级别访问store
 export function getConfig() {
-	return {
-		SHAREINFO: getShareInfo()
+	if (getShareInfo()) {
+		return {
+			SHAREINFO: getShareInfo()
+		}
+	} else {
+		return {
+			SHAREINFO: {
+				title: `嗨体喊你一起探索真皮层宝藏啦！`,
+				path: `pages-game/xunbao/index`,
+				imageUrl: 'https://img.vrupup.com/s/116/img/fxTup.png'
+			}
+		}
 	}
+
 }
 
 export default {

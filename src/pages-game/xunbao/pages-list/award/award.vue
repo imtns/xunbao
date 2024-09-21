@@ -78,7 +78,10 @@
 													:class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'">
 													{{prizeStatus[item2.prizeStatus]}}
 												</view> -->
-												<view class="award3122" v-if="item2.prizeStatus == 0 || item2.prizeStatus == 1" :class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'" @click="priztus(item2)">
+												<view class="award3122"
+													v-if="item2.prizeStatus == 0 || item2.prizeStatus == 1"
+													:class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'"
+													@click="priztus(item2)">
 													{{prizeStatus[item2.prizeStatus]}}
 												</view>
 												<!-- <view class="award3122" v-if="item2.prizeStatus == 66"
@@ -86,18 +89,20 @@
 													:class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'">
 													{{prizeStatus[3]}}
 												</view> -->
-                                                <view class="award3122" v-if="item2.prizeStatus == 66"
-                                                	@click="priztus(item2)"
-                                                	:class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'">
-                                                	{{prizeStatus[3]}}
-                                                </view>
+												<view class="award3122" v-if="item2.prizeStatus == 66"
+													@click="priztus(item2)"
+													:class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'">
+													{{prizeStatus[3]}}
+												</view>
 											</view>
 											<view class="award31_mc"
 												v-if="item2.prizeStatus == 2 || item2.prizeStatus == 3 || item2.prizeStatus == 4 || item2.prizeStatus == 5">
 												<view class="award31_mc1">
 													<view class="award31_mc11">
 														<!-- {{prizeStatus2[item2.prizeStatus]}} -->
-														<image :style="{'margin-top': item2.prizeStatus == 5 ? '44rpx' : ''}" :src="ASSETSURL + 'img/' + prizeStatus2[item2.prizeStatus]"
+														<image
+															:style="{'margin-top': item2.prizeStatus == 5 ? '44rpx' : ''}"
+															:src="ASSETSURL + 'img/' + prizeStatus2[item2.prizeStatus]"
 															height="92rpx" mode="heightFix"></image>
 													</view>
 													<view class="award31_mc12" v-if="index2 == 0">
@@ -106,7 +111,8 @@
 													<view class="award31_mc12" v-if="index2 == 1">
 														第2001-6000名可得宝藏嗨嗨挂件
 													</view>
-													<view class="award31_mc12" style="margin-top: 15rpx;" v-if="item2.prizeStatus != 5">
+													<view class="award31_mc12" style="margin-top: 15rpx;"
+														v-if="item2.prizeStatus != 5">
 														奖品当前剩余数量：{{item2.goodCnt || 0}}个
 													</view>
 												</view>
@@ -143,7 +149,7 @@
 										<view class="award5311">
 											<image :src="`${ASSETSURL}ad_2311.png`"></image>
 										</view>
-										<view class="award5312">
+										<view class="award5312" v-if="timeDiff">
 											{{timeDiff}}
 										</view>
 									</view>
@@ -248,9 +254,13 @@
 	} from '@/utils/report/report'
 	import shareAndDrop from '@/pages-game/xunbao/components/shareAndDrop/shareAndDrop.vue'
 	import store from '@/store'
+	import {
+		mapState
+	} from 'vuex'
 	export default {
 		components: {
-			shareAndDrop
+			shareAndDrop,
+			...mapState(['isLogin', 'userInfo'])
 		},
 		data() {
 			return {
@@ -319,7 +329,7 @@
 				addressDate: {}, //地址详情
 				name: '', //收货人
 				commodity: {}, //商品单个详情
-				isSubmit: false//防止重复提交
+				isSubmit: false //防止重复提交
 			}
 		},
 		computed: {
@@ -351,11 +361,23 @@
 		onLoad(opation) {
 			console.log("award-opation", opation)
 			if (opation.curNow) this.curNow = opation.curNow
+			console.log('this.isLogin', this.isLogin)
+			if (!this.isLogin) {
+				reportClickEvent({
+					activityName: '游戏首页跳转登录',
+					actionRank: 0,
+					activityId: 'game_xunbao_home_click_login',
+					activityContent: {}
+				})
+				return tool.jump_nav('/pages-sub/login/index')
+			}
 		},
 		onShow() {
+			
 			this.countdown("2024-10-11 12:00:00", 1000, this.onCountdownComplete)
 			// tool.storage('addressId', '1837064729768472578')
-			this.queryList()
+			this.$refs.paging.reload()
+			// this.queryList()
 			this.jsq_sj()
 			//获取地址
 			if (tool.storage('addressId')) {
@@ -427,7 +449,9 @@
 				if (store.state.actEndFlag && this.curNow != 2) return tool.alert('活动已结束，感谢您的关注~')
 				if (this.isSubmit) return
 				this.isSubmit = true
-				setTimeout(() => { this.isSubmit = false }, 1500)
+				setTimeout(() => {
+					this.isSubmit = false
+				}, 1500)
 				if (e.prizeStatus == 0) {
 					this.commodity = e
 					this.show = true
@@ -495,6 +519,7 @@
 								this.priceImgList.forEach(item3 => {
 									if (item2.prizeName == item3.prizeName) {
 										item2.prizeImage = item3.prizeImage
+										console.log("item2------", item2)
 									}
 								})
 							})
@@ -514,7 +539,8 @@
 								console.log('如果找到了第一个0，则将剩余的所有元素的prizeStatus设置为1')
 								for (let i = firstZeroIndex + 1; i < item.prizeInfoList.length; i++) {
 									item.prizeInfoList[i].prizeStatus = 5;
-									console.log("item.prizeInfoList[i].prizeStatus", item.prizeInfoList[i].prizeStatus)
+									console.log("item.prizeInfoList[i].prizeStatus", item.prizeInfoList[i]
+										.prizeStatus)
 								}
 							}
 						}
