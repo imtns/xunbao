@@ -373,7 +373,7 @@
 			}
 		},
 		onShow() {
-			
+
 			this.countdown("2024-10-11 12:00:00", 1000, this.onCountdownComplete)
 			// tool.storage('addressId', '1837064729768472578')
 			this.$refs.paging.reload()
@@ -442,7 +442,9 @@
 						this.queryList()
 						// somePageViewEvent() 全局埋点
 					}
-				})
+				}).catch(_ => {
+          tool.loading_h()
+        })
 			},
 			//点击填写地址
 			priztus(e) {
