@@ -240,7 +240,7 @@
 					height: 151rpx;
 					margin-top: 0rpx;
 					opacity: 1;
-
+					overflow: hidden;
 					.ranking21 {
 						background: #FFF0CE;
 						border-radius: 16rpx;

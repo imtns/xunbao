@@ -38,7 +38,7 @@
 						<view class="advertising421 le" @click="close1">
 							<image :src="`${ASSETSURL}advertising5.png`"></image>
 						</view>
-						<view class="advertising421 le" @click="close">
+						<view class="advertising421 le" @click="show = false">
 							<image :src="`${ASSETSURL}advertising6.png`"></image>
 						</view>
 					</view>
@@ -103,7 +103,7 @@
 				shareAndDropShow: false, //显示隐藏收货地址
 				addressDate: {}, //地址数据
 				isUseShare: true,
-				time: 15,
+				time: '--',
 				type: 2, //0提示  1最后一步
 				show: false,
 				video: null,
@@ -133,7 +133,7 @@
 					},
 				], //奖品合计
 				dq_prizeImage: null, //当前奖品图片
-				dq_claas_i: 1, //当前奖品索引
+				dq_claas_i: null, //当前奖品索引
 				shareCode2: null, //看完视频的code
 				isUseShare: true,
 				sharepro: 0, //分享进度
@@ -141,7 +141,8 @@
 				addressDate: {}, //地址详情
 				addressId: null, //获取地址
 				unpDate: true, //15后只触发一次
-				_currentTime: -1
+				_currentTime: -1,//视频播放当前秒（整数）
+				_currentTime2: -1//视频播放当前秒（小数）
 			}
 		},
 		onShareAppMessage() {
@@ -149,6 +150,7 @@
 			console.log('分享标题分享标题分享标题');
 			return {
 				title: '嗨体喊你一起探索真皮层宝藏啦！', //分享的标题
+				path: `pages-game/xunbao/index`,
 				imageUrl: 'https://cdn.vrupup.com/s/116/img/fxTup.png', //展示的图片，这里是本地路径的写法，也可以写http或https开头的图片路径
 				query: 'id=1154', //页面打开的传参
 				success: function(res) {
@@ -190,7 +192,7 @@
 				}, 0)
 			}
 			setInterval(() => {
-				console.log("当前秒", this._currentTime)
+				console.log("当前秒", this._currentTime, this._currentTime2)
 			}, 2000)
 			for (var i = 0; i < this.jiangp_list.length; i++) {
 				if (this.dropPrize.prizeName.includes(this.jiangp_list[i].prizeName)) {
@@ -225,7 +227,8 @@
 		computed: {
 			//当前进度
 			percentage() {
-				return (15 - this.time) * 50 / 15 + this.sharepro
+				let _time = (15 - this.time) * 50 / 15
+				return (_time >= 50 ? 50 : _time) + this.sharepro
 			},
 			priceImgList() {
 				return [{
@@ -336,9 +339,7 @@
 			},
 			// 分享朋友圈
 			shareWithFriends() {
-				console.log('分享朋友圈0', this.time);
 				if (this.time > 1) return
-				console.log('分享朋友圈1', this.time);
 				api.shareWithFriends({
 						watchVideoCode: this.shareCode2
 					})
@@ -407,12 +408,16 @@
 			},
 			//视频播放中
 			timeupdate(e) {
-				// if (!this.unpDate) return
-				let _currentTime = Math.floor(e.detail.currentTime)
+				let _currentTime = Math.floor(e.detail.currentTime), _currentTime2 = e.detail.currentTime, _duration = e.detail.duration
+				// console.log("e", e.detail.duration)
+				if (this.time == '--') {
+					this.time = _duration >= 15 ? 15 : Math.floor(_duration)
+				}
 				this._currentTime = _currentTime
+				this._currentTime2 = _currentTime2
 				this.time = 15 - _currentTime
 				// this.percentage = (15 - this.time) * 50 / 15
-				if (_currentTime >= 14 && this.unpDate) {
+				if (((_duration < 15 && _currentTime2 >= _duration) || (_duration >= 15 && _currentTime2 >= 14.8)) && this.unpDate) {
 					this.watchVideo2()
 					this.unpDate = false
 				}

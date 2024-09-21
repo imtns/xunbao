@@ -1,6 +1,5 @@
 <template>
 	<view>
-		<view>99999999999-{{showPrize}}</view>
 		<u-popup :show="show" @click="close" mode="center" :safeAreaInsetBottom="false" bgColor="transparent"
 			@close="close" :overlayOpacity="0.8" :closeOnClickOverlay="true">
 			<view class="prizeBox">
@@ -21,7 +20,7 @@
 				</view>
 
 				<!-- 卡片奖品 -->
-				<view class="cardPrize flex-cen-col" v-else-if="item.prizeType == 'kapian'">
+				<view class="cardPrize flex-cen-col" v-else-if="item.prizeType == 'kapian'" @longpress="longpressSaveImg">
 					<view class="back" @click="close" style="opacity: 0">
 						<u-icon :name="ASSETSURL + 'ad_18.png'" color="#fff" size="54rpx"></u-icon>
 					</view>
@@ -67,7 +66,7 @@
 						</button>
 					</view>
 					<view class="changAnBC" @longpress="longpressSaveImg">
-						长按保存
+						长按保存卡片
 					</view>
 				</view>
 				<!-- 实物奖品  惊喜掉落 -->
@@ -322,9 +321,10 @@
 		bottom: 13%;
 		left: 48%;
 		transform: translateX(-50%);
-		font-size: 20rpx;
+		font-size: 36rpx;
 		padding: 40rpx 60rpx;
 	}
+
 
 	.fect ::v-deep .currency {
 		top: 54% !important;

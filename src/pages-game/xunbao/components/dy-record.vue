@@ -8,7 +8,7 @@
 					<view class="adText" :style="{ color: code == 10007 ? '#000' : '' }">
 						{{ code == 10007 ? '识别失败，再来一次' : adText }}
 					</view>
-					<view class="adText" style="margin-top: 108rpx" :style="{ color: code == 10007 ? '#000' : '' }">{{ sayData }} </view>
+					<view class="adText" :class="!endRecordShow ? 'scale-wave' : ''" style="margin-top: 108rpx; font-size: 28rpx;font-weight: 400;" :style="{ color: code == 10007 ? '#000' : '' }">{{ sayData }} </view>
 				</view>
 				<view class="voice fade-show">
 					<sequenceEffect ref="voice" :sequenceList="voiceList"></sequenceEffect>
@@ -254,13 +254,14 @@ export default {
 			this.adText = data.ad
 			this.code = code
 			this.formData.adCode = data.adCode
-			this.sayData = '识别结果'
+			this.sayData = '(读取文字识别获取卡片或奖励)'
 		},
 		close() {
 			this.$emit('close')
 		},
 		// 长按录制
 		startRecord() {
+			if(!this.endRecordShow) return
 			this.$refs.voice.play()
 			this.$refs.mike.play()
 			this.getSetting().then(() => {
@@ -309,7 +310,7 @@ export default {
 			this.endRecordShow = false
 			// 隐藏 loading 提示框
 			// uni.hideLoading();
-			this.sayData = '识别中'
+			this.sayData = '语音识别中，请等待......'
 			recorderManager.stop()
 		},
 		// 生成握手参数
@@ -476,7 +477,7 @@ export default {
 		},
 		setResultText(result) {
 			let that = this
-			// console.log('最终结果' + result);
+			console.log('最终结果' + result);
 			// uni.showToast({
 			// 	title: '讯飞返回结果成功',
 			// 	icon: 'none'
@@ -492,6 +493,7 @@ export default {
 						...that.formData
 					})
 						.then(({ code, data, message }) => {
+							this.endRecordShow = true
 							reportClickEvent({
 								activityName: '语音识别接口',
 								actionRank: 0,
@@ -560,7 +562,7 @@ export default {
 
 <style lang="scss" scoped>
 	.head {
-		width: 110rpx;
+		width: 200rpx;
 		height: 78rpx;
 		margin-bottom: -30rpx;
 	}
@@ -576,7 +578,7 @@ export default {
 	width: 450rpx;
 	text-align: center;
 	font-weight: bold;
-	font-size: 32rpx;
+	font-size: 38rpx;
 	color: #ffffff;
 	position: absolute;
 	left: 114rpx;

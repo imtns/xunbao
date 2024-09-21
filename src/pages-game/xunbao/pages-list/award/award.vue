@@ -31,7 +31,7 @@
 											<image :src="item2.prizeImage"></image>
 										</view>
 										<view class="award312 le oh">
-											<view class="award3121 flex-cen">{{item2.prizeName}}</view>
+											<view class="award3121">{{item2.prizeName}}</view>
 											<view class="award3122 flex-cen" :class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'"
 												@click="priztus(item2)">
 												{{prizeStatus[item2.prizeStatus]}}
@@ -713,7 +713,7 @@
 				.award311 {
 					position: relative;
 					border: 4rpx solid #FE8A01;
-					border-radius: 30rpx;
+					border-radius: 29rpx;
 					font-size: 0;
 
 					image {

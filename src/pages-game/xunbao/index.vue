@@ -106,8 +106,8 @@
 				</view>
 			</u-popup>
 			<!-- 惊喜掉落弹窗 -->
-			<dy-prize ref="dyPrize2" seus="1" :show="showPrize" :showPrize="showPrize" :item="prizeDetail" @close="showPrize = false"
-			@getZlyq="showPrize = false"></dy-prize>
+			<dy-prize ref="dyPrize2" seus="1" :show="showPrize" :showPrize="showPrize" :item="prizeDetail"
+				@close="showPrize = false" @getZlyq="showPrize = false"></dy-prize>
 			<!-- 寻找宝藏 -->
 			<u-popup :show="show_1" :safeAreaInsetBottom="false" bgColor="transparent" @click="show_1 = false"
 				:overlayOpacity="overlayOpacity">
@@ -611,6 +611,7 @@
 				}, 30)
 			},
 			renw_1() {
+				if (this.showPrize) return
 				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
 				if (!this.isLogin) {
 					reportClickEvent({

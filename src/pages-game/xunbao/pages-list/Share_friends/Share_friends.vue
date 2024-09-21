@@ -20,7 +20,7 @@
 				<view class="Share1 tc">
 					<image mode="widthFix" :src="`${ASSETSURL}Share1.png`"></image>
 				</view>
-				<view class="Share1_1">感谢你的帮助！为你送上一张卡片/奖 励，收集卡片合成大奖，还有丰富的奖 励随机掉落，和我一起加入爱美客扫码 寻宝活动吧！</view>
+				<view class="Share1_1">感谢你的帮助！为你送上一张卡片/奖 励，收集卡片合成大奖，还有丰富的奖励随机掉落，和我一起加入爱美客扫码 寻宝活动吧！</view>
 				<view class="Share2 tc">
 					<image mode="widthFix" :src="`${ASSETSURL}Share2.png`"></image>
 				</view>
@@ -30,7 +30,7 @@
 				<view class="Share1 tc">
 					<image mode="widthFix" :src="`${ASSETSURL}Share1.png`"></image>
 				</view>
-				<view class="Share1_1">送你一张<text>{{ type }}</text>，赶快点击<text>收下</text>集齐 4张卡片就可以获得宝藏唱片音响1份还有 更多隐藏奖励等你挖掘！
+				<view class="Share1_1">送你一张<text>{{ type }}</text>，赶快点击<text>收下</text>集齐4张卡片就可以获得宝藏唱片音响1份还有更多隐藏奖励等你挖掘！
 				</view>
 				<view class="Share2 tc" v-if="type == '全身宝藏卡'">
 					<image mode="widthFix" :src="`${ASSETSURL}img/qs.png`"></image>
