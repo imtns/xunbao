@@ -22,7 +22,8 @@ import {
 } from '@/utils/sm4'
 
 const {
-	baseNewUrl
+	baseNewUrl,
+	baseIclubUrl
 } = require('./env')
 
 module.exports = {
@@ -41,7 +42,9 @@ module.exports = {
 		hideLoading = true, headers = {}) {
 		const json = 'application/json'
 		// iclub的请求走另外的接口域名
-		const base = baseNewUrl
+		// const base = baseNewUrl
+		// const base = url.includes('/iclub/') ? baseIclubUrl : baseNewUrl
+		const base = baseIclubUrl
 		const fullUrl = url.includes('http') ? url : `${base}${url}`
 		let token = lsGet('iclubUserToken3')
 

@@ -240,6 +240,7 @@
 				scan: null, //扫码
 				container_dibu: true,
 				overlayOpacity: 0.8,
+				actEndFlag: false,//活动是否结束
 				taskList: [{
 						name: '每日问答',
 						max: 1,
@@ -319,8 +320,14 @@
 		methods: {
 			//查询活动过期
 			queryActivityInfo() {
-				api.queryActivityInfo().then(res => {
-					conlsole.log(res, '--------查询活动过期-------')
+				api.queryActivityInfo().then(({ code, data }) => {
+					console.log(code, data, '--------查询活动过期-------')
+					if (code == 200) {
+						// this.actEndFlag = data.actEndFlag
+						// store.commit('setActEndFlag', data.actEndFlag)
+						store.commit('setActEndFlag', true)
+						console.log('查询活动过期', store.state.actEndFlag ? '【过期】' : '【未过期】') 
+					}
 				})
 			},
 			//loading加载完成
@@ -385,6 +392,7 @@
 						this.PreventMultiplePoints = false
 					}, 2000)
 					console.log('双击')
+					if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
 					this.showPrize = false
 					this.triggerBuryPoint()
 					reportClickEvent({
@@ -562,7 +570,8 @@
 				}, 30)
 			},
 			renw_1() {
-				if (!this.isLogin) {
+				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
+				if (!this.isLogin) { 
 					reportClickEvent({
 						activityName: '游戏首页跳转登录',
 						actionRank: 0,

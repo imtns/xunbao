@@ -418,6 +418,7 @@
 			},
 			// 赠送卡片
 			dq_src_sq(e, ee) {
+				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
 				if (ee == 0) return tool.alert("卡片数量不足")
 				console.log(e);
 				this.show = true
@@ -431,6 +432,7 @@
 			},
 			//合成卡片
 			compound() {
+				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
 				api.mergeCard()
 					.then((res) => {
 						console.log(res.data, '合成');

@@ -73,16 +73,24 @@
 											</view>
 											<view class="award312 le oh">
 												<view class="award3121">{{item2.prizeName}}</view>
-												<view class="award3122" v-if="item2.prizeStatus == 0"
+												<!-- <view class="award3122" v-if="item2.prizeStatus == 0"
 													@click="item2.prizeStatus == 0 ? show = true : ''"
 													:class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'">
 													{{prizeStatus[item2.prizeStatus]}}
+												</view> -->
+												<view class="award3122" v-if="item2.prizeStatus == 0" :class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'" @click="priztus(item2)">
+													{{prizeStatus[item2.prizeStatus]}}
 												</view>
-												<view class="award3122" v-if="item2.prizeStatus == 66"
+												<!-- <view class="award3122" v-if="item2.prizeStatus == 66"
 													@click="item2.prizeStatus == 0 ? show = true : ''"
 													:class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'">
 													{{prizeStatus[3]}}
-												</view>
+												</view> -->
+                                                <view class="award3122" v-if="item2.prizeStatus == 66"
+                                                	@click="priztus(item2)"
+                                                	:class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'">
+                                                	{{prizeStatus[3]}}
+                                                </view>
 											</view>
 											<view class="award31_mc"
 												v-if="item2.prizeStatus == 2 || item2.prizeStatus == 3 || item2.prizeStatus == 4">
@@ -310,8 +318,9 @@
 				addressDate: {}, //地址详情
 				name: '', //收货人
 				commodity: {}, //商品单个详情
+				isSubmit: false//防止重复提交
 			}
-		}, 
+		},
 		computed: {
 			priceImgList() {
 				return [{
@@ -349,6 +358,7 @@
 				this.getAddressId(this.addressId)
 			}
 			// this.getAddressId("1783425478279778305")
+			this.getAddressId("1837064729768472578")
 		},
 		methods: {
 			//测试查询所有storage
@@ -387,10 +397,13 @@
 					goodsCode: this.commodity.goodsCode, //商品编码
 					receiveAddressCode: this.addressDate.objectCode
 				}
+				console.log("this.commodity", this.commodity)
+				console.log("保存地址信息", data)
+				tool.loading('提交中')
 				api.saveAddressInfo(data).then(res => {
 					console.log(res, '===保存地址信息=======');
 					if (res.code == 200) {
-						tool.alert('提交成功')
+						tool.alert('提交成功', 1)
 						reportClickEvent({
 							activityName: '完成留资',
 							actionRank: 0,
@@ -405,10 +418,15 @@
 			},
 			//点击填写地址
 			priztus(e) {
-				console.log(e, '===');
+				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
+				if (this.isSubmit) return
+				this.isSubmit = true
+				setTimeout(() => { this.isSubmit = false }, 1500)
+				console.log('点击填写地址', e);
 				if (e.prizeStatus == 0) {
 					this.commodity = e
 					this.show = true
+					console.log("this.commodity", this.commodity)
 				}
 			},
 			//获取地址详情
@@ -712,6 +730,7 @@
 				border-radius: 20rpx 68rpx 37rpx 68rpx;
 				position: relative;
 				display: flex;
+
 				.award311 {
 					position: relative;
 					border: 4rpx solid #FE8A01;

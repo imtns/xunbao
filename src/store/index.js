@@ -16,6 +16,8 @@ const store = new Vuex.Store({
 		shareCode2: '',
 		//分享喜悦
 		shareCode3: '',
+		//活动结束标识
+		actEndFlag: false
 	},
 	mutations: {
 		//设置用户信息
@@ -44,7 +46,11 @@ const store = new Vuex.Store({
 			state.shareCode1 = ''
 			state.shareCode2 = ''
 			state.shareCode3 = ''
-		}
+		},
+		//活动结束标识
+		setActEndFlag(state, params) {
+			state.actEndFlag = params
+		},
 	}
 })
 

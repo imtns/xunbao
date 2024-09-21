@@ -70,7 +70,8 @@ export default {
 	//接口请求url
 	REQUESTURL: function() {
 		// return ['https://user-test.imeik.com/iclub', ''][this.DEV_ENV]
-		return process.env.VUE_APP_BASE_API
+		// return process.env.VUE_APP_BASE_API
+		return process.env.VUE_APP_BASE_API_ICLUB
 	},
 	//线上cdn资源url
 	ASSETSURL: 'https://cdn.vrupup.com/s/116/',
