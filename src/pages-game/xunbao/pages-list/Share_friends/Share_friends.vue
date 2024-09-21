@@ -375,7 +375,7 @@ export default {
 .Share6 {
 	position: absolute;
 	left: 50%;
-	bottom: 150rpx;
+	bottom: 200rpx;
 	z-index: 999;
 	transform: translateX(-50%);
 }
