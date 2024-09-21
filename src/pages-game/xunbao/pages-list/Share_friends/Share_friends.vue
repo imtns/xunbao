@@ -7,11 +7,6 @@
 			</view>
 		</view>
 		<view style="position: relative; z-index: 33">
-			<!-- <view class="award1" @click="getHome">
-				<image src="https://cdn.vrupup.com/s/116/ad_18.png"></image>
-				<!-- <u-navbar class="custom-navbar" title=" " autoBack bgColor="transparent" height="88rpx" placeholder></u-navbar> --
-			</view> -->
-
 			<view v-if="Share_type == 0" style="text-align: center">
 				<view class="Share4 tc">
 					<image mode="widthFix" :src="`${ASSETSURL}Share4.png`"></image>

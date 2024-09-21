@@ -94,8 +94,11 @@
 						<view class="compound121 le" @click="show = false">
 							<image :src="`${ASSETSURL}card/compound2.png`"></image>
 						</view>
-						<view class="compound122 le" @click="show = false,shareAndDropShow = true">
+						<!-- <view class="compound122 le" @click="show = false,shareAndDropShow = true">
 							<image :src="`${ASSETSURL}card/compound3.png`"></image>
+						</view> -->
+						<view class="compound122 le" @click="jump_nav_wodajl">
+							<image :src="`${ASSETSURL}card/compound3s.png`"></image>
 						</view>
 					</view>
 				</view>
@@ -206,6 +209,7 @@
 				compositionCount: 0, //数量
 				dq_src: null, //当前赠送卡片
 				isUseShare: true, //跳过全局分享
+				shareCode2: null,//合成奖品编码 
 				list: [{
 						id: 1,
 						type: 'qs_card', //qs_card 全身宝藏卡 yy_card 营养宝藏卡 xjb_card 性价比宝藏卡 bd_card 百搭宝藏卡
@@ -356,7 +360,7 @@
 			},
 			//保存地址信息
 			saveAddressInfo2() {
-				console.log('----保存地址信息----');
+				console.log('----保存地址信息----商品编码', this.shareCode2);
 				if (this.addressDate && !this.addressDate.objectCode) return tool.alert('请选择地址')
 				let data = {
 					goodsCode: this.shareCode2, //商品编码
@@ -430,13 +434,15 @@
 				this.show = true
 				this.compound1 = 2
 			},
+			//跳转到我的奖励			jump_nav_wodajl() {				this.show = false				tool.jump_nav('/pages-game/xunbao/pages-list/award/award?curNow=1')			},
 			//合成卡片
 			compound() {
-				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
+				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~') 
 				api.mergeCard()
 					.then((res) => {
-						console.log(res.data, '合成');
+						console.log(res.data, '合成返回');
 						if (res.code == 200) {
+							this.shareCode2 = res.data.goodsCode
 							this.bgGxShowFect = true
 							if (res.data.first) {
 								this.$refs.bgGx.play(46).then(() => {

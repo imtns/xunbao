@@ -12,7 +12,7 @@
 				<u-line-progress :percentage="percentage" :showText="false" activeColor="#FA7700"
 					height="18"></u-line-progress>
 			</view>
-			<view class="add_container3">{{ percentage }}%</view>
+			<view class="add_container3">{{ percentage }}%</view> 
 		</view>
 		<view class="container" v-show="!quan_tc" :style="{ opacity: pageLoadingOk ? '1' : '0' }">
 			<!-- <u-navbar title=" " leftIcon=" " :fixed="false" placeholder bgColor="#febd01"></u-navbar> -->
@@ -177,6 +177,16 @@
 				</view>
 			</u-popup>
 		</view>
+		<!-- 大奖 -->
+		<u-popup :show="show_popup_dajiang" mode="center" @click="show_popup_dajiang = false">
+			<view class="show_popup_dajiang_box por">
+				<image class="show_popup_dajiang_img" :src="`${ASSETSURL}song_dajiang3.png`"></image>
+				<view>
+					<view class="btn left" @click="show_popup_dajiang = false"></view>
+					<view class="btn right" @click="jump_nav_wodajl"></view>
+				</view>
+			</view>
+		</u-popup>
 		<loadingPage v-if="isShowLoadinPage" :pageLoadingOk="pageLoadingOk" @loadingOk="loadingOk"></loadingPage>
 	</view>
 </template>
@@ -212,6 +222,7 @@
 
 		data() {
 			return {
+				show_popup_dajiang: false, //大奖弹窗显示隐藏
 				isShowLoadinPage: true, //显示隐藏加载页
 				pageLoadingOk: false, //页面是否加载完成
 				effEShow: false, //首页特效
@@ -240,7 +251,7 @@
 				scan: null, //扫码
 				container_dibu: true,
 				overlayOpacity: 0.8,
-				actEndFlag: false,//活动是否结束
+				actEndFlag: false, //活动是否结束
 				taskList: [{
 						name: '每日问答',
 						max: 1,
@@ -297,7 +308,8 @@
 		},
 
 		onShow() {
-			 console.log(process.env,'envenvenv')
+			console.log(process.env, 'envenvenv')
+			if (!this.isShowLoadinPage) this.queryActivityInfo()
 			reportExposeEvent({
 				activityName: '游戏首页浏览',
 				actionRank: 0,
@@ -312,21 +324,46 @@
 					this.youx_zdao = false
 				}
 			}, 100)
-			this.queryActivityInfo()
 		},
 		onLoad(ope) {
 			this.add_jsq()
 		},
 		methods: {
+			//跳转到我的奖励
+			jump_nav_wodajl() {
+				this.show_popup_dajiang = false
+				tool.jump_nav('/pages-game/xunbao/pages-list/award/award?curNow=2')
+			},
+			//查询我的奖品信息（最高奖励）
+			getHtxbMyPrisjyqze() {
+				api.htxbMyPrize().then(res => {
+					console.log(res, '我的奖品')
+					res.data.forEach(item => {
+						if (item.prizeType == "zuigao") {
+							if (item.prizeInfoList.length && item.prizeInfoList[0].prizeStatus == 0) {
+								this.show_popup_dajiang = true
+								console.log("您获得了最高奖励的大奖-----------s")
+							}
+							// item.prizeInfoList.forEach(item2 => {
+							// 	item2.prizeStatus = 0
+							// })
+						}
+					})
+				})
+			},
 			//查询活动过期
 			queryActivityInfo() {
-				api.queryActivityInfo().then(({ code, data }) => {
+				api.queryActivityInfo().then(({
+					code,
+					data
+				}) => {
 					console.log(code, data, '--------查询活动过期-------')
 					if (code == 200) {
 						// this.actEndFlag = data.actEndFlag
 						store.commit('setActEndFlag', data.actEndFlag)
-
-						console.log('查询活动过期', store.state.actEndFlag ? '【过期】' : '【未过期】') 
+						// store.commit('setActEndFlag', true)
+						if (store.state.actEndFlag) this.getHtxbMyPrisjyqze()
+						console.log('查询活动过期', store.state.actEndFlag ? '【过期】' : '【未过期】')
 					}
 				})
 			},
@@ -334,6 +371,7 @@
 			loadingOk() {
 				this.isShowLoadinPage = false
 				this.getUserInfo()
+				this.queryActivityInfo()
 				this.getActivityTaskList()
 			},
 			//订阅消息
@@ -479,13 +517,12 @@
 					if (res.data.finish) {
 						this.prizeDetail = res.data
 						this.showPrize = true
-						this.show_1 = false;
 						this.$nextTick(() => {
 							if (data.prizeType == 'kapian') {
 								this.$refs.dyPrize2.play2()
-								
 							}
 						})
+						this.show_1 = false
 						reportClickEvent({
 							activityName: '用户完成连续签到任务获得卡片奖励的数量',
 							actionRank: 0,
@@ -573,7 +610,7 @@
 			},
 			renw_1() {
 				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
-				if (!this.isLogin) { 
+				if (!this.isLogin) {
 					reportClickEvent({
 						activityName: '游戏首页跳转登录',
 						actionRank: 0,
@@ -660,6 +697,27 @@
 	@import './css/base.css';
 </style>
 <style scoped lang="scss">
+	.show_popup_dajiang_box {
+		.show_popup_dajiang_img {
+			width: 750rpx;
+			height: 911rpx;
+		}
+
+		.btn {
+			width: 280rpx;
+			height: 100rpx;
+			opacity: 0.5;
+			position: absolute;
+			left: 80rpx;
+			bottom: 4px;
+
+			&.right {
+				left: auto;
+				right: 80rpx;
+			}
+		}
+	}
+
 	.box {
 		position: relative;
 

@@ -78,7 +78,7 @@
 													:class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'">
 													{{prizeStatus[item2.prizeStatus]}}
 												</view> -->
-												<view class="award3122" v-if="item2.prizeStatus == 0" :class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'" @click="priztus(item2)">
+												<view class="award3122" v-if="item2.prizeStatus == 0 || item2.prizeStatus == 1" :class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'" @click="priztus(item2)">
 													{{prizeStatus[item2.prizeStatus]}}
 												</view>
 												<!-- <view class="award3122" v-if="item2.prizeStatus == 66"
@@ -93,12 +93,11 @@
                                                 </view>
 											</view>
 											<view class="award31_mc"
-												v-if="item2.prizeStatus == 2 || item2.prizeStatus == 3 || item2.prizeStatus == 4">
+												v-if="item2.prizeStatus == 2 || item2.prizeStatus == 3 || item2.prizeStatus == 4 || item2.prizeStatus == 5">
 												<view class="award31_mc1">
 													<view class="award31_mc11">
 														<!-- {{prizeStatus2[item2.prizeStatus]}} -->
-														<image
-															:src="ASSETSURL + 'img/' + prizeStatus2[item2.prizeStatus]"
+														<image :style="{'margin-top': item2.prizeStatus == 5 ? '44rpx' : ''}" :src="ASSETSURL + 'img/' + prizeStatus2[item2.prizeStatus]"
 															height="92rpx" mode="heightFix"></image>
 													</view>
 													<view class="award31_mc12" v-if="index2 == 0">
@@ -107,7 +106,7 @@
 													<view class="award31_mc12" v-if="index2 == 1">
 														第2001-6000名可得宝藏嗨嗨挂件
 													</view>
-													<view class="award31_mc12" style="margin-top: 15rpx;">
+													<view class="award31_mc12" style="margin-top: 15rpx;" v-if="item2.prizeStatus != 5">
 														奖品当前剩余数量：{{item2.goodCnt || 0}}个
 													</view>
 												</view>
@@ -312,6 +311,7 @@
 					'zWHD.png',
 					'预占',
 					'zwkf.png', //'暂未开始发放',
+					'nyhd.png', //'您已获得音响',
 				],
 				difference: null,
 				timeDiff: null, //倒计时
@@ -348,6 +348,10 @@
 				}]
 			}
 		},
+		onLoad(opation) {
+			console.log("award-opation", opation)
+			if (opation.curNow) this.curNow = opation.curNow
+		},
 		onShow() {
 			this.countdown("2024-10-11 12:00:00", 1000, this.onCountdownComplete)
 			// tool.storage('addressId', '1837064729768472578')
@@ -358,8 +362,8 @@
 				this.addressId = tool.storage('addressId')
 				this.getAddressId(this.addressId)
 			}
-			// this.getAddressId("1783425478279778305")
-			this.getAddressId("1837064729768472578")
+			// this.getAddressId("1783425478279778305")//陈豪豪 的收货地址
+			// this.getAddressId("1837064729768472578")//扬帆 的收货地址
 		},
 		methods: {
 			//测试查询所有storage
@@ -419,11 +423,11 @@
 			},
 			//点击填写地址
 			priztus(e) {
-				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
+				console.log('点击填写地址', e, e.prizeStatus, e.prizeStatus == 0);
+				if (store.state.actEndFlag && this.curNow != 2) return tool.alert('活动已结束，感谢您的关注~')
 				if (this.isSubmit) return
 				this.isSubmit = true
 				setTimeout(() => { this.isSubmit = false }, 1500)
-				console.log('点击填写地址', e);
 				if (e.prizeStatus == 0) {
 					this.commodity = e
 					this.show = true
@@ -499,15 +503,18 @@
 							let firstZeroIndex = -1; // 初始化第一个0的索引
 							// 遍历列表找到第一个prizeStatus为0的元素索引
 							for (let i = 0; i < item.prizeInfoList.length; i++) {
-								if (item.prizeInfoList[i].prizeStatus === 0) {
+								if (item.prizeInfoList[i].prizeStatus == 0) {
 									firstZeroIndex = i;
+									console.log("firstZeroIndex", firstZeroIndex)
 									break; // 找到第一个0，记录索引后退出循环
 								}
 							}
 							// 如果找到了第一个0，则将剩余的所有元素的prizeStatus设置为1
 							if (firstZeroIndex !== -1) {
+								console.log('如果找到了第一个0，则将剩余的所有元素的prizeStatus设置为1')
 								for (let i = firstZeroIndex + 1; i < item.prizeInfoList.length; i++) {
-									item.prizeInfoList[i].prizeStatus = 66;
+									item.prizeInfoList[i].prizeStatus = 5;
+									console.log("item.prizeInfoList[i].prizeStatus", item.prizeInfoList[i].prizeStatus)
 								}
 							}
 						}

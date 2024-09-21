@@ -14,7 +14,7 @@
 					<view :style="{'left': percentage + '%'}" class="pro-circle"></view>
 				</view>
 				<view class="advertising11 le">
-					<image :src="`${ASSETSURL}advertising2.png`"></image>
+					<image :src="`${ASSETSURL}advertising2.png`"></image> 
 				</view>
 			</view>
 			<view class="advertising2">
@@ -23,7 +23,7 @@
 						:muted="false" @pause="pause" @ended="ended" @timeupdate="timeupdate"></video>
 				</view>
 				<view class="advertising22" v-show="time <= 0"> 完成 </view>
-				<view class="advertising22" v-show="time > 0"> {{ time }}s </view>
+				<view class="advertising22" v-show="time > 0">{{ time }}s </view>
 			</view>
 			<view class="advertising3 tc">
 				<image :src="`${ASSETSURL}advertising3.png`"></image>
@@ -133,6 +133,7 @@
 				addressDate: {}, //地址详情
 				addressId: null, //获取地址
 				unpDate: true, //15后只触发一次
+				_currentTime: -1
 			}
 		},
 		onShareAppMessage() {
@@ -174,6 +175,7 @@
 			}
 		},
 		onShow() {
+			setInterval(() => { console.log("当前秒", this._currentTime) }, 2000) 
 			for (var i = 0; i < this.jiangp_list.length; i++) {
 				if (this.dropPrize.prizeName.includes(this.jiangp_list[i].prizeName)) {
 					this.dq_prizeImage = this.jiangp_list[i].prizeImage
@@ -372,12 +374,14 @@
 			},
 			//视频播放中
 			timeupdate(e) {
-				if (!this.unpDate) return
-				this.time = 15 - Math.floor(e.detail.currentTime)
+				// if (!this.unpDate) return
+				let _currentTime = Math.floor(e.detail.currentTime)
+				this._currentTime = _currentTime
+				this.time = 15 - _currentTime
 				// this.percentage = (15 - this.time) * 50 / 15
-				if (Math.floor(e.detail.currentTime) >= 15 && this.unpDate) {
-					this.unpDate = false
+				if (_currentTime >= 14 && this.unpDate) {
 					this.watchVideo2()
+					this.unpDate = false
 				}
 			},
 			//视频播放完成

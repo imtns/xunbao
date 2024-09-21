@@ -162,7 +162,6 @@ export default {
  
 	//查询活动信息
 	queryActivityInfo: (data, url = '/iclub/openApi/activity/htxb/queryActivityInfo') => {
-	// queryActivityInfo: (data, url = 'https://user-test.imeik.com/openApi/activity/htxb/queryActivityInfo') => {
 		return myRequest(data, url, 'POST', false, 1)
 	}
 }
