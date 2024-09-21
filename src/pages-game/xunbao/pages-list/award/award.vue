@@ -248,6 +248,7 @@
 		reportExposeEvent
 	} from '@/utils/report/report'
 	import shareAndDrop from '@/pages-game/xunbao/components/shareAndDrop/shareAndDrop.vue'
+	import store from '@/store'
 	export default {
 		components: {
 			shareAndDrop
