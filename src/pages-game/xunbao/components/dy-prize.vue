@@ -75,7 +75,7 @@
 						<sequenceEffect ref="bgGx" :sequenceList="bgGx2"></sequenceEffect>
 					</view> -->
 					<image class="img" :src="ASSETSURL + 'img/diaoLuoJiangLI2.png'" mode="aspectFit"
-						@click="advertising"></image>
+						@click="$u.throttle(advertising, 2000)"></image>
 					<view class="xcolone" @click="close">
 						<image :src="ASSETSURL + 'img/Xclone.png'"></image>
 					</view>

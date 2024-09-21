@@ -63,7 +63,7 @@
 				<view class="card4ceng oh">
 					<!-- <u-scroll-list indicatorActiveColor="#ffb300" indicator='false'> -->
 					<view class="card41 le" v-for="(item, index) in list" :key="index"
-						@click="dq_src_sq(index, item.num)">
+						@click="throttledMethod(index, item.num)">
 						<view class="card411">
 							<image :src="`${ASSETSURL}card/card6.png`"></image>
 							<text>{{ item.num }}</text>
@@ -348,6 +348,11 @@
 			}
 		},
 		methods: {
+			throttledMethod(index, num) {
+				return this.$u.throttle(() => {
+					this.dq_src_sq(index, num);
+				}, 2000);
+			},
 			//长按保存图片
 			longpressSaveImg() {
 				// let _cardType = this.item.card.cardType,

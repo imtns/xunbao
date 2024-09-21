@@ -2,7 +2,10 @@
 	<view class="Share" v-show="isFect">
 		<view class="effect" style="width: 100vw; height: 100vh; position: absolute; left: 0; top: 0">
 			<sequenceEffect ref="showfect" :sequenceList="starList" @loadOk="loadOk"></sequenceEffect>
-			<view class="Share6 Share3 tc" v-if="Share_type != 2" @click="getHome">
+			<view class="Share6 Share3 tc" v-if="Share_type != 2 && Share_type != 1" @click="getHome">
+				<image mode="widthFix" :src="`${ASSETSURL}Share3.png`"></image>
+			</view>
+			<view class="Share6 Share3 tc" v-if="Share_type == 1" @click="getJoinActivity(shareCode)">
 				<image mode="widthFix" :src="`${ASSETSURL}Share3.png`"></image>
 			</view>
 		</view>
@@ -128,9 +131,10 @@
 			}
 			console.log(ope)
 			if (ope.shareCode) {
+				this.Share_type = 1
 				this.shareCode = ope.shareCode
 				// tool.alert(ope.shareCode + '我是分享过来的code')
-				this.getJoinActivity(ope.shareCode)
+				// this.getJoinActivity(ope.shareCode)
 			}
 			if (ope.shareCode1) {
 				console.log(222)
