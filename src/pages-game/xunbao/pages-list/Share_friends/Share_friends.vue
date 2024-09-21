@@ -101,7 +101,7 @@
 		},
 		data() {
 			return {
-				isFect:false,//加载
+				isFect: false, //加载
 				Share_type: 2, //0 卡片被收下 1 参与活动  2 收下 3 你不是新用户无法助力 4 卡片失效
 				timeData: {},
 				shareCode: null,
@@ -250,6 +250,7 @@
 								})
 							} else {
 								this.Share_type = 1
+								tool.alert('助力成功')
 								reportClickEvent({
 									activityName: '好友主力成功',
 									actionRank: 0,

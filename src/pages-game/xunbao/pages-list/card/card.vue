@@ -457,6 +457,7 @@
 				this.play2()
 			},
 			compound1_sq() {
+				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
 				this.show = true
 				this.compound1 = 2
 			},
@@ -478,7 +479,7 @@
 							this.bgGxShowFect = true
 							if (res.data.first) {
 								this.$refs.bgGx.play(46).then(() => {
-									this.show = true
+									// this.show = true
 									// this.compound1 = 1
 									this.showPrizeTips = true
 									this.bgGxShowFect = false

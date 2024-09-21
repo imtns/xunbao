@@ -31,8 +31,8 @@
 											<image :src="item2.prizeImage"></image>
 										</view>
 										<view class="award312 le oh">
-											<view class="award3121">{{item2.prizeName}}</view>
-											<view class="award3122" :class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'"
+											<view class="award3121 flex-cen">{{item2.prizeName}}</view>
+											<view class="award3122 flex-cen" :class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'"
 												@click="priztus(item2)">
 												{{prizeStatus[item2.prizeStatus]}}
 											</view>
@@ -102,10 +102,10 @@
 														:src="ASSETSURL + 'img/' + prizeStatus2[item2.prizeStatus]"
 														height="92rpx" mode="heightFix"></image>
 												</view>
-												<view class="award31_mc12" v-if="index2 == 0">
+												<view class="award31_mc12" v-if="index2 == 0 && item2.prizeStatus != 5">
 													第1-2000名可得宝藏唱片音响
 												</view>
-												<view class="award31_mc12" v-if="index2 == 1">
+												<view class="award31_mc12" v-if="index2 == 1 && item2.prizeStatus != 5">
 													第2001-6000名可得宝藏嗨嗨挂件
 												</view>
 												<view class="award31_mc12" style="margin-top: 15rpx;"
@@ -173,64 +173,6 @@
 			@click="getMyAddressId">
 			<image :src="ASSETSURL + 'img/jikaText.png'" mode=""></image>
 		</view>
-
-		<!-- 	<u-popup :show="show" mode="center" @close="close" @click="show = false">
-				<view class="award_tanc">
-					<view class="award_tanceng">
-						<view class="adddd">
-							<view class="award_tanc1 oh">
-								<view class="le">填写倒计时
-								</view>
-								<view class="le">{{timeDiff}}</view>
-							</view>
-							<view class="award_tanc2 oh">
-								<view class="award_tanc21 le">
-									收货人
-								</view>
-								<view class="award_tanc22 le">
-									<input disabled v-model="addressDate.receiver" />
-								</view>
-							</view>
-							<view class="award_tanc2 oh">
-								<view class="award_tanc21 le">
-									手机号
-								</view>
-								<view class="award_tanc22 le">
-									<input disabled v-model="addressDate.phone" />
-								</view>
-							</view>
-							<view class="award_tanc2 oh">
-								<view class="award_tanc21 le">
-									所在地
-								</view>
-								<view class="award_tanc22 le">
-									<input disabled v-model="addressDate.fullname" />
-								</view>
-							</view>
-							<view class="award_tanc2 oh">
-								<view class="award_tanc21 le">
-									详细地址
-								</view>
-								<view class="award_tanc22 le">
-									<input disabled v-model="addressDate.detailAddress" />
-								</view>
-							</view>
-							<view class="award_tanc3 oh">
-								<view class="award_tanc31 le" @click="selectAddress">
-									<image :src="`${ASSETSURL}award_tanc2.png`"></image>
-								</view>
-								<view class="award_tanc32 le" @click="saveAddressInfo">
-									<image :src="`${ASSETSURL}award_tanc3.png`"></image>
-								</view>
-
-							</view>
-							<view class="award_tanc4">
-								请仔细填写收货地址信息 确保奖励能够准确无误地送达您的手中 地址一经提交，不支持修改
-							</view>
-						</view>
-					</view>
-				</view>
-			</u-popup> -->
 
 		<!-- 地址弹窗 -->
 		<view style="margin-top: -100rpx;">
@@ -527,7 +469,7 @@
 							let firstZeroIndex = -1; // 初始化第一个0的索引
 							// 遍历列表找到第一个prizeStatus为0的元素索引
 							for (let i = 0; i < item.prizeInfoList.length; i++) {
-								if (item.prizeInfoList[i].prizeStatus == 0) {
+								if (item.prizeInfoList[i].prizeStatus == 0 || item.prizeInfoList[i].prizeStatus == 1) {
 									firstZeroIndex = i;
 									console.log("firstZeroIndex", firstZeroIndex)
 									break; // 找到第一个0，记录索引后退出循环
@@ -687,6 +629,9 @@
 			height: 52rpx;
 			border-radius: 50rpx;
 			margin-bottom: 100rpx;
+			::v-deep .u-subsection__item__text{
+				font-weight: bold !important;
+			}
 		}
 
 		.conterFoms {
@@ -768,7 +713,7 @@
 				.award311 {
 					position: relative;
 					border: 4rpx solid #FE8A01;
-					border-radius: 28rpx;
+					border-radius: 30rpx;
 					font-size: 0;
 
 					image {

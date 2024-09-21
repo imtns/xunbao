@@ -73,7 +73,7 @@
 				@close="shareAndDropShow = false" @selectAddress="selectAddress" @saveAddressInfo2="saveAddressInfo2" />
 		</view>
 		<!-- 获取奖品弹窗 -->
-		<u-popup :show="showPrizeTips" mode="center">
+		<u-popup :show="showPrizeTips" mode="center" overlayOpacity="0.7">
 			<prizeTips :showPrizeType="showPrizeType" @closePrizePup="closePrizePup" @jumpNext="jumpNext"></prizeTips>
 		</u-popup>
 	</view>
@@ -255,8 +255,8 @@
 		methods: {
 			//奖品弹窗回调——我再想一想
 			closePrizePup() {
-				this.showPrizeTips = false
-				// tool.jump_back()
+				// this.showPrizeTips = false
+				tool.jump_back()
 			},
 			//奖品弹窗回调——跳转去留资
 			jumpNext() {

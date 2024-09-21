@@ -105,8 +105,9 @@
 					</view>
 				</view>
 			</u-popup>
-			<dy-prize ref="dyPrize2" seus="1" :show="showPrize" :item="prizeDetail" @close="showPrize = false"
-				@getZlyq="showPrize = false"></dy-prize>
+			<!-- 惊喜掉落弹窗 -->
+			<dy-prize ref="dyPrize2" seus="1" :show="showPrize" :showPrize="showPrize" :item="prizeDetail" @close="showPrize = false"
+			@getZlyq="showPrize = false"></dy-prize>
 			<!-- 寻找宝藏 -->
 			<u-popup :show="show_1" :safeAreaInsetBottom="false" bgColor="transparent" @click="show_1 = false"
 				:overlayOpacity="overlayOpacity">
@@ -513,7 +514,7 @@
 			continueSign(e, inx) {
 				api.continueSign().then((res) => {
 					console.log(res, '--------')
-					tool.alert(res.message)
+					// tool.alert(res.message)
 					this.getActivityTaskList()
 					if (res.data.finish) {
 						this.prizeDetail = res.data

@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<view>99999999999-{{showPrize}}</view>
 		<u-popup :show="show" @click="close" mode="center" :safeAreaInsetBottom="false" bgColor="transparent"
 			@close="close" :overlayOpacity="0.8" :closeOnClickOverlay="true">
 			<view class="prizeBox">
@@ -20,7 +21,7 @@
 				</view>
 
 				<!-- 卡片奖品 -->
-				<view class="cardPrize flex-cen-col" v-else-if="item.prizeType == 'kapian'" @longpress="longpressSaveImg">
+				<view class="cardPrize flex-cen-col" v-else-if="item.prizeType == 'kapian'">
 					<view class="back" @click="close" style="opacity: 0">
 						<u-icon :name="ASSETSURL + 'ad_18.png'" color="#fff" size="54rpx"></u-icon>
 					</view>
@@ -41,7 +42,7 @@
 						v-show="item.card.cardType == 'bd_card'">
 						<!-- <sequenceEffect ref="showfect1" :sequenceList="starList" @loadOk="loadOk('showfect1')">
 						</sequenceEffect> -->
-						<card-flip ref="showfect1" :option="starList1" ></card-flip>
+						<card-flip ref="showfect1" :option="starList1"></card-flip>
 					</view>
 					<view class="fect" style="width: 474rpx; height: 702rpx; z-index: -1"
 						v-show="item.card.cardType == 'qs_card'">
@@ -66,7 +67,7 @@
 						</button>
 					</view>
 					<view class="changAnBC" @longpress="longpressSaveImg">
-						长按保存卡片
+						长按保存
 					</view>
 				</view>
 				<!-- 实物奖品  惊喜掉落 -->
@@ -75,7 +76,7 @@
 						<sequenceEffect ref="bgGx" :sequenceList="bgGx2"></sequenceEffect>
 					</view> -->
 					<image class="img" :src="ASSETSURL + 'img/diaoLuoJiangLI2.png'" mode="aspectFit"
-						@click="$u.throttle(advertising, 2000)"></image>
+						@click="advertising"></image>
 					<view class="xcolone" @click="close">
 						<image :src="ASSETSURL + 'img/Xclone.png'"></image>
 					</view>
@@ -111,8 +112,21 @@
 			cardFlip,
 			sequenceEffect
 		},
-
+		watch: {
+			showPrize: {
+				handler(newVal, oldVale) {
+					console.log("newVal-oldVale", newVal, oldVale)
+					if (newVal) this.openPopup()
+				},
+				deep: true,
+				immediate: true
+			}
+		},
 		props: {
+			showPrize: {
+				type: Boolean,
+				default: false
+			},
 			seus: {
 				String,
 				default: null
@@ -131,6 +145,8 @@
 		},
 		data() {
 			return {
+				isAllowClicks: false, //控制延迟可点击跳转
+				setTimeout_isAllowClicks: null, //定时器-控制延迟可点击跳转
 				bgGxShow: false,
 				starList1: {
 					imgList: ['https://img.vrupup.com/s/116/img/zpc1.png',
@@ -178,7 +194,8 @@
 		methods: {
 			//长按保存图片
 			longpressSaveImg() {
-				let _cardType = this.item.card.cardType, _cardTypeList = ['', 'bd_card', 'qs_card', 'yy_card', 'xjb_card']
+				let _cardType = this.item.card.cardType,
+					_cardTypeList = ['', 'bd_card', 'qs_card', 'yy_card', 'xjb_card']
 				let _cardIndex = _cardTypeList.findIndex(items => items == _cardType)
 				console.log('长按保存图片', _cardIndex, this[`starList${_cardIndex}`].imgList[1])
 				util.saveImageToPhotosAlbum(this[`starList${_cardIndex}`].imgList[1])
@@ -204,8 +221,16 @@
 				console.log(Page, '当前页面路径')
 				if (Page.route != 'pages-game/xunbao/index') uni.navigateBack()
 			},
+			//打开了弹窗
+			openPopup() {
+				clearTimeout(this.setTimeout_isAllowClicks)
+				this.setTimeout_isAllowClicks = setTimeout(() => {
+					this.isAllowClicks = true
+				}, 1000)
+			},
 			//跳转到视频页
 			advertising() {
+				if (!this.isAllowClicks) return
 				this.$emit('close')
 				tool.jump_nav('/pages-game/xunbao/pages-list/advertising/advertising')
 			},
@@ -297,8 +322,7 @@
 		bottom: 13%;
 		left: 48%;
 		transform: translateX(-50%);
-		font-size: 36rpx;
-		font-weight: 700;
+		font-size: 20rpx;
 		padding: 40rpx 60rpx;
 	}
 
