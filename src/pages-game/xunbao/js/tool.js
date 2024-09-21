@@ -28,21 +28,30 @@ const getMenuButtonBoundingClientRect = () => {
 const saveImageToPhotosAlbum = (imgUrl) => {
 	return new Promise(async (resolve, reject) => {
 		if (imgUrl.includes('https')) imgUrl = (await getImageInfo(imgUrl)).path
-			uni.saveImageToPhotosAlbum({
-				filePath: imgUrl,
-				success: function() {
-					resolve({ status: 1, msg: '保存图片到系统相册成功' })
-					alert('保存成功', 1)
-				},
-				fail(err) {
-					if (err.errMsg == 'saveImageToPhotosAlbum:fail auth deny') {
-						resolve({ status: 0, msg: err })
-						alert('您拒绝了添加到相册授权')
-					} else {
-						resolve({ status: -1, msg: err })
-					}
+		uni.saveImageToPhotosAlbum({
+			filePath: imgUrl,
+			success: function() {
+				resolve({
+					status: 1,
+					msg: '保存图片到系统相册成功'
+				})
+				alert('保存成功', 1)
+			},
+			fail(err) {
+				if (err.errMsg == 'saveImageToPhotosAlbum:fail auth deny') {
+					resolve({
+						status: 0,
+						msg: err
+					})
+					// alert('您拒绝了添加到相册授权')
+				} else {
+					resolve({
+						status: -1,
+						msg: err
+					})
 				}
-			})
+			}
+		})
 		// })
 	})
 }
@@ -109,11 +118,13 @@ const showModal = (title = "确认", content = "您确认进行此操作？", ca
 			title: title,
 			content: content,
 			showCancel: cancels ? true : false,
-			cancelText: cancels ? (cancels.indexOf(',') != -1 ? cancels.split(",")[0] : cancels) : '取消',
+			cancelText: cancels ? (cancels.indexOf(',') != -1 ? cancels.split(",")[0] : cancels) :
+				'取消',
 			cancelColor: (cancels && cancels.indexOf(',') != -1) ? cancels.split(",")[1] : '#333',
 			confirmText: confirms ? (confirms.indexOf(',') != -1 ? confirms.split(",")[0] :
 				confirms) : '确认',
-			confirmColor: (confirms && confirms.indexOf(',') != -1) ? confirms.split(",")[1] : '#333',
+			confirmColor: (confirms && confirms.indexOf(',') != -1) ? confirms.split(",")[1] :
+				'#333',
 			success: (res) => {
 				if (res.confirm) {
 					resolve(true)
@@ -727,12 +738,30 @@ const getSetting = scope => {
 
 	})
 }
+/**
+ * 打开系统授权设置页
+ */
+const openSetting = () => {
+	return new Promise((resolve, reject) => {
+		uni.openSetting({
+			success: res => {
+				if (res.authSetting['scope.writePhotosAlbum'] === true) {
+					resolve()
+				}
+			},
+			fail: err => {
+				reject(err)
+			}
+		})
+	})
+}
 
 
 
 module.exports = {
 	getSetting,
 	getDateTime,
+	openSetting,
 	saveImageToPhotosAlbum,
 	requestSubscribeMessage,
 	alert,

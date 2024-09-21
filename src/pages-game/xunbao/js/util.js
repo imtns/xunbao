@@ -4,13 +4,18 @@ import tool from './tool.js'
 const saveImageToPhotosAlbum = (imgUrl) => {
 	tool.saveImageToPhotosAlbum(imgUrl).then(res => {
 		if (res.status === 0) {
-			tool.showModal("添加到相册授权", "您拒绝了添加到相册授权，打开指引：右上角“・・・” > 设置 > 添加到相册  > 开启", false)
+			tool.showModal("添加到相册授权", "您拒绝了添加到相册授权，点击确认按钮后开启授权").then(res => {
+				if (res) {
+					tool.openSetting().then(res => {
+						saveImageToPhotosAlbum(imgUrl)
+					})
+				}
+			})
 		}
 	})
 }
 //判断渠道-determineTheSceneJump(options.scene, 1154, '/page')
 const determineTheSceneJump = (scene, scencVal, pageUrl) => {
-	console.log("场景值", scene)
 	if (scene == scencVal) {
 		tool.jump_rel(pageUrl)
 	}

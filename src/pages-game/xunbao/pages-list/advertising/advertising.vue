@@ -19,7 +19,7 @@
 			</view>
 			<view class="advertising2">
 				<view class="advertising21">
-					<video :src="video" :enable-progress-gesture="false" :controls="false" :autoplay="true"
+					<video id="myVideo" :src="video" :enable-progress-gesture="false" :controls="false" :autoplay="true"
 						:muted="false" @pause="pause" @ended="ended" @timeupdate="timeupdate"></video>
 				</view>
 				<view class="advertising22" v-show="time <= 0"> 完成 </view>
@@ -38,7 +38,7 @@
 						<view class="advertising421 le" @click="close1">
 							<image :src="`${ASSETSURL}advertising5.png`"></image>
 						</view>
-						<view class="advertising421 le" @click="show = false">
+						<view class="advertising421 le" @click="show = false,videoContext.play()">
 							<image :src="`${ASSETSURL}advertising6.png`"></image>
 						</view>
 					</view>
@@ -97,6 +97,7 @@
 		},
 		data() {
 			return {
+				videoContext: null, //视频dom
 				showPrizeTips: false, //奖品弹窗
 				showPrizeType: 0, //当前中奖图片索引//1-4
 				showPyq: false, //朋友圈弹窗
@@ -141,8 +142,8 @@
 				addressDate: {}, //地址详情
 				addressId: null, //获取地址
 				unpDate: true, //15后只触发一次
-				_currentTime: -1,//视频播放当前秒（整数）
-				_currentTime2: -1//视频播放当前秒（小数）
+				_currentTime: -1, //视频播放当前秒（整数）
+				_currentTime2: -1 //视频播放当前秒（小数）
 			}
 		},
 		onShareAppMessage() {
@@ -186,7 +187,7 @@
 		},
 		onShow() {
 			if (tool.storage('completeVideoPrize')) {
-				setTimeout(() => { 
+				setTimeout(() => {
 					tool.storage('#completeVideoPrize')
 					tool.jump_back()
 				}, 0)
@@ -223,6 +224,7 @@
 		},
 		onUnload() {
 			clearInterval(this.dsq)
+			this.videoContext = null
 		},
 		computed: {
 			//当前进度
@@ -361,6 +363,10 @@
 			},
 			fhui() {
 				if (this.time > 0) {
+					this.$nextTick(() => {
+						this.videoContext = uni.createVideoContext('myVideo')
+						this.videoContext.pause(); // 暂停视频
+					})
 					this.show = true
 					this.type = 0
 				} else {
@@ -408,7 +414,9 @@
 			},
 			//视频播放中
 			timeupdate(e) {
-				let _currentTime = Math.floor(e.detail.currentTime), _currentTime2 = e.detail.currentTime, _duration = e.detail.duration
+				let _currentTime = Math.floor(e.detail.currentTime),
+					_currentTime2 = e.detail.currentTime,
+					_duration = e.detail.duration
 				// console.log("e", e.detail.duration)
 				if (this.time == '--') {
 					this.time = _duration >= 15 ? 15 : Math.floor(_duration)
@@ -417,7 +425,8 @@
 				this._currentTime2 = _currentTime2
 				this.time = 15 - _currentTime
 				// this.percentage = (15 - this.time) * 50 / 15
-				if (((_duration < 15 && _currentTime2 >= _duration) || (_duration >= 15 && _currentTime2 >= 14.8)) && this.unpDate) {
+				if (((_duration < 15 && _currentTime2 >= _duration) || (_duration >= 15 && _currentTime2 >= 14.8)) && this
+					.unpDate) {
 					this.watchVideo2()
 					this.unpDate = false
 				}
