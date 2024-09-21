@@ -6,7 +6,7 @@
 				<!-- <u-navbar class="custom-navbar" title=" " autoBack bgColor="transparent" height="88rpx" placeholder></u-navbar> -->
 				<!-- <image src='https://cdn.vrupup.com/s/116/ad_2.png' style="position: fixed;bottom: 0;width: 100vw;z-index: 9999;" class="addd12" mode="widthFix"></image> -->
 				<view class="camera">
-					<camera device-position="back" flash="off" binderror="error" frame-size="small">
+					<camera v-if="isShowCamera" device-position="back" flash="off" binderror="error" frame-size="small">
 						<image v-if="type == 0" class="cover-image" :src="`${ASSETSURL}ar.png`"></image>
 					</camera>
 				</view>
@@ -58,6 +58,8 @@
 		},
 		data() {
 			return {
+				context:null,//相机上下文
+				isShowCamera: true,//展示相机
 				codes_type: 2, //0 1 2是否扫到内容 提示
 				isSend: false,
 				src: '',
@@ -75,7 +77,47 @@
 				return
 			}
 		},
+		onShow() {
+			this.getSetting().then(() => { 
+				this.isShowCamera = true
+				this.contextCamera = wx.createCameraContext()
+			}) 
+		},
 		methods: {
+			//查询是否授权
+			getSetting() {
+				return new Promise((resolve, reject) => {
+					console.log('查询授权')
+					let that = this
+					tool.getSetting('scope.camera').then((res) => {
+						console.log(res, '相机授权')
+						if (res.status === 0) {
+							this.isShowCamera = false
+							uni.authorize({
+								scope: 'scope.camera',
+								success() {
+									resolve()
+								},
+								fail() {
+									tool.showModal("访问相机授权", "您拒绝了访问相机授权，点击确认按钮后开启授权").then(res => {
+										if (res) {
+ 										uni.openSetting({
+											success: (res) => {
+												if (res.authSetting['scope.camera'] === true) {
+													resolve()
+												}
+											}
+										})
+										}
+									})
+								}
+							})
+						} else if (res.status == 1) {
+							resolve()
+						}
+					})
+				})
+			},
 			youx_zdao_xyb() {
 				console.log(11)
 				tool.jump_back()
@@ -99,7 +141,7 @@
 			},
 			takePhoto() {
 				api.preArScan({
-					methodName: 'takePhoto'
+					methodName: 'startScan'
 				}).then(({
 					data,
 					code,
@@ -123,10 +165,9 @@
 			startScan() {
 				if (this.isSend) return tool.alert('太快了~')
 				this.isSend = true
-				const context = wx.createCameraContext()
+				// this.contextCamera = wx.createCameraContext()
 				let that = this
-
-				context.takePhoto({
+				this.contextCamera.takePhoto({
 					quality: 'high',
 					success: function(res) {
 						// tool.loading();

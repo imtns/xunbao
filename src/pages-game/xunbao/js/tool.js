@@ -294,7 +294,6 @@ const jump_back = (delta) => {
  * 操作本地缓存
  * @param { String } key 缓存键值
  * @param { String } value 缓存数据
- * @param { Boolean } isEnv 是否自动拼接环境
  */
 const storage = (key, value) => {
 	if (value != null) {
@@ -305,7 +304,7 @@ const storage = (key, value) => {
 		} else {
 			if (key != '#') {
 				if (key[0] == '#') {
-					uni.removeStorageSync(`${key.slice(1)}_${key}`)
+					uni.removeStorageSync(`${env}_${key.slice(1)}`)
 				} else {
 					return uni.getStorageSync(`${env}_${key}`)
 				}
@@ -315,45 +314,6 @@ const storage = (key, value) => {
 		}
 	}
 }
-// const storage = (key, value, isEnv = true) => {
-// 	if (isEnv) key = `${env}_${key}`
-// 	if (value != null) {
-// 		uni.setStorageSync(key, value)
-// 	} else {
-// 		if (key == null) {
-// 			return uni.getStorageInfoSync()
-// 		} else {
-// 			if (key != '#') {
-// 				if (key[0] == '#') {
-// 					uni.removeStorageSync(key.slice(1))
-// 				} else {
-// 					return uni.getStorageSync(key)
-// 				}
-// 			} else if (key == '#') {
-// 				uni.clearStorageSync()
-// 			}
-// 		}
-// 	}
-// }
-// const storage = (key, value, isEnv) => {
-// 	if (value != null) {
-// 		uni.setStorageSync(`${env}_${key}`, value)
-// 	} else {
-// 		if (key == null) {
-// 			return uni.getStorageInfoSync()
-// 		} else {
-// 			if (key != '#') {
-// 				if (key[0] == '#') {
-// 					uni.removeStorageSync(`${key.slice(1)}_${key}`)
-// 				} else {
-// 					return uni.getStorageSync(`${env}_${key}`)
-// 				}
-// 			} else if (key == '#') {
-// 				uni.clearStorageSync()
-// 			}
-// 		}
-// 	}
-// }
 /**
  * 选择/拍摄图片
  * @param { Number } count 选择/拍摄图片张数
@@ -734,10 +694,18 @@ const getSetting = scope => {
 		console.log("scope", scope)
 		uni.getSetting({
 			success(res) {
-				if (!res.authSetting[scope]) {
+				let _scope = res.authSetting[scope]
+				console.log("查询是否授权查询是否授权2", res, _scope)
+				if (_scope === undefined) {
+					resolve({
+						status: -1,
+						msg: '用户未授过权',
+						data: res
+					})
+				} else if (!_scope) {
 					resolve({
 						status: 0,
-						msg: '用户尚未授权',
+						msg: '用户拒绝过授权',
 						data: res
 					})
 				} else {
