@@ -21,7 +21,7 @@
 					height="94rpx"></u-image>
 				<u-image :src="`${ASSETSURL}again.png`" v-else-if="code == 10007" @click="again" width="273rpx"
 					height="94rpx"></u-image>
-				<view class="record-btn por" v-else :style="{ opacity: endRecordShow ? '1' : '0' }" @touchstart="startRecord"
+				<view class="record-btn por" v-else  @touchstart="startRecord"
 					@touchend="endRecord">
 
 					<view class="mike fade-show">
@@ -114,7 +114,7 @@
 				},
 				mikeList: {
 					url: `https://cdn.vrupup.com/s/116/mike3/1.png`,
-					num: 30,
+					num: 15,
 					initIndex: 1,
 					speed: 68,
 					loop: true,
@@ -137,7 +137,7 @@
 					adCode: ''
 				},
 				code: '10007',
-				sayData: '识别结果',
+				sayData: ' ',
 				endRecordShow: true, //是否录音
 				myConnectSocket: null, //WebSocket
 				isNoreadAuto: true, //录音权限
@@ -310,7 +310,7 @@
 			// 松开停止
 			endRecord() {
 				this.$refs.voice.pause();
-				this.$refs.mike.play();
+				this.$refs.mike.pause();
 				if (!this.isNoreadAuto) return
 				this.endRecordShow = false
 				// 隐藏 loading 提示框
@@ -402,7 +402,6 @@
 					// uni.showLoading({
 					// 	title: '识别中'
 					// })
-					this.sayData = '识别中'
 					// 最后一帧
 					if (this.audioData.length === 0) {
 						// if (this.status === 'end') {
@@ -491,7 +490,7 @@
 				// })
 				uni.hideLoading()
 				that.formData.voiceText = result
-				that.sayData = that.formData.voiceText
+				that.sayData = ' '
 				tool.uploadFiles([that.voicePath], 'https://java.vrupup.com/identify/link/uploadFile')
 					.then((res) => {
 						that.formData.voiceUrl = res[0]

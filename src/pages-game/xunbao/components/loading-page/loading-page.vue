@@ -98,7 +98,7 @@
 				margin-top: 8rpx;
 				border: 2rpx solid #000;
 				border-radius: 40rpx;
-
+				overflow: hidden;
 				.pro-box {
 					position: absolute;
 					top: 0;
