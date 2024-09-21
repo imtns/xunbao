@@ -186,7 +186,7 @@ export default {
         this.dq_prizeImage = this.jiangp_list[i].prizeImage
         console.log(i, this.jiangp_list[i].prizeName);
         this.dq_claas_i = i
-        this.showPrizeType = i
+        this.showPrizeType = i + 1
       }
     }
     //获取地址
