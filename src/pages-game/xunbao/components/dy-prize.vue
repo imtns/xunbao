@@ -20,7 +20,7 @@
 				</view>
 
 				<!-- 卡片奖品 -->
-				<view class="cardPrize flex-cen-col" v-else-if="item.prizeType == 'kapian'">
+				<view class="cardPrize flex-cen-col" v-else-if="item.prizeType == 'kapian'" @longpress="longpressSaveImg">
 					<view class="back" @click="close" style="opacity: 0">
 						<u-icon :name="ASSETSURL + 'ad_18.png'" color="#fff" size="54rpx"></u-icon>
 					</view>
@@ -41,7 +41,7 @@
 						v-show="item.card.cardType == 'bd_card'">
 						<!-- <sequenceEffect ref="showfect1" :sequenceList="starList" @loadOk="loadOk('showfect1')">
 						</sequenceEffect> -->
-						<card-flip ref="showfect1" :option="starList1"></card-flip>
+						<card-flip ref="showfect1" :option="starList1" ></card-flip>
 					</view>
 					<view class="fect" style="width: 474rpx; height: 702rpx; z-index: -1"
 						v-show="item.card.cardType == 'qs_card'">
@@ -66,7 +66,7 @@
 						</button>
 					</view>
 					<view class="changAnBC" @longpress="longpressSaveImg">
-						长按保存
+						长按保存卡片
 					</view>
 				</view>
 				<!-- 实物奖品  惊喜掉落 -->
@@ -297,7 +297,8 @@
 		bottom: 13%;
 		left: 48%;
 		transform: translateX(-50%);
-		font-size: 20rpx;
+		font-size: 36rpx;
+		font-weight: 700;
 		padding: 40rpx 60rpx;
 	}
 

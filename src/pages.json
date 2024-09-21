@@ -27,7 +27,7 @@
 			"pages": [{
 					"path": "xunbao/index",
 					"style": {
-						"navigationBarTitleText": "首页2",
+						"navigationBarTitleText": "首页",
 						// "navigationStyle": "custom",
 						"disableScroll": true,
 						"backgroundColor": "#febd01"

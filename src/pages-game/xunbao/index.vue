@@ -408,45 +408,53 @@
 				this.$refs.homeDx.play()
 			},
 			handleDoubleClick1() {
-				console.log('this.isLogin', this.isLogin)
+				console.log('this.isLogin', this.isLogin);
 				if (!this.isLogin) {
 					reportClickEvent({
 						activityName: '游戏首页跳转登录',
 						actionRank: 0,
 						activityId: 'game_xunbao_home_click_login',
 						activityContent: {}
-					})
-					return tool.jump_nav('/pages-sub/login/index')
+					});
+					return tool.jump_nav('/pages-sub/login/index');
 				}
-				// 单击或双击
-				let _this = this
-				let curTime = new Date().getTime()
-				let lastTime = _this.lastTapDiffTime
-				_this.lastTapDiffTime = curTime
-				let diff = curTime - lastTime
-				if (diff < 300) {
-					if (this.PreventMultiplePoints) return
-					this.PreventMultiplePoints = true
-					setTimeout(() => {
-						this.PreventMultiplePoints = false
-					}, 2000)
-					console.log('双击')
-					if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
-					this.showPrize = false
-					this.triggerBuryPoint()
-					reportClickEvent({
-						activityName: '首页埋点点击',
-						actionRank: 0,
-						activityId: 'game_xunbao_click_point',
-						activityContent: {}
-					})
-					clearTimeout(_this.lastTapTimeoutFunc)
-				} else {
-					// 单击事件延时300毫秒执行
-					_this.lastTapTimeoutFunc = setTimeout(function() {
-						console.log('单击')
-					}, 300)
+
+				let curTime = new Date().getTime();
+				// 如果存在上一次点击的时间，并且两次点击间隔小于300毫秒，则认为是快速连续点击
+				if (this.lastTapTime && (curTime - this.lastTapTime < 300)) {
+					console.log('防多点：快速连续点击');
+					return; // 直接返回，不执行后续代码
 				}
+
+				// 更新上一次点击的时间
+				this.lastTapTime = curTime;
+
+				// 双击事件处理
+				if (this.PreventMultiplePoints) return;
+				this.PreventMultiplePoints = true;
+				setTimeout(() => {
+					this.PreventMultiplePoints = false;
+				}, 2000);
+
+				console.log('双击');
+				if (store.state.actEndFlag) {
+					return tool.alert('活动已结束，感谢您的关注~');
+				}
+				this.showPrize = false;
+				this.triggerBuryPoint();
+				reportClickEvent({
+					activityName: '首页埋点点击',
+					actionRank: 0,
+					activityId: 'game_xunbao_click_point',
+					activityContent: {}
+				});
+
+				// 单击事件延时300毫秒执行
+				clearTimeout(this.lastTapTimeoutFunc); // 清除之前的延时函数
+				this.lastTapTimeoutFunc = setTimeout(() => {
+					console.log('单击');
+					// 在这里处理单击事件
+				}, 300);
 			},
 			// 查询活动任务接口
 			getActivityTaskList() {
@@ -888,7 +896,7 @@
 			height: 100%;
 
 			.warper1 {
-				background: url('https://cdn.vrupup.com/s/116/ad_15.png') no-repeat;
+				background: url('https://cdn.vrupup.com/s/116/image/guize3.png') no-repeat;
 				background-size: 100% 100%;
 				width: 677rpx;
 				height: 1196rpx;

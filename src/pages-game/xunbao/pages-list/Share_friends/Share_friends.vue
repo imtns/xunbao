@@ -1,5 +1,5 @@
 <template>
-	<view class="Share">
+	<view class="Share" v-show="isFect">
 		<view class="effect" style="width: 100vw; height: 100vh; position: absolute; left: 0; top: 0">
 			<sequenceEffect ref="showfect" :sequenceList="starList" @loadOk="loadOk"></sequenceEffect>
 			<view class="Share6 Share3 tc" v-if="Share_type != 2" @click="getHome">
@@ -29,23 +29,34 @@
 				</view>
 				<view class="Share1_1">送你一张<text>{{ type }}</text>，赶快点击<text>收下</text>集齐 4张卡片就可以获得宝藏唱片音响1份还有 更多隐藏奖励等你挖掘！
 				</view>
-				<view class="Share2 tc">
-					<image mode="widthFix" :src="`${ASSETSURL}Share2.png`"></image>
+				<view class="Share2 tc" v-if="type == '全身宝藏卡'">
+					<image mode="widthFix" :src="`${ASSETSURL}img/qs.png`"></image>
+				</view>
+				<view class="Share2 tc" v-if="type == '营养宝藏卡'">
+					<image mode="widthFix" :src="`${ASSETSURL}img/yy.png`"></image>
+				</view>
+				<view class="Share2 tc" v-if="type == '性价比宝藏卡'">
+					<image mode="widthFix" :src="`${ASSETSURL}img/xjb.png`"></image>
+				</view>
+				<view class="Share2 tc" v-if="type == '百搭宝藏卡'">
+					<image mode="widthFix" :src="`${ASSETSURL}img/bd1.png`"></image>
 				</view>
 				<view class="Share2_1 tc">
 					<u-count-down :time="rateDate.leftTime" format="HH:mm:ss" autoStart millisecond @change="onChange">
 						<view class="time">
 							<view class="time__custom">
 								<text
-									class="time__custom__item">{{ timeData.hours > 10 ? timeData.hours : '0' + timeData.hours }}</text>
+									class="time__custom__item">{{ timeData.hours >= 10 ? timeData.hours : '0' + timeData.hours }}</text>
 							</view>
 							<text class="time__doc">:</text>
 							<view class="time__custom">
-								<text class="time__custom__item">{{ timeData.minutes }}</text>
+								<text
+									class="time__custom__item">{{ timeData.minutes >= 10 ? timeData.minutes : '0' + timeData.minutes }}</text>
 							</view>
 							<text class="time__doc">:</text>
 							<view class="time__custom">
-								<text class="time__custom__item">{{ timeData.seconds }}</text>
+								<text
+									class="time__custom__item">{{ timeData.seconds >= 10 ? timeData.seconds : '0' + timeData.seconds }}</text>
 							</view>
 						</view>
 					</u-count-down>
@@ -59,6 +70,12 @@
 					<image mode="widthFix" :src="`${ASSETSURL}Share6.png`"></image>
 				</view>
 			</view>
+			<view v-if="Share_type == 4" style="text-align: center;margin-top: -110rpx;">
+				<view class="Share4 tc">
+					<image mode="" :src="`${ASSETSURL}/img/kPSX.png`"></image>
+				</view>
+			</view>
+
 		</view>
 	</view>
 </template>
@@ -81,7 +98,8 @@
 		},
 		data() {
 			return {
-				Share_type: 2, //0 卡片被收下 1 参与活动  2 收下 3 你不是新用户无法助力
+				isFect:false,//加载
+				Share_type: 2, //0 卡片被收下 1 参与活动  2 收下 3 你不是新用户无法助力 4 卡片失效
 				timeData: {},
 				shareCode: null,
 				type: null,
@@ -123,7 +141,9 @@
 		},
 		methods: {
 			loadOk() {
+				console.log('加载完成')
 				this.$refs.showfect.play()
+				this.isFect = true
 			},
 			// 查询卡详情
 			htxb_cardDetail(e) {
@@ -160,8 +180,8 @@
 					if (err.code === 10005) {
 						this.Share_type = 0
 					} else if (err.code === 10009) {
-						this.Share_type = 0
-						tool.alert('分享链接已失效')
+						this.Share_type = 4
+						// tool.alert('分享链接已失效')
 					}
 				})
 			},
