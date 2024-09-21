@@ -479,9 +479,11 @@
 					if (res.data.finish) {
 						this.prizeDetail = res.data
 						this.showPrize = true
+						this.show_1 = false;
 						this.$nextTick(() => {
 							if (data.prizeType == 'kapian') {
 								this.$refs.dyPrize2.play2()
+								
 							}
 						})
 						reportClickEvent({
