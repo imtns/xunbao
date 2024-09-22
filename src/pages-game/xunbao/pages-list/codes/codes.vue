@@ -241,9 +241,9 @@
 									console.log(err, '‘err173')
 									that.isSend = false
 									that.codes_type = 0
-									console.log(err.message,err.message.includes('今日次数已达上限'), err.code == 500,
-										'今日次数已达上限今日次数已达上限')
-									if (err.message.includes('今日次数已达上限') || err.code == 500) {
+									console.log(err, err.code == 500,
+										'--------errerrerrerrs---------')
+									if (err.code == 10010) {
 										tool.jump_back()
 									}
 								})

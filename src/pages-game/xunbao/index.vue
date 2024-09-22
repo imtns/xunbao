@@ -64,8 +64,8 @@
 				</block>
 			</view>
 			<!-- 弹窗语音识别 -->
-			<dy-record v-show="showRecord" :showRecord="showRecord" @close="showRecord = false" ref="record"
-				@detailCloce="detailCloce" @languageSuccess="languageSuccess"></dy-record>
+			<dy-record v-if="showRecord" :showRecord="showRecord" @close="showRecord = false" ref="record"
+				@detailCloce="detailCloce" @languageSuccess="languageSuccess" @closeKong="closeKong"></dy-record>
 			<!-- 活动规则 -->
 			<u-popup :show="show_2" mode="center" :safeAreaInsetBottom="false" bgColor="transparent"
 				@click="show_2 = false" :overlayOpacity="0.8">
@@ -189,6 +189,21 @@
 			</view>
 		</u-popup>
 		<loadingPage v-if="isShowLoadinPage" :pageLoadingOk="pageLoadingOk" @loadingOk="loadingOk"></loadingPage>
+		<!-- 语音空弹窗 -->
+		<u-popup :show="noPrize" mode="center" :safeAreaInsetBottom="false" bgColor="transparent" @close="
+				noPrize = false
+				close()
+			">
+			<view class="por">
+				<u-image :src="ASSETSURL + 'noPrize.png'" width="540rpx" height="674rpx"></u-image>
+				<view class="close" @click="
+						noPrize = false
+						close()
+					">
+					<u-icon :name="ASSETSURL + 'close.png'" color="#fff" size="60rpx"></u-icon>
+				</view>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
@@ -223,6 +238,7 @@
 
 		data() {
 			return {
+				noPrize: false, //语音空弹窗
 				show_popup_dajiang: false, //大奖弹窗显示隐藏
 				isShowLoadinPage: true, //显示隐藏加载页
 				pageLoadingOk: false, //页面是否加载完成
@@ -330,6 +346,11 @@
 			this.add_jsq()
 		},
 		methods: {
+			//语音空弹窗
+			closeKong() {
+				this.showRecord = false
+				this.noPrize = true
+			},
 			//语音弹惊喜
 			languageSuccess(e) {
 				this.prizeDetail = e
@@ -717,6 +738,12 @@
 	@import './css/base.css';
 </style>
 <style scoped lang="scss">
+	.close {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
 	.show_popup_dajiang_box {
 		.show_popup_dajiang_img {
 			width: 750rpx;
