@@ -485,9 +485,10 @@
 								// console.log('是否有为0的', _item.prizeStatus != 0 && _item.prizeStatus != 1 && _item.goodCnt === 0)
 								if (_item.prizeStatus != 0 && _item.prizeStatus != 1 && _item.goodCnt === 0) _item.prizeStatus = 7
 								if (i != firstZeroIndex && firstZeroIndex !== -1) {
-									if (_item.goodsCode == "1831952468850761729") {
+									console.log("_item.goodsCode", _item.goodsCode)
+									if (_item.goodsCode == "1831952468850761729") {//音响
 										_item.prizeStatus = 6
-									} else if (_item.goodsCode == "1831952627743580162") {
+									} else if (_item.goodsCode == "1831952627743580162") {//挂件
 										_item.prizeStatus = 5
 									}
 								}

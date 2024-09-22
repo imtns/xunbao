@@ -29,7 +29,8 @@
 				<image :src="`${ASSETSURL}dayAnswer/cancel.png`" @click="fhui" class="cancel"></image>
 			</view>
 		</u-popup>
-		<dy-prize ref="dyPrize2" :show="showPrize" :showPrize="showPrize" :item="prizeDetail" @close="showPrize = false"></dy-prize>
+		<dy-prize ref="dyPrize2" :show="showPrize" :showPrize="showPrize" :item="prizeDetail"
+			@close="showPrize = false"></dy-prize>
 	</view>
 </template>
 
@@ -81,7 +82,7 @@
 				let dataJson = {
 					questionCode: this.detail.questionCode,
 					answer: answer,
-          methodName: 'sub'
+					methodName: 'sub'
 				}
 				let {
 					code,
@@ -101,6 +102,7 @@
 					console.log(data, this.detail.optionJson[i], data.correctAnswern, this.cur, 'data56')
 					if (data.answerResult == 'success') {
 						console.log(i, '777')
+
 						reportClickEvent({
 							activityName: '回答正确',
 							actionRank: 0,
@@ -121,8 +123,8 @@
 					this.dq_cw = 2
 					return
 				} else if (data.prizeType == 'jiangli') {
-					tool.jump_nav('/pages-game/xunbao/pages-list/advertising/advertising')
-					return
+					console.log(data.triggerCode, '答题存入存入存入triggerCode')
+					tool.storage('triggerCode', data.triggerCode)
 				} else {}
 				this.prizeDetail = data
 				if (data.prizeType != 'kong') {

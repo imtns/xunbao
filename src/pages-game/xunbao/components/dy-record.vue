@@ -52,8 +52,8 @@
 			</view>
 		</u-popup>
 
-		<dy-prize :show="showPrize" :item="prizeDetail" v-if="code != 10007" @close="showPrize = false"
-			@getZlyq="showPrize = false"></dy-prize>
+		<dy-prize :show="showPrize" :showPrize="showPrize" :item="prizeDetail" v-if="code != 10007"
+			@close="showPrize = false" @getZlyq="showPrize = false"></dy-prize>
 	</view>
 </template>
 <style>
@@ -145,7 +145,11 @@
 				sayData: ' ',
 				endRecordShow: true, //是否录音
 				myConnectSocket: null, //WebSocket
-				isNoreadAuto: true //录音权限
+				isNoreadAuto: true, //录音权限
+				startRecord_timeStamp: null, // 按下录音按钮的时间戳
+				pressAndHold_minTimes: 200, //按住最小时间才算录音，时间戳
+				startRecordNext_setT: null, // 按下录音按钮后，超过1秒后，开始录音
+				isTouchEnd: false //已经释放长按
 			}
 		},
 		watch: {
@@ -199,8 +203,8 @@
 														if (res
 															.authSetting[
 																'scope.record'
-																] === true
-															) {
+															] === true
+														) {
 															reportClickEvent
 																({
 																	activityName: '允许授权麦克风',
@@ -236,7 +240,8 @@
 					self.voicePath = res.tempFilePath
 					var tempFilePath = res.tempFilePath //音频文件地址
 					console.log('音频文件地址', tempFilePath)
-
+					self.endRecordShow = false
+					self.sayData = '语音识别中，请等待......'
 					// #ifdef MP-WEIXIN
 					const fs = uni.getFileSystemManager()
 					fs.readFile({
@@ -274,8 +279,16 @@
 			},
 			// 长按录制
 			startRecord() {
+				clearTimeout(this.startRecordNext_setT)
+				this.startRecord_timeStamp = Date.now()
 				if (!this.endRecordShow) return
-
+				// this.isTouchEnd = false
+				this.startRecordNext_setT = setTimeout(() => {
+					console.log("{开始录音5}")
+					this.startRecordNext()
+				}, this.pressAndHold_minTimes)
+			},
+			startRecordNext() {
 				this.getSetting().then(() => {
 					reportClickEvent({
 						activityName: '录制广告词',
@@ -322,12 +335,15 @@
 			endRecord() {
 				this.$refs.voice.pause()
 				this.$refs.mike.pause()
-				if (!this.isNoreadAuto) return
-				this.endRecordShow = false
-				// 隐藏 loading 提示框
-				// uni.hideLoading();
-				this.sayData = '语音识别中，请等待......'
-				recorderManager.stop()
+				console.log("短按时间34", Date.now() - this.startRecord_timeStamp)
+				if (Date.now() - this.startRecord_timeStamp > this.pressAndHold_minTimes) {
+					// this.isTouchEnd = true
+					recorderManager.stop()
+					// this.recordNext()
+				} else {
+					clearTimeout(this.startRecordNext_setT)
+				}
+				// if (!this.isNoreadAuto) return
 			},
 			// 生成握手参数
 			getWebSocketUrl() {
@@ -514,6 +530,10 @@
 								data,
 								message
 							}) => {
+								console.log(data, '---------data参数提交-----')
+								if (!data) {
+									return tool.alert('data是空的')
+								}
 								uni.closeSocket()
 								this.endRecordShow = true
 								reportClickEvent({
@@ -522,7 +542,6 @@
 									activityId: 'game_xunbao_audio_click_tell',
 									activityContent: that.formData
 								})
-								// someClickEvent() 全局埋点
 
 								reportClickEvent({
 									activityName: '语音识别成功',
@@ -530,7 +549,23 @@
 									activityId: 'game_xunbao_audio_click_success',
 									activityContent: that.formData
 								})
-								if (data.prizeType != 'kong') {
+								if (data.prizeType == 'kapian') {
+									console.log('出弹窗')
+									that.$emit('detailCloce', data)
+								} else if (data.prizeType == 'jiangli') {
+									// that.showRecord = false
+									console.log(data.triggerCode, '语音语音语音存入存入存入triggerCode')
+									console.log(data, '语音语音语音data')
+									tool.storage('triggerCode', data.triggerCode)
+									tool.storage('dropPrize', data.dropPrize)
+									that.queryAd()
+									that.$emit('languageSuccess', data)
+									// tool.jump_nav('/pages-game/xunbao/pages-list/advertising/advertising')
+									return
+								} else if (data.prizeType == 'kong') {
+									that.$emit('languageSuccess', data)
+								} else if (data.prizeType != 'kong') {
+									that.close()
 									reportClickEvent({
 										activityName: '语言获得奖品',
 										actionRank: 0,
@@ -538,31 +573,18 @@
 										activityContent: data
 									})
 								}
-								if (data.prizeType == 'kapian') {
-									that.close()
-									// that.showRecord = false
-								} else if (data.prizeType == 'jiangli') {
-									// that.showRecord = false
-									that.close()
-									that.queryAd()
-									tool.jump_nav('/pages-game/xunbao/pages-list/advertising/advertising')
-									return
-								}
 
 								// that.prizeDetail = data;
 								// setTimeout(() => {
 								// 	that.showPrize = true;
 								// }, 200)
-
-
-								console.log('出弹窗')
-								if (data.prizeType != 'kong') that.$emit('detailCloce', data)
-								else {
-									that.noPrize = true
-								}
-
+								// if (data.prizeType != 'kong')
+								// else {
+								// 	that.noPrize = true
+								// }
 							})
 							.catch((err) => {
+								console.log(err, 'errrrrrrrrrrrrrrrrrrrr')
 								uni.closeSocket()
 								let {
 									code,

@@ -1,6 +1,6 @@
 <template>
 	<view class="codes">
-        <x-loading v-if="isSend" text="正在识别..." background="white" />
+		<x-loading v-if="isSend" text="正在识别..." background="white" />
 		<view class="codesceng">
 			<view class="award1">
 				<!-- <image :src="`${ASSETSURL}ad_18.png`"></image> -->
@@ -33,8 +33,8 @@
 				</view>
 			</view>
 		</view>
-		<dy-prize ref="dyPrize2" :show="showPrize" :showPrize="showPrize" :item="prizeDetail" v-if="code != 10007" @close="showPrize = false"
-			@getZlyq="showPrize = false"></dy-prize>
+		<dy-prize ref="dyPrize2" :show="showPrize" :showPrize="showPrize" :item="prizeDetail" v-if="code != 10007"
+			@close="showPrize = false" @getZlyq="showPrize = false"></dy-prize>
 		<view class="takePhoto flex-cen">
 			<image class="btn scale-wave" :src="`${ASSETSURL}image/song_btn_01.png`"
 				@click="$u.throttle(takePhoto, 3000)"></image>
@@ -59,8 +59,8 @@
 		},
 		data() {
 			return {
-				context:null,//相机上下文
-				isShowCamera: true,//展示相机
+				context: null, //相机上下文
+				isShowCamera: true, //展示相机
 				codes_type: 2, //0 1 2是否扫到内容 提示
 				isSend: false,
 				src: '',
@@ -79,10 +79,10 @@
 			}
 		},
 		onShow() {
-			this.getSetting().then(() => { 
+			this.getSetting().then(() => {
 				this.isShowCamera = true
 				this.contextCamera = wx.createCameraContext()
-			}) 
+			})
 		},
 		methods: {
 			//查询是否授权
@@ -100,17 +100,20 @@
 									resolve()
 								},
 								fail() {
-									tool.showModal("访问相机授权", "您拒绝了访问相机授权，点击确认按钮后开启授权").then(res => {
-										if (res) {
- 										uni.openSetting({
-											success: (res) => {
-												if (res.authSetting['scope.camera'] === true) {
-													resolve()
-												}
+									tool.showModal("访问相机授权", "您拒绝了访问相机授权，点击确认按钮后开启授权").then(
+										res => {
+											if (res) {
+												uni.openSetting({
+													success: (res) => {
+														if (res.authSetting[
+																'scope.camera'] ===
+															true) {
+															resolve()
+														}
+													}
+												})
 											}
 										})
-										}
-									})
 								}
 							})
 						} else if (res.status == 1) {
@@ -133,7 +136,7 @@
 							icon: 'none'
 						})
 						uni.setStorageSync('todaySignStatus', 1)
-						tool.jump_swi('/pages-game/xunbao/index')
+						tool.jump_rel('/pages-game/xunbao/index')
 					})
 					.catch((err) => {})
 			},
@@ -165,8 +168,7 @@
 				})
 			},
 			startScan() {
-                if (this.isSend) return tool.alert('太快了~')
- 
+				if (this.isSend) return tool.alert('太快了~')
 				this.isSend = true
 				if (!this.contextCamera) this.contextCamera = wx.createCameraContext()
 				let that = this
@@ -174,7 +176,6 @@
 					quality: 'high',
 					success: function(res) {
 						// tool.loading();
-
 						reportClickEvent({
 							activityName: '点击AR拍照',
 							actionRank: 0,
@@ -193,8 +194,7 @@
 									if (res1.code == 500) {
 										tool.alert(res1.message)
 										return
-                                    }
-                                   
+									}
 									that.isSend = false
 									reportClickEvent({
 										activityName: 'AR识别接口',
@@ -205,7 +205,6 @@
 											imgUrl: res[0]
 										}
 									})
-
 									reportClickEvent({
 										activityName: 'AR扫描成功',
 										actionRank: 0,
@@ -217,6 +216,11 @@
 									})
 									console.log(111)
 									that.prizeDetail = res1.data
+									if (res1.data.triggerCode) {
+										console.log(res1.data.triggerCode, 'AR扫码存入存入存入triggerCode')
+										tool.storage('triggerCode', res1.data.triggerCode)
+										tool.storage('dropPrize', res1.data.dropPrize)
+									}
 									that.showPrize = true
 									that.$nextTick(() => {
 										if (res1.data.prizeType == 'kapian') {
@@ -235,9 +239,13 @@
 								.catch((err) => {
 									tool.loading_h();
 									console.log(err, '‘err173')
-                                    that.isSend = false
-                                    
+									that.isSend = false
 									that.codes_type = 0
+									console.log(err.message,err.message.includes('今日次数已达上限'), err.code == 500,
+										'今日次数已达上限今日次数已达上限')
+									if (err.message.includes('今日次数已达上限') || err.code == 500) {
+										tool.jump_back()
+									}
 								})
 						})
 					}

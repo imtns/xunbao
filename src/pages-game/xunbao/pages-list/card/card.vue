@@ -481,6 +481,8 @@
 								this.$refs.bgGx.play(46).then(() => {
 									// this.show = true
 									// this.compound1 = 1
+									let _prizeList = ['1831952468850761729', '1831952627743580162']
+									this.showPrizeType = _prizeList.findIndex(item => item == res.data.goodsCode) + 5
 									this.showPrizeTips = true
 									this.bgGxShowFect = false
 								})

@@ -99,7 +99,9 @@
 			time(newValue, oldValue) {
 				if (newValue <= 0) {
 					console.log('watch监听到15秒了')
-					this.watchVideo2()
+					if (!this.unpDate) {
+						this.watchVideo2()
+					}
 					this.unpDate = false
 				}
 			}
@@ -120,8 +122,8 @@
 				show: false,
 				video: null,
 				// percentage: 1,
-				triggerCode: uni.getStorageSync('triggerCode'),
-				dropPrize: uni.getStorageSync('dropPrize'), //jiangli 信息
+				triggerCode: tool.storage('triggerCode'),
+				// dropPrize: uni.getStorageSync('dropPrize'), //jiangli 信息
 				// dropPrize: {
 				// 	prizeName: '方法收纳盒的师傅',
 				// 	prizeImage: 'https://cdn.vrupup.com/s/116/advertising7.png'
@@ -206,8 +208,10 @@
 			// setInterval(() => {
 			// 	console.log("当前秒", this._currentTime, this._currentTime2)
 			// }, 2000)
+			let dropPrize = tool.storage('dropPrize')
+			console.log(dropPrize, 'dropPrizedropPrizedropPrizedropPrize')
 			for (var i = 0; i < this.jiangp_list.length; i++) {
-				if (this.dropPrize.prizeName.includes(this.jiangp_list[i].prizeName)) {
+				if (dropPrize.prizeName.includes(this.jiangp_list[i].prizeName)) {
 					this.dq_prizeImage = this.jiangp_list[i].prizeImage
 					console.log(i, this.jiangp_list[i].prizeName);
 					this.dq_claas_i = i
@@ -352,18 +356,24 @@
 			},
 			// 分享朋友圈
 			shareWithFriends() {
-				if (this.time > 1) return
+				let that = this
+				if (that.time > 1) return
 				api.shareWithFriends({
-						watchVideoCode: this.shareCode2
+						watchVideoCode: that.shareCode2
 					})
 					.then((res) => {
-						console.log(res.data);
-						this.shareDate = res.data
-						this.sharepro = 100
+						console.log("分享朋友圈", res.data);
+						that.shareDate = res.data
+						that.sharepro = 100
 						// this.shareAndDropShow = true
-						this.showPrizeTips = true
-						this.showPyq = false
-						this.show = false
+						// this.showPyq = false
+						that.showPyq = false
+						that.show = false
+						// that.showPrizeTips = true
+						setTimeout(() => {
+							console.log("延迟弹出奖品弹窗2", that.showPyq, that.show)
+							that.showPrizeTips = true
+						}, 200)
 					})
 					.catch((err) => {
 
@@ -387,9 +397,10 @@
 			},
 			//获取分享码
 			watchVideo2() {
-				console.log('看完视频后获取分享码');
+				let code = tool.storage('triggerCode')
+				console.log('看完视频后获取分享码codecode', code);
 				api.watchVideo({
-						triggerCode: this.triggerCode
+						triggerCode: code
 					})
 					.then((res) => {
 						console.log('获取分享码（视频后弹窗）-成功', res.data);
@@ -456,12 +467,6 @@
 			},
 			//视频播放
 			play() {
-				reportClickEvent({
-					activityName: '触发的掉落奖励用户完成观看广告的次数',
-					actionRank: 0,
-					activityId: 'game_xunbao_prize_click_play',
-					activityContent: {}
-				})
 				// let that = this
 				// this.dsq = setInterval(() => {
 				// 	this.time--

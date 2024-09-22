@@ -64,8 +64,8 @@
 				</block>
 			</view>
 			<!-- 弹窗语音识别 -->
-			<dy-record v-if="showRecord" :showRecord="showRecord" @close="showRecord = false" ref="record"
-				@detailCloce="detailCloce"></dy-record>
+			<dy-record v-show="showRecord" :showRecord="showRecord" @close="showRecord = false" ref="record"
+				@detailCloce="detailCloce" @languageSuccess="languageSuccess"></dy-record>
 			<!-- 活动规则 -->
 			<u-popup :show="show_2" mode="center" :safeAreaInsetBottom="false" bgColor="transparent"
 				@click="show_2 = false" :overlayOpacity="0.8">
@@ -330,6 +330,12 @@
 			this.add_jsq()
 		},
 		methods: {
+			//语音弹惊喜
+			languageSuccess(e) {
+				this.prizeDetail = e
+				this.showPrize = true
+				this.showRecord = false
+			},
 			//跳转到我的奖励
 			jump_nav_wodajl() {
 				this.show_popup_dajiang = false
@@ -395,8 +401,10 @@
 			},
 			//语音识别成功返回
 			detailCloce(e) {
+				console.log(e, 'eeeee语音识别成功返回eeeeee')
 				this.prizeDetail = e
 				this.showPrize = true
+				this.showRecord = false
 				this.$nextTick(() => {
 					this.$refs.dyPrize2.play2()
 				})
@@ -503,8 +511,8 @@
 						console.log(res.data)
 						this.prizeDetail = res.data
 						this.triggerCode = res.data.triggerCode
-						uni.setStorageSync('triggerCode', res.data.triggerCode)
-						uni.setStorageSync('dropPrize', res.data.dropPrize)
+						tool.storage('triggerCode', res.data.triggerCode)
+						tool.storage('dropPrize', res.data.dropPrize)
 						// triggerCode
 						this.quan_typoe(res.data.prizeType)
 					})
@@ -542,7 +550,7 @@
 				})
 			},
 			//分享
-			shareActivity(){
+			shareActivity() {
 				api.shareActivity().then((res) => {
 					if (res.code == 200) {
 						store.commit('storeShareCode', res.data.shareCode)
@@ -597,7 +605,7 @@
 					activityName: '去完成的次数',
 					actionRank: 0,
 					activityId: 'game_xunbao_audio_click_tell',
-					activityContent:{}
+					activityContent: {}
 				})
 				this.requestSubscribeMessage()
 				tool.jump_nav('/pages-game/xunbao/pages-list/codes/codes')
