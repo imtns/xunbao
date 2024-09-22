@@ -389,7 +389,7 @@
 			//点击填写地址
 			priztus(e) {
 				console.log('点击填写地址', e, e.prizeStatus, e.prizeStatus == 0);
-				if (store.state.actEndFlag && this.curNow != 2) return tool.alert('活动已结束，感谢您的关注~')
+				if (store.state.actEndFlag && this.curNow != 2) return tool.alert('活动已结束，感谢您的关注')
 				if (this.isSubmit) return
 				this.isSubmit = true
 				setTimeout(() => {
