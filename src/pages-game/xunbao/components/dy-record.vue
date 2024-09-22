@@ -169,7 +169,7 @@ export default {
 				let that = this
 				tool.getSetting('scope.record').then((res) => {
 					console.log(res, '录音授权123123')
-					if (!res.status) {
+					if (res.status != 1) {
 						this.isNoreadAuto = false
 						wx.authorize({
 							scope: 'scope.record',
@@ -493,6 +493,7 @@ export default {
 						...that.formData
 					})
 						.then(({ code, data, message }) => {
+							uni.closeSocket()
 							this.endRecordShow = true
 							reportClickEvent({
 								activityName: '语音识别接口',
@@ -532,13 +533,13 @@ export default {
 							// 	that.showPrize = true;
 							// }, 200)
 
-							uni.closeSocket()
+							
 							console.log('出弹窗')
 							if (data.prizeType != 'kong') that.$emit('detailCloce', data)
 							else {
 								that.noPrize = true
 							}
-							uni.closeSocket()
+							
 						})
 						.catch((err) => {
 							uni.closeSocket()
