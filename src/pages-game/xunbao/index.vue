@@ -121,7 +121,7 @@
 							<view class="flex-bet" style="margin-bottom: 20rpx">
 								<view class="arText">
 									<view class="">AR扫码（{{ scan.finishTimes || 0 }}/{{ scan.totalTimes || 0 }}）</view>
-									<text class="">扫描"嗨体”，集卡片赢奖励</text>
+									<text class="">扫描“嗨体”，集卡片赢奖励</text>
 								</view>
 								<dy-button fontSize="24" width="122rpx" btn_bg="#847b73" height="50rpx"
 									v-if="scan.finishTimes == scan.totalTimes">已完成</dy-button>
@@ -268,7 +268,7 @@
 						id: 2,
 						now: 0,
 						icon: 'ad_11',
-						text: '读出嗨体广告语,集卡片赢奖励',
+						text: '读出嗨体宝藏语录,集卡片赢奖励',
 						tan: 1,
 						btnList: ['去完成', '已完成']
 					},
@@ -436,7 +436,7 @@
 					this.showPrize = false
 					this.triggerBuryPoint()
 					reportClickEvent({
-						activityName: '首页埋点点击',
+						activityName: '点击触发了首页埋点获得掉落奖励的次数',
 						actionRank: 0,
 						activityId: 'game_xunbao_click_point',
 						activityContent: {}

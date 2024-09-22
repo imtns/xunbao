@@ -6,7 +6,7 @@
 				<image mode="widthFix" :src="`${ASSETSURL}Share3.png`"></image>
 			</view>
 			<view class="Share6 Share3 tc" v-if="Share_type == 1" @click="getJoinActivity(shareCode)">
-				<image mode="widthFix" :src="`${ASSETSURL}Share3.png`"></image>
+				<image mode="widthFix" :src="`${ASSETSURL}shouXKP.png`"></image>
 			</view>
 		</view>
 		<view style="position: relative; z-index: 33">
@@ -20,7 +20,7 @@
 				<view class="Share1 tc">
 					<image mode="widthFix" :src="`${ASSETSURL}Share1.png`"></image>
 				</view>
-				<view class="Share1_1">感谢你的帮助！为你送上一张卡片/奖 励，收集卡片合成大奖，还有丰富的奖励随机掉落，和我一起加入爱美客扫码 寻宝活动吧！</view>
+				<view class="Share1_1">感谢你的帮助!为你送营养宝藏卡，收集卡片合成大奖，还有丰富的笑励随机掉落，和我一起加入爱美客扫码寻宝活动吧!</view>
 				<view class="Share2 tc">
 					<image mode="widthFix" :src="`${ASSETSURL}Share2.png`"></image>
 				</view>
@@ -102,7 +102,7 @@
 		data() {
 			return {
 				isFect: false, //加载
-				Share_type: 2, //0 卡片被收下 1 参与活动  2 收下 3 你不是新用户无法助力 4 卡片失效
+				Share_type: -1, //0 卡片被收下 1 参与活动  2 收下 3 你不是新用户无法助力 4 卡片失效
 				timeData: {},
 				shareCode: null,
 				type: null,
@@ -120,30 +120,48 @@
 		},
 		onLoad(ope) {
 			console.log(ope, '--------opeopeopeope-----')
-			if (!this.isLogin) {
-				reportClickEvent({
-					activityName: '好友分享页跳转登录',
-					actionRank: 0,
-					activityId: 'game_xunbao_share_click_login',
-					activityContent: {}
-				})
-				return tool.jump_nav('/pages-sub/login/index')
-			}
-			console.log(ope)
-			if (ope.shareCode) {
-				this.Share_type = 1
-				this.shareCode = ope.shareCode
-				// tool.alert(ope.shareCode + '我是分享过来的code')
-				// this.getJoinActivity(ope.shareCode)
-			}
-			if (ope.shareCode1) {
-				console.log(222)
-				this.operateCode = ope.shareCode1
-				this.shareCode = ope.shareCode
-				this.htxb_cardDetail(ope.shareCode1)
-			}
+			this.$nextTick(() => {
+				setTimeout(() => {
+					this.getUserInfo()
+					if (!this.isLogin) {
+						reportClickEvent({
+							activityName: '好友分享页跳转登录',
+							actionRank: 0,
+							activityId: 'game_xunbao_share_click_login',
+							activityContent: {}
+						})
+						return tool.jump_nav('/pages-sub/login/index')
+					}
+					console.log(ope)
+					if (ope.shareCode) {
+						this.Share_type = 1
+						this.shareCode = ope.shareCode
+						// tool.alert(ope.shareCode + '我是分享过来的code')
+						// this.getJoinActivity(ope.shareCode)
+					}
+					if (ope.shareCode1) {
+						console.log(222)
+						this.operateCode = ope.shareCode1
+						this.shareCode = ope.shareCode
+						this.htxb_cardDetail(ope.shareCode1)
+					}
+				}, 500)
+			})
 		},
 		methods: {
+			//查询用户信息
+			getUserInfo() {
+				api.getUserInfo().then((res) => {
+					console.log(res, '-------查询用户信息-------')
+					if (res.code === 200) {
+						if (res.data.newUserFlag == 1) {
+							this.Share_type = 3
+						}
+					}
+				}).catch((err) => {
+					console.log(err, '------errerrerr-------')
+				})
+			},
 			loadOk() {
 				console.log('加载完成')
 				this.$refs.showfect.play()

@@ -1,6 +1,5 @@
 <template>
-	<z-paging ref="paging" v-model="dataList" @query="queryList" :loading-more-enabled="false"
-		:refresher-enabled="false" hide-empty-view>
+
 		<view class="ranking_list">
 			<view class="rankingceng">
 				<!-- <view class="award1" @click="fhui">
@@ -56,7 +55,6 @@
 				</view>
 			</view>
 		</view>
-	</z-paging>
 </template>
 <style>
 	@import '@/pages-game/xunbao/css/base.css';
@@ -79,7 +77,7 @@
 			}
 		},
 		onShow() {
-			// this.htxb_rankList()
+			this.queryList()
 		},
 		methods: {
 			// 查询排行榜
@@ -97,7 +95,7 @@
 						this.dataList = res.data.rankList
 						if (!this.dataList.length) this.showRanking = true
 						this.dq_list = res.data.myRank
-						this.$refs.paging.complete(this.dataList)
+						
 						setTimeout(() => {
 							this.listShow = true
 						}, 500)
