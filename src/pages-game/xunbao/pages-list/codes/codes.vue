@@ -141,7 +141,7 @@
 			},
 			takePhoto() {
 				api.preArScan({
-					methodName: 'startScan'
+					methodName: 'takePhoto'
 				}).then(({
 					data,
 					code,
