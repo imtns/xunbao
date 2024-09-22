@@ -541,6 +541,17 @@
 					// this.$set(this.taskList[inx].btnList, 0, '已签到');
 				})
 			},
+			//分享
+			shareActivity(){
+				api.shareActivity().then((res) => {
+					if (res.code == 200) {
+						store.commit('storeShareCode', res.data.shareCode)
+						console.log(store.state.shareCode, '-------shareCode-------')
+						this.show_1 = false
+						this.show_3 = true
+					}
+				})
+			},
 			//签到 分享等
 			getSignin(e, inx) {
 				reportClickEvent({
@@ -563,14 +574,7 @@
 					// })
 				}
 				if (e.id == 3) {
-					api.shareActivity().then((res) => {
-						if (res.code == 200) {
-							store.commit('storeShareCode', res.data.shareCode)
-							console.log(store.state.shareCode, '-------shareCode-------')
-							this.show_1 = false
-							this.show_3 = true
-						}
-					})
+					uni.$u.debounce(() => this.shareActivity(), 500)
 				}
 			},
 			handleChildEvent(e) {
@@ -628,7 +632,6 @@
 					activityId: 'game_xunbao_click_seek',
 					activityContent: {}
 				})
-				// someClickEvent() 全局埋点
 				this.getActivityTaskList()
 				console.log(11)
 				this.show_1 = true

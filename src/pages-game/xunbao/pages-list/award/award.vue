@@ -32,7 +32,8 @@
 										</view>
 										<view class="award312 le oh">
 											<view class="award3121">{{item2.prizeName}}</view>
-											<view class="award3122 flex-cen" :class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'"
+											<view class="award3122 flex-cen"
+												:class="item2.prizeStatus == 1 ? 'yiLinQu' : 'aaa'"
 												@click="priztus(item2)">
 												{{prizeStatus[item2.prizeStatus]}}
 											</view>
@@ -93,23 +94,22 @@
 											</view>
 										</view>
 										<view class="award31_mc"
-											v-if="item2.prizeStatus == 2 || item2.prizeStatus == 3 || item2.prizeStatus == 4 || item2.prizeStatus == 5">
+											v-if="item2.prizeStatus >= 2">
 											<view class="award31_mc1">
 												<view class="award31_mc11">
 													<!-- {{prizeStatus2[item2.prizeStatus]}} -->
 													<image
-														:style="{'margin-top': item2.prizeStatus == 5 ? '44rpx' : ''}"
+														:style="{'margin-top': item2.prizeStatus == 5 || item2.prizeStatus == 6 ? '44rpx' : ''}"
 														:src="ASSETSURL + 'img/' + prizeStatus2[item2.prizeStatus]"
 														height="92rpx" mode="heightFix"></image>
 												</view>
-												<view class="award31_mc12" v-if="index2 == 0 && item2.prizeStatus != 5">
+												<view class="award31_mc12" v-if="index2 == 0 && item2.prizeStatus != 5 && item2.prizeStatus != 6">
 													第1-2000名可得宝藏唱片音响
 												</view>
-												<view class="award31_mc12" v-if="index2 == 1 && item2.prizeStatus != 5">
+												<view class="award31_mc12" v-if="index2 == 1 && item2.prizeStatus != 5 && item2.prizeStatus != 6">
 													第2001-6000名可得宝藏嗨嗨挂件
 												</view>
-												<view class="award31_mc12" style="margin-top: 15rpx;"
-													v-if="item2.prizeStatus != 5">
+												<view class="award31_mc12" style="margin-top: 15rpx;" v-if="item2.prizeStatus != 5 && item2.prizeStatus != 6">
 													奖品当前剩余数量：{{item2.goodCnt || 0}}个
 												</view>
 											</view>
@@ -260,6 +260,7 @@
 					'预占',
 					'zwkf.png', //'暂未开始发放',
 					'nyhd.png', //'您已获得音响',
+					'yfw.png', //'已发完'
 				],
 				difference: null,
 				timeDiff: null, //倒计时
@@ -469,21 +470,22 @@
 							let firstZeroIndex = -1; // 初始化第一个0的索引
 							// 遍历列表找到第一个prizeStatus为0的元素索引
 							for (let i = 0; i < item.prizeInfoList.length; i++) {
-								if (item.prizeInfoList[i].prizeStatus == 0 || item.prizeInfoList[i].prizeStatus == 1) {
+								let _item = item.prizeInfoList[i]
+								if (_item.prizeStatus == 0 || _item.prizeStatus == 1) {
 									firstZeroIndex = i;
 									console.log("firstZeroIndex", firstZeroIndex)
 									break; // 找到第一个0，记录索引后退出循环
 								}
 							}
 							// 如果找到了第一个0，则将剩余的所有元素的prizeStatus设置为1
-							if (firstZeroIndex !== -1) {
-								console.log('如果找到了第一个0，则将剩余的所有元素的prizeStatus设置为1')
-								for (let i = firstZeroIndex + 1; i < item.prizeInfoList.length; i++) {
-									item.prizeInfoList[i].prizeStatus = 5;
-									console.log("item.prizeInfoList[i].prizeStatus", item.prizeInfoList[i]
-										.prizeStatus)
-								}
+							// if (firstZeroIndex !== -1) {
+							for (let i = 0; i < item.prizeInfoList.length; i++) {
+								let _item = item.prizeInfoList[i]
+								console.log('是否有为0的', _item.prizeStatus != 0 && _item.prizeStatus != 1 && _item.goodCnt === 0)
+								if (_item.prizeStatus != 0 && _item.prizeStatus != 1 && _item.goodCnt === 0) _item.prizeStatus = 6
+								if (i != firstZeroIndex && firstZeroIndex !== -1) _item.prizeStatus = 5
 							}
+							// }
 						}
 						// if (item.prizeType == "zuigao") {
 						// 	item.prizeInfoList.forEach(item2 => {
@@ -629,7 +631,8 @@
 			height: 52rpx;
 			border-radius: 50rpx;
 			margin-bottom: 100rpx;
-			::v-deep .u-subsection__item__text{
+
+			::v-deep .u-subsection__item__text {
 				font-weight: bold !important;
 			}
 		}

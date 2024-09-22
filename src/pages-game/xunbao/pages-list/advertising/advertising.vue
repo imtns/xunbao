@@ -98,12 +98,14 @@
 		data() {
 			return {
 				videoContext: null, //视频dom
+				videoDuration: -1, //视频总时长
 				showPrizeTips: false, //奖品弹窗
 				showPrizeType: 0, //当前中奖图片索引//1-4
 				showPyq: false, //朋友圈弹窗
 				shareAndDropShow: false, //显示隐藏收货地址
 				addressDate: {}, //地址数据
 				isUseShare: true,
+				maxTime: -1, //视频最大时间
 				time: '--',
 				type: 2, //0提示  1最后一步
 				show: false,
@@ -192,9 +194,9 @@
 					tool.jump_back()
 				}, 0)
 			}
-			setInterval(() => {
-				console.log("当前秒", this._currentTime, this._currentTime2)
-			}, 2000)
+			// setInterval(() => {
+			// 	console.log("当前秒", this._currentTime, this._currentTime2)
+			// }, 2000)
 			for (var i = 0; i < this.jiangp_list.length; i++) {
 				if (this.dropPrize.prizeName.includes(this.jiangp_list[i].prizeName)) {
 					this.dq_prizeImage = this.jiangp_list[i].prizeImage
@@ -376,12 +378,12 @@
 			},
 			//获取分享码
 			watchVideo2() {
-				console.log('获取分享码');
+				console.log('看完视频后获取分享码');
 				api.watchVideo({
 						triggerCode: this.triggerCode
 					})
 					.then((res) => {
-						console.log(res.data, '’167');
+						console.log('获取分享码（视频后弹窗）-成功', res.data);
 						this.show = true
 						this.type = 1
 						// tool.alert(res.message)
@@ -389,7 +391,7 @@
 						store.commit('storeShareCode2', res.data.watchVideoCode);
 					})
 					.catch((err) => {
-						console.log('获取分享码222', err);
+						console.log('获取分享码（视频后弹窗）-失败', err);
 					});
 			},
 			//cx分享视频
@@ -415,24 +417,31 @@
 			//视频播放中
 			timeupdate(e) {
 				let _currentTime = Math.floor(e.detail.currentTime),
-					_currentTime2 = e.detail.currentTime,
-					_duration = e.detail.duration
-				// console.log("e", e.detail.duration)
-				if (this.time == '--') {
-					this.time = _duration >= 15 ? 15 : Math.floor(_duration)
+					_currentTime2 = e.detail.currentTime
+				this.videoDuration = e.detail.duration
+				if (this.maxTime == -1) {
+					this.maxTime = this.videoDuration >= 15 ? 15 : Math.floor(this.videoDuration)
 				}
+				console.log("视频播放中2", this.videoDuration, this.maxTime, _currentTime2, (this.videoDuration < 15 &&
+					_currentTime2 >= this.videoDuration), (this.videoDuration >= 15 && _currentTime2 >= this
+					.maxTime), this.unpDate)
 				this._currentTime = _currentTime
 				this._currentTime2 = _currentTime2
-				this.time = 15 - _currentTime
+				this.time = this.maxTime - _currentTime
+				let _difference = Math.abs(util.accSub(_currentTime2, this.maxTime))
+				console.log('_difference', _difference)
 				// this.percentage = (15 - this.time) * 50 / 15
-				if (((_duration < 15 && _currentTime2 >= _duration) || (_duration >= 15 && _currentTime2 >= 14.8)) && this
-					.unpDate) {
+				if (this.videoDuration >= 15 && _difference <= 0.3 && this.unpDate) {
 					this.watchVideo2()
 					this.unpDate = false
 				}
 			},
 			//视频播放完成
 			ended() {
+				if (this.videoDuration < 15) {
+					this.watchVideo2()
+					this.unpDate = false
+				}
 				this.time = 0
 				// this.watchVideo2()
 			},

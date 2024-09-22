@@ -1,11 +1,12 @@
 <template>
-	<view class="Share" v-show="isFect">
+	<view class="Share" v-show="isFect && Share_type">
 		<view class="effect" style="width: 100vw; height: 100vh; position: absolute; left: 0; top: 0">
 			<sequenceEffect ref="showfect" :sequenceList="starList" @loadOk="loadOk"></sequenceEffect>
-			<view class="Share6 Share3 tc" v-if="Share_type != 2 && Share_type != 1" @click="getHome">
+			<view class="Share6 Share3 tc" v-if="Share_type != 2 && Share_type != 1"
+				@click="$u.throttle(getHome, 2000)">
 				<image mode="widthFix" :src="`${ASSETSURL}Share3.png`"></image>
 			</view>
-			<view class="Share6 Share3 tc" v-if="Share_type == 1" @click="getJoinActivity(shareCode)">
+			<view class="Share6 Share3 tc" v-if="Share_type == 1" @click="$u.throttle(getHome, 2000)">
 				<image mode="widthFix" :src="`${ASSETSURL}shouXKP.png`"></image>
 			</view>
 		</view>
@@ -20,9 +21,18 @@
 				<view class="Share1 tc">
 					<image mode="widthFix" :src="`${ASSETSURL}Share1.png`"></image>
 				</view>
-				<view class="Share1_1">感谢你的帮助!为你送营养宝藏卡，收集卡片合成大奖，还有丰富的笑励随机掉落，和我一起加入爱美客扫码寻宝活动吧!</view>
-				<view class="Share2 tc">
-					<image mode="widthFix" :src="`${ASSETSURL}Share2.png`"></image>
+				<view class="Share1_1">感谢你的帮助!为你送<text>{{ type }}</text>，收集卡片合成大奖，还有丰富的笑励随机掉落，和我一起加入爱美客扫码寻宝活动吧!</view>
+				<view class="Share2 tc" v-if="type == '全身宝藏卡'">
+					<image mode="widthFix" :src="`${ASSETSURL}img/qs.png`"></image>
+				</view>
+				<view class="Share2 tc" v-if="type == '营养宝藏卡'">
+					<image mode="widthFix" :src="`${ASSETSURL}img/yy.png`"></image>
+				</view>
+				<view class="Share2 tc" v-if="type == '性价比宝藏卡'">
+					<image mode="widthFix" :src="`${ASSETSURL}img/xjb.png`"></image>
+				</view>
+				<view class="Share2 tc" v-if="type == '百搭宝藏卡'">
+					<image mode="widthFix" :src="`${ASSETSURL}img/bd1.png`"></image>
 				</view>
 			</view>
 
@@ -102,7 +112,7 @@
 		data() {
 			return {
 				isFect: false, //加载
-				Share_type: -1, //0 卡片被收下 1 参与活动  2 收下 3 你不是新用户无法助力 4 卡片失效
+				Share_type: null, //0 卡片被收下 1 参与活动  2 收下 3 你不是新用户无法助力 4 卡片失效
 				timeData: {},
 				shareCode: null,
 				type: null,
@@ -134,10 +144,9 @@
 					}
 					console.log(ope)
 					if (ope.shareCode) {
-						this.Share_type = 1
 						this.shareCode = ope.shareCode
 						// tool.alert(ope.shareCode + '我是分享过来的code')
-						// this.getJoinActivity(ope.shareCode)
+						this.getJoinActivity(ope.shareCode)
 					}
 					if (ope.shareCode1) {
 						console.log(222)
@@ -267,8 +276,25 @@
 									}
 								})
 							} else {
+								switch (res.data.card.cardType) {
+									case 'qs_card':
+										this.type = '全身宝藏卡';
+										break;
+									case 'yy_card':
+										this.type = '营养宝藏卡';
+										break;
+									case 'xjb_card':
+										this.type = '性价比宝藏卡';
+										break;
+									case 'bd_card':
+										this.type = '百搭宝藏卡';
+										break;
+									default:
+										// 处理未知卡类型
+										this.type = '未知类型';
+										break;
+								}
 								this.Share_type = 1
-								tool.alert('助力成功')
 								reportClickEvent({
 									activityName: '好友主力成功',
 									actionRank: 0,
