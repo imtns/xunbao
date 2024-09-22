@@ -97,12 +97,12 @@
 		},
 		watch: {
 			time(newValue, oldValue) {
-				if (newValue <= 0) {
-					console.log('watch监听到15秒了')
-					if (!this.unpDate) {
+				if (this.unpDate) {
+					if (newValue <= 0) {
+						console.log('watch监听到15秒了')
 						this.watchVideo2()
+						this.unpDate = false
 					}
-					this.unpDate = false
 				}
 			}
 		},
