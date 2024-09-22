@@ -1,5 +1,6 @@
 <template>
 	<view class="codes">
+        <x-loading v-if="isSend" text="正在识别..." background="white" />
 		<view class="codesceng">
 			<view class="award1">
 				<!-- <image :src="`${ASSETSURL}ad_18.png`"></image> -->
@@ -147,12 +148,13 @@
 					code,
 					message
 				}) => {
-					console.log('返回preArScanpreArScanpreArScan', '++++++++++------------')
+					console.log('返回preArScanpreArScanpreArScan', '++++++++++------------', data)
 					if (code == 500) {
 						tool.alert(message)
 						return
 					}
 					this.operateRecordCode = data.operateRecordCode
+					console.log("🚀 ~ takePhoto ~ operateRecordCode:", this.operateRecordCode)
 					reportClickEvent({
 						activityName: '允许授权摄像头',
 						actionRank: 0,
@@ -163,7 +165,8 @@
 				})
 			},
 			startScan() {
-				if (this.isSend) return tool.alert('太快了~')
+                if (this.isSend) return tool.alert('太快了~')
+ 
 				this.isSend = true
 				// this.contextCamera = wx.createCameraContext()
 				let that = this
@@ -190,7 +193,8 @@
 									if (res1.code == 500) {
 										tool.alert(res1.message)
 										return
-									}
+                                    }
+                                   
 									that.isSend = false
 									reportClickEvent({
 										activityName: 'AR识别接口',
@@ -231,7 +235,8 @@
 								.catch((err) => {
 									tool.loading_h();
 									console.log(err, '‘err173')
-									that.isSend = false
+                                    that.isSend = false
+                                    
 									that.codes_type = 0
 								})
 						})
