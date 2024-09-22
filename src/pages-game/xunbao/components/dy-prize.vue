@@ -225,11 +225,12 @@
 				clearTimeout(this.setTimeout_isAllowClicks)
 				this.setTimeout_isAllowClicks = setTimeout(() => {
 					this.isAllowClicks = true
-				}, 1000)
+				}, 1500)
 			},
 			//跳转到视频页
 			advertising() {
 				if (!this.isAllowClicks) return
+				this.isAllowClicks = false
 				this.$emit('close')
 				tool.jump_nav('/pages-game/xunbao/pages-list/advertising/advertising')
 			},

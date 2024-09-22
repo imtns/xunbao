@@ -593,6 +593,12 @@
 				console.log(e)
 			},
 			arCard() {
+				reportClickEvent({
+					activityName: '去完成的次数',
+					actionRank: 0,
+					activityId: 'game_xunbao_audio_click_tell',
+					activityContent:{}
+				})
 				this.requestSubscribeMessage()
 				tool.jump_nav('/pages-game/xunbao/pages-list/codes/codes')
 			},

@@ -260,6 +260,7 @@
 					'预占',
 					'zwkf.png', //'暂未开始发放',
 					'nyhd.png', //'您已获得音响',
+					'nyhd2.png', //'您已获得挂件',
 					'yfw.png', //'已发完'
 				],
 				difference: null,
@@ -481,9 +482,15 @@
 							// if (firstZeroIndex !== -1) {
 							for (let i = 0; i < item.prizeInfoList.length; i++) {
 								let _item = item.prizeInfoList[i]
-								console.log('是否有为0的', _item.prizeStatus != 0 && _item.prizeStatus != 1 && _item.goodCnt === 0)
-								if (_item.prizeStatus != 0 && _item.prizeStatus != 1 && _item.goodCnt === 0) _item.prizeStatus = 6
-								if (i != firstZeroIndex && firstZeroIndex !== -1) _item.prizeStatus = 5
+								// console.log('是否有为0的', _item.prizeStatus != 0 && _item.prizeStatus != 1 && _item.goodCnt === 0)
+								if (_item.prizeStatus != 0 && _item.prizeStatus != 1 && _item.goodCnt === 0) _item.prizeStatus = 7
+								if (i != firstZeroIndex && firstZeroIndex !== -1) {
+									if (_item.goodsCode == "1831952468850761729") {
+										_item.prizeStatus = 6
+									} else if (_item.goodsCode == "1831952627743580162") {
+										_item.prizeStatus = 5
+									}
+								}
 							}
 							// }
 						}

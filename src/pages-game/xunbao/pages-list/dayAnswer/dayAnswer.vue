@@ -29,7 +29,7 @@
 				<image :src="`${ASSETSURL}dayAnswer/cancel.png`" @click="fhui" class="cancel"></image>
 			</view>
 		</u-popup>
-		<dy-prize ref="dyPrize2" :show="showPrize" :item="prizeDetail" @close="showPrize = false"></dy-prize>
+		<dy-prize ref="dyPrize2" :show="showPrize" :showPrize="showPrize" :item="prizeDetail" @close="showPrize = false"></dy-prize>
 	</view>
 </template>
 

@@ -95,6 +95,15 @@
 			shareAndDrop,
 			prizeTips
 		},
+		watch: {
+			time(newValue, oldValue) {
+				if (newValue <= 0) {
+					console.log('watch监听到15秒了')
+					this.watchVideo2()
+					this.unpDate = false
+				}
+			}
+		},
 		data() {
 			return {
 				videoContext: null, //视频dom
@@ -431,22 +440,28 @@
 				let _difference = Math.abs(util.accSub(_currentTime2, this.maxTime))
 				console.log('_difference', _difference)
 				// this.percentage = (15 - this.time) * 50 / 15
-				if (this.videoDuration >= 15 && _difference <= 0.3 && this.unpDate) {
-					this.watchVideo2()
-					this.unpDate = false
-				}
+				// if (this.videoDuration >= 15 && _difference <= 0.3 && this.unpDate) {
+				// 	this.watchVideo2()
+				// 	this.unpDate = false
+				// }
 			},
 			//视频播放完成
 			ended() {
-				if (this.videoDuration < 15) {
-					this.watchVideo2()
-					this.unpDate = false
-				}
+				// if (this.videoDuration < 15) {
+				// 	this.watchVideo2()
+				// 	this.unpDate = false
+				// }
 				this.time = 0
 				// this.watchVideo2()
 			},
 			//视频播放
 			play() {
+				reportClickEvent({
+					activityName: '触发的掉落奖励用户完成观看广告的次数',
+					actionRank: 0,
+					activityId: 'game_xunbao_prize_click_play',
+					activityContent: {}
+				})
 				// let that = this
 				// this.dsq = setInterval(() => {
 				// 	this.time--

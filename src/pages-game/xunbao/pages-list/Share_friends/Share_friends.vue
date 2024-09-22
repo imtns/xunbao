@@ -1,13 +1,13 @@
 <template>
-	<view class="Share" v-show="isFect && Share_type">
+	<view class="Share" v-show="isFect && Share_type >= 0">
 		<view class="effect" style="width: 100vw; height: 100vh; position: absolute; left: 0; top: 0">
 			<sequenceEffect ref="showfect" :sequenceList="starList" @loadOk="loadOk"></sequenceEffect>
-			<view class="Share6 Share3 tc" v-if="Share_type != 2 && Share_type != 1"
-				@click="$u.throttle(getHome, 2000)">
-				<image mode="widthFix" :src="`${ASSETSURL}Share3.png`"></image>
-			</view>
 			<view class="Share6 Share3 tc" v-if="Share_type == 1" @click="$u.throttle(getHome, 2000)">
 				<image mode="widthFix" :src="`${ASSETSURL}shouXKP.png`"></image>
+			</view>
+			<view class="Share6 Share3 tc" v-if="Share_type >= 0 &&  Share_type != 2 && Share_type != 1"
+				@click="$u.throttle(getHome, 2000)">
+				<image mode="widthFix" :src="`${ASSETSURL}Share3.png`"></image>
 			</view>
 		</view>
 		<view style="position: relative; z-index: 33">
@@ -112,7 +112,7 @@
 		data() {
 			return {
 				isFect: false, //加载
-				Share_type: null, //0 卡片被收下 1 参与活动  2 收下 3 你不是新用户无法助力 4 卡片失效
+				Share_type: -1, //0 卡片被收下 1 参与活动  2 收下 3 你不是新用户无法助力 4 卡片失效
 				timeData: {},
 				shareCode: null,
 				type: null,
@@ -183,7 +183,6 @@
 							this.getJoinActivity(ope.shareCode)
 						}
 						if (ope.shareCode1) {
-							console.log(222)
 							this.operateCode = ope.shareCode1
 							this.shareCode = ope.shareCode
 							this.htxb_cardDetail(ope.shareCode1)
@@ -220,8 +219,8 @@
 					console.log(res, '-------查询卡详情查询卡详情------')
 					// 检查API调用是否成功
 					if (res.code === 200) {
-						this.rateDate = res.data
 						this.Share_type = 2
+						this.rateDate = res.data
 						switch (res.data.cardType) {
 							case 'qs_card':
 								this.type = '全身宝藏卡';
@@ -243,10 +242,11 @@
 						console.log(this.type, res.data)
 					}
 				}).catch((err) => {
-					console.log(err, '------errerrerr-------')
-					if (err.code === 10005) {
+					console.log(err, '------errerrerr------errerr-')
+					if (err.code == 10005) {
 						this.Share_type = 0
-					} else if (err.code === 10009) {
+						console.log(this.Share_type, '-------10005--查询卡详情查询卡详情------')
+					} else if (err.code == 10009) {
 						this.Share_type = 4
 						// tool.alert('分享链接已失效')
 					}
@@ -263,10 +263,12 @@
 						tool.alert(res.message)
 						if ((res.code == 200)) {
 							reportClickEvent({
-								activityName: '用户通过分享活动任务获得卡片奖励的数量',
+								activityName: '收卡的次数',
 								actionRank: 0,
 								activityId: 'game_xunbao_share_click_success',
-								activityContent: {}
+								activityContent: {
+									name:this.type
+								}
 							})
 							tool.alert('收卡成功')
 							tool.loading_h()

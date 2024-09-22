@@ -33,7 +33,7 @@
 				</view>
 			</view>
 		</view>
-		<dy-prize ref="dyPrize2" :show="showPrize" :item="prizeDetail" v-if="code != 10007" @close="showPrize = false"
+		<dy-prize ref="dyPrize2" :show="showPrize" :showPrize="showPrize" :item="prizeDetail" v-if="code != 10007" @close="showPrize = false"
 			@getZlyq="showPrize = false"></dy-prize>
 		<view class="takePhoto flex-cen">
 			<image class="btn scale-wave" :src="`${ASSETSURL}image/song_btn_01.png`"
