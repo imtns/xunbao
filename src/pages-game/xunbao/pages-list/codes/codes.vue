@@ -168,7 +168,7 @@
                 if (this.isSend) return tool.alert('太快了~')
  
 				this.isSend = true
-				// this.contextCamera = wx.createCameraContext()
+				if (!this.contextCamera) this.contextCamera = wx.createCameraContext()
 				let that = this
 				this.contextCamera.takePhoto({
 					quality: 'high',

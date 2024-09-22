@@ -129,33 +129,69 @@
 			}
 		},
 		onLoad(ope) {
-			console.log(ope, '--------opeopeopeope-----')
-			this.$nextTick(() => {
-				setTimeout(() => {
-					this.getUserInfo()
-					if (!this.isLogin) {
-						reportClickEvent({
-							activityName: '好友分享页跳转登录',
-							actionRank: 0,
-							activityId: 'game_xunbao_share_click_login',
-							activityContent: {}
-						})
-						return tool.jump_nav('/pages-sub/login/index')
-					}
-					console.log(ope)
-					if (ope.shareCode) {
-						this.shareCode = ope.shareCode
-						// tool.alert(ope.shareCode + '我是分享过来的code')
-						this.getJoinActivity(ope.shareCode)
-					}
-					if (ope.shareCode1) {
-						console.log(222)
-						this.operateCode = ope.shareCode1
-						this.shareCode = ope.shareCode
-						this.htxb_cardDetail(ope.shareCode1)
-					}
-				}, 500)
-			})
+			console.log(ope, '--------分享页面onLoadonLoadonLoadpeopeopeope-----')
+			if (ope) {
+				tool.storage('opeDate', ope)
+			}
+			// this.$nextTick(() => {
+			// 	setTimeout(() => {
+			// 		this.getUserInfo()
+			// 		if (!this.isLogin) {
+			// 			reportClickEvent({
+			// 				activityName: '好友分享页跳转登录',
+			// 				actionRank: 0,
+			// 				activityId: 'game_xunbao_share_click_login',
+			// 				activityContent: {}
+			// 			})
+			// 			return tool.jump_nav('/pages-sub/login/index')
+			// 		}
+			// 		console.log(ope)
+			// 		if (ope.shareCode) {
+			// 			this.shareCode = ope.shareCode
+			// 			// tool.alert(ope.shareCode + '我是分享过来的code')
+			// 			this.getJoinActivity(ope.shareCode)
+			// 		}
+			// 		if (ope.shareCode1) {
+			// 			console.log(222)
+			// 			this.operateCode = ope.shareCode1
+			// 			this.shareCode = ope.shareCode
+			// 			this.htxb_cardDetail(ope.shareCode1)
+			// 		}
+			// 	}, 500)
+			// })
+		},
+		onShow() {
+			let ope = tool.storage('opeDate')
+			console.log(ope, '--------分享页面onShowonShowonShowopeopeopeope-----')
+			if (ope) {
+				this.$nextTick(() => {
+					setTimeout(() => {
+						this.getUserInfo()
+						if (!this.isLogin) {
+							reportClickEvent({
+								activityName: '好友分享页跳转登录',
+								actionRank: 0,
+								activityId: 'game_xunbao_share_click_login',
+								activityContent: {}
+							})
+							return tool.jump_nav('/pages-sub/login/index')
+						}
+						console.log(ope)
+						if (ope.shareCode) {
+							this.shareCode = ope.shareCode
+							// tool.alert(ope.shareCode + '我是分享过来的code')
+							this.getJoinActivity(ope.shareCode)
+						}
+						if (ope.shareCode1) {
+							console.log(222)
+							this.operateCode = ope.shareCode1
+							this.shareCode = ope.shareCode
+							this.htxb_cardDetail(ope.shareCode1)
+						}
+						tool.storage('#opeDate')
+					}, 500)
+				})
+			}
 		},
 		methods: {
 			//查询用户信息
