@@ -511,6 +511,7 @@
 </script>
 <style>
 	@import '@/pages-game/xunbao/css/base.css';
+	@import '@/pages-game/xunbao/css/code-fun.css';
 </style>
 <style scoped lang="scss">
 	.awardceng {
