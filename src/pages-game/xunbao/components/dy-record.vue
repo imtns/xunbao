@@ -58,6 +58,7 @@
 </template>
 <style>
 	@import '@/pages-game/xunbao/css/base.css';
+	@import '@/pages-game/xunbao/css/code-fun.css';
 </style>
 <script>
 	import {

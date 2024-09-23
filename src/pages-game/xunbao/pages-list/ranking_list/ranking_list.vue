@@ -58,6 +58,7 @@
 </template>
 <style>
 	@import '@/pages-game/xunbao/css/base.css';
+	@import '@/pages-game/xunbao/css/code-fun.css';
 </style>
 <script>
 	import api from '@/pages-game/xunbao/api/api'
@@ -95,7 +96,7 @@
 						this.dataList = res.data.rankList
 						if (!this.dataList.length) this.showRanking = true
 						this.dq_list = res.data.myRank
-						
+
 						setTimeout(() => {
 							this.listShow = true
 						}, 500)

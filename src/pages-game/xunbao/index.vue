@@ -736,6 +736,7 @@
 </script>
 <style>
 	@import './css/base.css';
+	@import './css/code-fun.css';
 </style>
 <style scoped lang="scss">
 	.close {
