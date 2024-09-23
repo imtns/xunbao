@@ -182,7 +182,7 @@
 </style>
 <script>
 	import api from '@/pages-game/xunbao/api/api'
-	import tool from '@/pages-game/xunbao/js/tool' 
+	import tool from '@/pages-game/xunbao/js/tool'
 	import store from '@/store';
 	import cardFlip from '@/pages-game/xunbao/components/card-flip/card-flip.vue';
 	import sequenceEffect from '@/pages-game/xunbao/components/sequenceEffect/sequenceEffect';
@@ -938,12 +938,12 @@
 		}
 	}
 </style>
-<style scoped>
-	.u-popup__content {
-		background: none;
+<style scoped lang="scss">
+	::v-deep .u-popup__content {
+		background: none !important;
 	}
 
-	.u-popup__content {
+	::v-deep .u-popup__content {
 		background: none !important;
 	}
 

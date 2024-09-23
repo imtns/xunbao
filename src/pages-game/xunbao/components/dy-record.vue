@@ -70,9 +70,9 @@
 	import api from '@/pages-game/xunbao/api/api.js'
 	import tool from '@/pages-game/xunbao/js/tool.js'
 	// 鉴权码：从讯飞开放平台申请appid，并添加（流式接口）获取接口密钥APIKey 和 APISecret
-	const APPID = '08c1a943'
-	const API_SECRET = 'NmQ5YmY0Nzg4MmU0YTQzNGU0NmM5OWMy'
-	const API_KEY = '5cbaed332e3e5b1dbbb8959e4d59b879'
+	const APPID = '2699dfb4'
+	const API_SECRET = 'MjI0ZGUyNDRlMTVkZDg3MzFiZTQ3NDk4'
+	const API_KEY = '738258842d2ebad4dcc6fd7df5e58324'
 	import {
 		reportClickEvent,
 		reportExposeEvent
@@ -420,13 +420,13 @@
 						audio: this.toBase64(audioData)
 					}
 				}
-				console.log('------初始化头部数据--流式分片发送数据到讯飞平台------')
+				console.log('------初始化头部数据--流式分片发送数据到讯飞平台2------')
 				uni.sendSocketMessage({
 					data: JSON.stringify(params)
 				})
 				// this.webSocket.send(JSON.stringify(params))
 				this.handlerInterval = setInterval(() => {
-					console.log('------具体内容数据--流式分片发送数据到讯飞平台------')
+					console.log('------具体内容数据--流式分片发送数据到讯飞平台3------')
 					// uni.showLoading({
 					// 	title: '识别中'
 					// })
