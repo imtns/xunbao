@@ -461,7 +461,7 @@
 						this.PreventMultiplePoints = false
 					}, 2000)
 					console.log('双击')
-					if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
+					if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注')
 					this.showPrize = false
 					this.triggerBuryPoint()
 					reportClickEvent({
@@ -651,7 +651,7 @@
 			},
 			renw_1() {
 				if (this.showPrize) return
-				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注~')
+				if (store.state.actEndFlag) return tool.alert('活动已结束，感谢您的关注')
 				if (!this.isLogin) {
 					reportClickEvent({
 						activityName: '游戏首页跳转登录',
