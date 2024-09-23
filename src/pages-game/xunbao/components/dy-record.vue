@@ -138,7 +138,7 @@
 					operateRecordCode: '',
 					adCode: ''
 				},
-				code: '10007',
+				code: '',
 				sayData: ' ',
 				endRecordShow: true, //是否录音
 				myConnectSocket: null, //WebSocket
