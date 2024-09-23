@@ -31,10 +31,6 @@
 						<!-- <u-image class="btn-img" width="100%" height="100%" :src="`${ASSETSURL}tan2_2.png`"></u-image> -->
 					</view>
 				</block>
-
-				<!-- 	<view class="" v-else>
-						123
-					</view> -->
 				<u-popup :show="noPrize" mode="center" :safeAreaInsetBottom="false" bgColor="transparent" @close="
 						noPrize = false
 						close()
@@ -493,6 +489,7 @@
 				if (jsonData.code === 0 && jsonData.data.status === 2) {
 					uni.onSocketClose(function(res) {
 						console.log('WebSocket 已关闭！2')
+						that.code == 10007
 						that.myConnectSocket = null
 						// uni.hideLoading();
 						// tool.alert('识别失败')

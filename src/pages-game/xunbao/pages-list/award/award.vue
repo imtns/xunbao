@@ -99,7 +99,7 @@
 												<view class="award31_mc11">
 													<!-- {{prizeStatus2[item2.prizeStatus]}} -->
 													<image
-														:style="{'margin-top': item2.prizeStatus == 5 || item2.prizeStatus == 6 ? '44rpx' : ''}"
+														:style="{'margin-top': item2.prizeStatus == 5 || item2.prizeStatus == 6 || item2.prizeStatus == 7 ? '44rpx' : ''}"
 														:src="ASSETSURL + 'img/' + prizeStatus2[item2.prizeStatus]"
 														height="92rpx" mode="heightFix"></image>
 												</view>
@@ -107,9 +107,9 @@
 													第1-2000名可得宝藏唱片音响
 												</view>
 												<view class="award31_mc12" v-if="index2 == 1 && item2.prizeStatus != 5 && item2.prizeStatus != 6 && item2.prizeStatus != 7">
-													第2001-6000名可得宝藏嗨嗨挂件
+													第2001-9000名可得宝藏嗨嗨挂件
 												</view>
-												<view class="award31_mc12" style="margin-top: 15rpx;" v-if="item2.prizeStatus != 5 && item2.prizeStatus != 6">
+												<view class="award31_mc12" style="margin-top: 15rpx;" v-if="item2.prizeStatus != 5 && item2.prizeStatus != 6 && item2.prizeStatus != 7">
 													奖品当前剩余数量：{{item2.goodCnt || 0}}个
 												</view>
 											</view>
