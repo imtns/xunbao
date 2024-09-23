@@ -30,8 +30,8 @@ const {
 } = require('./env')
 
 function toolAlert(message) {
-	let msgList = ['语音识别文字不能为空', '识别失败，再来一次']
-	if (!msgList.includes(message)) tool.alert(message)
+	let msgList = ['语音识别文字不能为空', '识别失败，再来一次', '身份认证失败']
+	if (!msgList.includes(message) && message) tool.alert(message)
 }
 module.exports = {
 	/**
