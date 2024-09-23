@@ -564,7 +564,7 @@
 									// tool.jump_nav('/pages-game/xunbao/pages-list/advertising/advertising')
 									return
 								} else if (data.prizeType == 'kong') {
-									that.closeKong('closeKong')
+									that.$emit('closeKong')
 								} else if (data.prizeType != 'kong') {
 									that.close()
 									reportClickEvent({
