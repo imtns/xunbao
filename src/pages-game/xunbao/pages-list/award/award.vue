@@ -483,7 +483,6 @@
 							for (let i = 0; i < item.prizeInfoList.length; i++) {
 								let _item = item.prizeInfoList[i]
 								// console.log('是否有为0的', _item.prizeStatus != 0 && _item.prizeStatus != 1 && _item.goodCnt === 0)
-								if (_item.prizeStatus != 0 && _item.prizeStatus != 1 && _item.goodCnt === 0) _item.prizeStatus = 7
 								if (i != firstZeroIndex && firstZeroIndex !== -1) {
 									console.log("_item.goodsCode", _item.goodsCode)
 									if (_item.goodsCode == "1831952468850761729") {//音响
@@ -492,6 +491,7 @@
 										_item.prizeStatus = 5
 									}
 								}
+								if (_item.prizeStatus != 0 && _item.prizeStatus != 1 && _item.goodCnt === 0) _item.prizeStatus = 7
 							}
 							// }
 						}

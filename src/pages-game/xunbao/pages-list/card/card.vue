@@ -1,6 +1,7 @@
 <template>
 	<view class="card">
 		<view class="cardceng" style="height: 100%">
+			<!-- <view class="" style="padding-top: 20rpx; box-sizing: border-box"> -->
 			<view class="" style="padding-top: 20rpx; box-sizing: border-box">
 				<view class="card1 oh">
 					<view class="myKp">
@@ -13,7 +14,8 @@
 							<image class="img" :src="`${ASSETSURL}img/X.png`" style="height: 30rpx"></image>
 							<image class="img" :src="`${ASSETSURL}img/${compositionCount[0]}.png`"></image>
 							<image class="img" style="margin-left: -6rpx"
-								:src="`${ASSETSURL}img/${compositionCount[1]}.png`"> </image>
+								:src="`${ASSETSURL}img/${compositionCount[1]}.png`">
+							</image>
 							<image class="img" v-if="compositionCount[2]" style="margin-left: -12rpx"
 								:src="`${ASSETSURL}img/${compositionCount[2]}.png`"></image>
 						</view>
@@ -59,13 +61,13 @@
 					</view>
 				</view>
 			</view>
-			<view class="card4">
+			<view class="card4 flex-cen">
 				<view class="card4ceng oh">
 					<!-- <u-scroll-list indicatorActiveColor="#ffb300" indicator='false'> -->
 					<view class="card41 le" v-for="(item, index) in list" :key="index"
 						@click="throttledMethod(index, item.num)">
 						<view class="card411">
-							<image :src="`${ASSETSURL}card/card6.png`"></image>
+							<!-- <image :src="`${ASSETSURL}card/card6.png`"></image> -->
 							<text>{{ item.num }}</text>
 						</view>
 						<view class="card412">
@@ -174,10 +176,13 @@
 		</u-popup>
 	</view>
 </template>
-
+<style>
+	@import '@/pages-game/xunbao/css/base.css';
+	@import '@/pages-game/xunbao/css/code-fun.css';
+</style>
 <script>
 	import api from '@/pages-game/xunbao/api/api'
-	import tool from '@/pages-game/xunbao/js/tool'
+	import tool from '@/pages-game/xunbao/js/tool' 
 	import store from '@/store';
 	import cardFlip from '@/pages-game/xunbao/components/card-flip/card-flip.vue';
 	import sequenceEffect from '@/pages-game/xunbao/components/sequenceEffect/sequenceEffect';
@@ -482,7 +487,8 @@
 									// this.show = true
 									// this.compound1 = 1
 									let _prizeList = ['1831952468850761729', '1831952627743580162']
-									this.showPrizeType = _prizeList.findIndex(item => item == res.data.goodsCode) + 5
+									this.showPrizeType = _prizeList.findIndex(item => item == res.data
+										.goodsCode) + 5
 									this.showPrizeTips = true
 									this.bgGxShowFect = false
 								})
@@ -568,7 +574,6 @@
 </script>
 <style>
 	@import '@/pages-game/xunbao/css/base.css';
-	@import '@/pages-game/xunbao/css/code-fun.css';
 </style>
 <style scoped lang="scss">
 	.changAnBC {
@@ -738,17 +743,24 @@
 			}
 
 			.card4 {
-				background: url('https://cdn.vrupup.com/s/116/card_bj1_1.png') no-repeat;
-				background-size: 100% 100%;
-				height: 395rpx;
+				// background: url('https://cdn.vrupup.com/s/116/card_bj1_1.png') no-repeat;
+				// background-size: 100% 100%;
+				background: #FFB300;
+				border-radius: 40rpx;
+				padding: 20rpx 0;
+				// height: 395rpx;
 				position: absolute;
 				width: 100vw;
 				bottom: 0;
 
 				.card4ceng {
-					position: absolute;
-					bottom: 64rpx;
-					left: 67rpx;
+					// position: absolute;
+					// bottom: 64rpx;
+					// left: 67rpx;
+					padding: 26rpx 20rpx;
+					background: #FFF6A0;
+					font-size: 0;
+					border-radius: 40rpx;
 
 					.card41:nth-child(4n) {
 						// margin-right: 0rpx;
@@ -758,22 +770,23 @@
 						margin-right: 17rpx;
 						position: relative;
 
-						.card411 {
-							position: relative;
-							left: 122rpx;
-							top: 26rpx;
-							z-index: 999;
+						&.card41:nth-child(4) {
+							margin-right: 0;
 
+						}
+
+						.card411 {
 							text {
 								position: absolute;
+								right: 0;
+								top: 0;
+								transform: translate(40%, -40%);
+								border-radius: 50%;
 								font-family: Alibaba PuHuiTi;
 								font-weight: 500;
 								font-size: 18rpx;
 								color: #080808;
-								left: 0;
-								top: 1rpx;
 								background: #fc7105;
-								border-radius: 120rpx;
 								width: 30rpx;
 								height: 30rpx;
 								line-height: 30rpx;
@@ -925,12 +938,59 @@
 		}
 	}
 </style>
-<style>
+<style scoped>
 	.u-popup__content {
 		background: none;
 	}
 
 	.u-popup__content {
 		background: none !important;
+	}
+
+	@media screen and (max-height: 700px) {
+		.card .cardceng .card2 {
+			transform: scale(.8) translateY(-100rpx);
+		}
+
+		.card .cardceng .card3 {
+			transform: scale(.8) translateY(-130rpx);
+		}
+
+		.card .cardceng .card1 .myKp {
+			transform: scale(.8) translateY(-30rpx)
+		}
+
+		.card .cardceng .card1 .card11,
+		.card .cardceng .card1 .card12 {
+			transform: translateY(-30rpx);
+		}
+
+		.card .cardceng .card4 {
+			padding: 14rpx 0;
+		}
+
+		.card .cardceng .card4 .card4ceng {
+			padding: 26rpx 20rpx 16rpx;
+		}
+	}
+
+	@media screen and (max-height: 650px) {
+		.card .cardceng .card2 {
+			transform: scale(.8) translateY(-120rpx);
+		}
+
+		.card .cardceng .card3 {
+			transform: scale(.8) translateY(-190rpx);
+		}
+	}
+
+	@media screen and (max-height: 600px) {
+		.card .cardceng .card2 {
+			transform: scale(.8) translateY(-190rpx);
+		}
+
+		.card .cardceng .card3 {
+			transform: scale(.8) translateY(-350rpx);
+		}
 	}
 </style>
