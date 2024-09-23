@@ -146,7 +146,8 @@
 				startRecord_timeStamp: null, // 按下录音按钮的时间戳
 				pressAndHold_minTimes: 200, //按住最小时间才算录音，时间戳
 				startRecordNext_setT: null, // 按下录音按钮后，超过1秒后，开始录音
-				isTouchEnd: false //已经释放长按
+				isTouchEnd: false, //已经释放长按
+				isDouDi: null, //兜底提示
 			}
 		},
 		watch: {
@@ -378,6 +379,7 @@
 					})
 					uni.onSocketMessage(function(res) {
 						console.log('收到服务器内容：' + res.data)
+						clearTimeout(that.isDouDi)
 						that.result(res.data)
 					})
 				})
@@ -420,9 +422,16 @@
 				uni.sendSocketMessage({
 					data: JSON.stringify(params)
 				})
+
 				// this.webSocket.send(JSON.stringify(params))
 				this.handlerInterval = setInterval(() => {
 					console.log('------具体内容数据--流式分片发送数据到讯飞平台3------')
+
+					clearTimeout(this.isDouDi)
+					this.isDouDi = setTimeout(() => {
+						console.log('进入兜底--------------')
+						this.luYinShiBai()
+					}, 7000)
 					// uni.showLoading({
 					// 	title: '识别中'
 					// })
@@ -458,6 +467,14 @@
 					})
 				}, 40)
 			},
+			//判断录音失败的情况
+			luYinShiBai() {
+				if (!this.endRecordShow) {
+					this.code == 10007
+					this.sayData = ''
+					this.adText = '识别失败，再来一次'
+				}
+			},
 			result(resultData) {
 				let that = this
 				// 识别结束
@@ -489,7 +506,7 @@
 				if (jsonData.code === 0 && jsonData.data.status === 2) {
 					uni.onSocketClose(function(res) {
 						console.log('WebSocket 已关闭！2')
-						that.code == 10007
+						that.luYinShiBai()
 						that.myConnectSocket = null
 						// uni.hideLoading();
 						// tool.alert('识别失败')
@@ -501,6 +518,7 @@
 				if (jsonData.code !== 0) {
 					uni.onSocketClose(function(res) {
 						console.log('WebSocket 已关闭！1')
+						that.luYinShiBai()
 						that.myConnectSocket = null
 					})
 					console.log(`${jsonData.code}:${jsonData.message}`)

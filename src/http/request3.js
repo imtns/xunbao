@@ -29,6 +29,10 @@ const {
 	baseIclubUrl
 } = require('./env')
 
+function toolAlert(message) {
+	let msgList = ['语音识别文字不能为空', '识别失败，再来一次']
+	if (!msgList.includes(message)) tool.alert(message)
+}
 module.exports = {
 	/**
 	 *
@@ -101,16 +105,17 @@ module.exports = {
 						'console.log(res.data.code, res.data.code === 10005)')
 					if (res.data.code === 10005 || res.data.code === 10009) {
 						console.log(res, '------codecode222-------')
-						tool.alert(res.data.message)
+						toolAlert(res.data.message)
+
 						reject(res.data)
 					} else if (res.data.code === 10000) {
 						const pages = getCurrentPages().reverse()
 						const pageUrl = pages[0] && pages[0].route
 						uni.$emit(`captcha-${pageUrl}`, data.methodName)
-						tool.alert(res.data.message)
+						toolAlert(res.data.message)
 						reject(res.data)
 					} else if (res.data.code === 200) {
-						// tool.alert(res.data.code)
+						// toolAlert(res.data.code)
 						if (isMessage) {
 							resolve(res.data.data)
 						} else {
@@ -146,7 +151,7 @@ module.exports = {
 								uni.$emit('toast', msg)
 							}, 300)
 						}
-						tool.alert(res.data.message)
+						toolAlert(res.data.message)
 						reject(res.data)
 					}
 				},
@@ -154,7 +159,7 @@ module.exports = {
 					console.log('请求失败，请检查网络', err)
 					uni.$emit('toast', '请求失败，请检查网络')
 					// eslint-disable-next-line prefer-promise-reject-errors
-					tool.alert(res.data.message)
+					toolAlert(res.data.message)
 					reject('请求失败，请检查网络')
 				}
 			})
