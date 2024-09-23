@@ -6,8 +6,8 @@
 					<image :src="`${ASSETSURL}ad_18.png`"></image>
 					<u-navbar class="custom-navbar" title=" " autoBack bgColor="transparent" height="88rpx" placeholder></u-navbar>
 				</view> -->
-				<view class="ranking">
-					<view class="ranking1 oh flex-bet" :class="dataList.length == 0 ? '' : 'shows'" v-if="dataList.length || showRanking">
+				<view class="ranking" :style="{'padding-top': showRanking ? '162rpx' : 0}">
+					<view class="ranking1 oh flex-bet" :class="dataList.length == 0 ? '' : 'shows'" v-if="dataList.length">
 						<view class="ranking11 le ranking11_wenzi">排名</view>
 						<view class="ranking12 le ranking11_wenzi">昵称</view>
 						<view class="ranking13 ri ranking11_wenzi">集齐套数</view>
@@ -91,7 +91,7 @@
 			queryList(pageNo, pageSize) {
 				api.htxb_rankList().then((res) => {
 						console.log(res.data, '查询排行榜');
-						this.dataList = []
+						// this.dataList = []
 						this.dataList = res.data.rankList
 						if (!this.dataList.length) this.showRanking = true
 						this.dq_list = res.data.myRank

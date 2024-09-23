@@ -16,7 +16,7 @@
 									<view class="oh">
 										<view class="award311 le" v-if="item2.prizeStatus == 0">
 											<view class="prizeImage">
-												<image :src="item2.prizeImage"></image>
+												<image :src="item2.prizeImage"  mode="aspectFit"></image>
 											</view>
 											<view class="theAddress">
 												<view class="address">
@@ -28,7 +28,7 @@
 											</view>
 										</view>
 										<view class="award311 le" v-else>
-											<image :src="item2.prizeImage"></image>
+											<image :src="item2.prizeImage" mode="aspectFit"></image>
 										</view>
 										<view class="award312 le oh">
 											<view class="award3121">{{item2.prizeName}}</view>
@@ -56,9 +56,9 @@
 								<view class="award31_add1">
 									<view class="award31 oh award31_add">
 										<view class="award311 le">
-											<image :src="item2.prizeImage" v-if="item2.prizeStatus != 0"></image>
+											<image :src="item2.prizeImage" v-if="item2.prizeStatus != 0" mode="aspectFit"></image>
 											<view class="prizeImage">
-												<image :src="item2.prizeImage"></image>
+												<image :src="item2.prizeImage" mode="aspectFit"></image>
 											</view>
 											<view class="theAddress" v-if="item2.prizeStatus == 0">
 												<view class="address">
